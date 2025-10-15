@@ -6,23 +6,26 @@
                 <p class="mb-0 small">&copy; COUPSAURUS 2025</p>
             </div>
 
-            <div class="col-md-4 text-center text-md-end mt-4 mt-md-0">
-                <a href="#" class="text-light text-decoration-none me-2">INSTAGRAM</a>
-                <a href="#" class="text-light text-decoration-none me-2">SHOPEE</a>
-                <a href="#" class="text-light text-decoration-none">TOKOPEDIA</a>
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-6 text-center text-md-end">
+                        <ul class="list-unstyled small mb-0">
+                            <li><a href="#" class="text-light text-decoration-none">Instagram</a></li>
+                            <li><a href="#" class="text-light text-decoration-none">Shopee</a></li>
+                            <li><a href="#" class="text-light text-decoration-none">Tokopedia</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6 text-center text-md-start">
+                        <ul class="list-unstyled small mb-0">
+                            <li><a href="#" class="text-light text-decoration-none">Our Story</a></li>
+                            <li><a href="#" class="text-light text-decoration-none">E-Catalog</a></li>
+                            <li><a href="#" class="text-light text-decoration-none">Contact Us</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 
         <hr class="border-light">
-
-        <div class="row text-center text-md-start">
-            <div class="col-md-6">
-                <ul class="list-unstyled small mb-0">
-                    <li><a href="#" class="text-light text-decoration-none">OUR STORY</a></li>
-                    <li><a href="#" class="text-light text-decoration-none">E-CATALOG</a></li>
-                    <li><a href="#" class="text-light text-decoration-none">CONTACT US</a></li>
-                </ul>
-            </div>
-        </div>
     </div>
 </footer>
