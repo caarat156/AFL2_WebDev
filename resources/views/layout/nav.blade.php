@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light py-3" style="background-color: #f2e5d5;">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <img src="{{ asset('image/logo.png') }}" alt="Logo" height="40">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" height="40">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
