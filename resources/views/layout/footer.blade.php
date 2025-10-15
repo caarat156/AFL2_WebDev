@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row align-items-center mb-4">
             <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
-                <img src="{{ asset('image/logo.png') }}" alt="Logo" width="100" class="mb-2">
+                <img src="{{ asset('images/logo.png') }}" alt="Logo" width="100" class="mb-2">
                 <p class="mb-0 small">&copy; COUPSAURUS 2025</p>
             </div>
 
