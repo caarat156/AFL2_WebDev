@@ -1,0 +1,13 @@
+@font-face {
+    font-family: 'Playfair Italic' ;
+    src: url('/fonts/PlayfairDisplay-Italic-VariableFont_wght.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Playfair' ;
+    src: url('/fonts/PlayfairDisplay-VariableFont_wght.ttf') format('truetype');
+}
+
+body, h1, h2{
+    font-family:'Playfair', 'sans-serif';
+}
