@@ -14,16 +14,16 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav align-items-center gap-lg-4 gap-3 mt-3 mt-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold text-uppercase" href="#" style="color: #5a4634;">Home</a>
+                    <a class="nav-link fw-semibold text-uppercase" href="/" style="color: #5a4634;">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold text-uppercase" href="#" style="color: #5a4634;">Product</a>
+                    <a class="nav-link fw-semibold text-uppercase" href="/product" style="color: #5a4634;">Product</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold text-uppercase" href="#" style="color: #5a4634;">Stores</a>
+                    <a class="nav-link fw-semibold text-uppercase" href="/store" style="color: #5a4634;">Stores</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold text-uppercase" href="#" style="color: #5a4634;">About</a>
+                    <a class="nav-link fw-semibold text-uppercase" href="about" style="color: #5a4634;">About</a>
                 </li>
 
                 <!-- ICONS -->
