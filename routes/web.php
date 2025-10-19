@@ -3,17 +3,18 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\ReviewController;
 
-Route::get('/', function () {
-    return view('home');
-});
+// 🏠 Home page — kirim reviews ke view
+Route::get('/', [ReviewController::class, 'home'])->name('home');
 
-// ubah ini:
-Route::get('/product', [ProductController::class, 'index']); // ✅ pakai controller
+// 🕯️ Product page
+Route::get('/product', [ProductController::class, 'index'])->name('product.index');
 
-Route::get('/store', [StoreController::class, 'index']);
+// 🏬 Store page
+Route::get('/store', [StoreController::class, 'index'])->name('store.index');
 
+// ℹ️ About page
 Route::get('/about', function () {
     return view('about');
-});
-
+})->name('about');
