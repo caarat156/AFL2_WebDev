@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
         ProductSeeder::class,
         StoreSeeder::class,
     ]);
+
+    \App\Models\Review::factory(100)->create();
     
 }
 
