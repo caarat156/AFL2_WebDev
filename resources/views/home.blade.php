@@ -10,7 +10,7 @@
 @section('content')
 <!-- Hero Section -->
 <div class="hero-section-fullscreen">
-    <img src="{{ asset('images/welcome.jpg') }}" alt="Candle Image" class="hero-image">
+    <img src="{{ asset('images/welcome4.png') }}" alt="Candle Image" class="hero-image">
     <div class="hero-overlay">
         <h1 class="hero-text">Natural, Nostalgic and Created with Love</h1>
     </div>
