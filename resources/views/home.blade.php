@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="product-info">
                                     <p class="product-category">Best Selling Candles</p>
-                                    <h3 class="product-name">HANGING MINI DIFFUSE...R</h3>
+                                    <h3 class="product-name">HANGING MINI DIFFUSER</h3>
                                 </div>
                             </div>
                         </div>
