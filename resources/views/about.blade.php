@@ -51,8 +51,8 @@
             <div class="card border-0 text-center p-4 h-100" style="background-color: #faf8f6;">
                 <div class="card-body">
                     <div class="mb-3 fs-1">🌿</div>
-                    <h4 class="card-title fw-light mb-3" style="color: #6b4e3d;">100% Natural</h4>
-                    <p class="card-text text-muted">Handcrafted with natural ingredients for authentic quality</p>
+                    <h4 class="card-title fw-light mb-3" style="color: #6b4e3d;">Artisan</h4>
+                    <p class="card-text text-muted">Handcrafted for authentic quality</p>
                 </div>
             </div>
         </div>

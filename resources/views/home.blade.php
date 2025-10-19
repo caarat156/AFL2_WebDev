@@ -10,9 +10,9 @@
 @section('content')
 <!-- Hero Section -->
 <div class="hero-section-fullscreen">
-    <img src="{{ asset('images/welcome4.png') }}" alt="Candle Image" class="hero-image">
+    <img src="{{ asset('images/welcome5.jpg') }}" alt="Candle Image" class="hero-image">
     <div class="hero-overlay">
-        <h1 class="hero-text">Natural, Nostalgic and Created with Love</h1>
+        <h1 class="hero-text">A scent can bring back a thousand memories</h1>
     </div>
 </div>
 
@@ -50,7 +50,7 @@
                     <p class="refer-subtitle">Suitable for Gifts</p>
                     <h2 class="refer-title">A Gift For Them, A Gift For You</h2>
                     <p class="refer-description">
-                        Introduce your friends and family to Aromatherapy Associates,<br>
+                        Introduce to your friends and family <br>
                         we will happily pack them up with love for you.
                     </p>
                 </div>
@@ -78,7 +78,7 @@
                     <p class="refer-subtitle">Handcrafted Quality</p>
                     <h2 class="refer-title">Made with Care, Made for You</h2>
                     <p class="refer-description">
-                        Each candle is carefully handcrafted using premium natural ingredients,<br>
+                        Each candle is carefully handcrafted,<br>
                         ensuring the highest quality and a unique experience in every burn.
                     </p>
                 </div>
