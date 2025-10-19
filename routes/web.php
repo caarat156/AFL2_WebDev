@@ -6,7 +6,7 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ReviewController;
 
 // 🏠 Home page — kirim reviews ke view
-Route::get('/', [ReviewController::class, 'home'])->name('home');
+Route::get('/', [ProductController::class, 'home'])->name('home');
 
 // 🕯️ Product page
 Route::get('/product', [ProductController::class, 'index'])->name('product.index');
