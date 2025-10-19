@@ -130,7 +130,7 @@ class ProductSeeder extends Seeder
                 'price_2024' => null,
                 'price_2025' => 209000,
                 'net_price' => 135850,
-                'image' => 'images/artisan_parfume.jpg',
+                'image' => 'images/artisan_perfume.jpg',
                 'notes' => null,
             ],
             [
@@ -140,7 +140,7 @@ class ProductSeeder extends Seeder
                 'price_2024' => 159000,
                 'price_2025' => 169000,
                 'net_price' => 109850,
-                'image' => 'images/artisan_parfume.jpg',
+                'image' => 'images/artisan_perfume.jpg',
                 'notes' => null,
             ],
 
