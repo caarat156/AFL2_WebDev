@@ -19,9 +19,12 @@ return new class extends Migration
         $table->integer('price_2024')->nullable();
         $table->integer('price_2025')->nullable();
         $table->integer('net_price')->nullable();
+        $table->string('image')->nullable();
         $table->text('notes')->nullable();
         $table->timestamps();
     });
 }
+
+    
 
 };
