@@ -1,11 +1,10 @@
 <nav class="navbar navbar-expand-lg navbar-light shadow-sm py-3" style="background-color: #f6efe8;">
     <div class="container">
-        <!-- LOGO -->
+
         <a class="navbar-brand d-flex align-items-center" href="#">
-            <img src="{{ asset('images/logo.png') }}" alt="Logo" height="45" class="me-2">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" height="60" class="me-2">
         </a>
 
-        <!-- TOGGLER (mobile) -->
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <i class="bi bi-list" style="font-size: 1.5rem; color: #6b4e3d;"></i>
         </button>
@@ -20,7 +19,7 @@
                     <a class="nav-link fw-semibold text-uppercase" href="/product" style="color: #5a4634;">Product</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold text-uppercase" href="/store" style="color: #5a4634;">Stores</a>
+                    <a class="nav-link fw-semibold text-uppercase" href="/store" style="color: #5a4634;">Offline Stores</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link fw-semibold text-uppercase" href="about" style="color: #5a4634;">About</a>
