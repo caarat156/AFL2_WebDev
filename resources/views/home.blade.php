@@ -83,9 +83,6 @@
                         </div>
                     </div>
                 </div>
-
-                    </div>
-                </div>
             </div>
 
             <!-- Indicators for mobile -->
@@ -95,40 +92,5 @@
             </div>
         </div>
     </div>
-
-    <!-- Customer Reviews Section -->
-<section class="reviews-section py-5">
-    <div class="container">
-        <h2 class="text-center mb-4">What Our Customers Say</h2>
-
-        <div class="row g-4">
-            @foreach ($reviews as $review)
-                <div class="col-lg-4 col-md-6">
-                    <div class="review-card p-4 shadow-sm rounded-3 bg-light">
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="me-3">
-                                <i class="bi bi-person-circle fs-2 text-secondary"></i>
-                            </div>
-                            <div>
-                                <h5 class="mb-0">{{ $review->name }}</h5>
-                                <div class="text-warning">
-                                    @for ($i = 1; $i <= 5; $i++)
-                                        @if ($i <= $review->rating)
-                                            ★
-                                        @else
-                                            ☆
-                                        @endif
-                                    @endfor
-                                </div>
-                            </div>
-                        </div>
-                        <p class="mb-0 text-muted">“{{ $review->comment }}”</p>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    </div>
-</section>
-
 </section>
 @endsection
