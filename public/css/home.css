@@ -117,7 +117,76 @@
     margin: 0;
 }
 
+/* Refer a Friend Section */
+.refer-section {
+    background-color: #f5f0eb;
+    margin: 80px 0;
+}
+
+.refer-content-wrapper {
+    padding: 100px 80px;
+    background-color: #f5f0eb;
+}
+
+.refer-content {
+    max-width: 550px;
+    text-align: center;
+}
+
+.refer-subtitle {
+    font-size: 0.875rem;
+    letter-spacing: 2.5px;
+    color: #a8896b;
+    margin-bottom: 25px;
+    font-weight: 400;
+    text-transform: uppercase;
+}
+
+.refer-title {
+    font-size: 2.75rem;
+    font-weight: 400;
+    color: #1a3a52;
+    margin-bottom: 30px;
+    font-family: 'Georgia', serif;
+    line-height: 1.2;
+}
+
+.refer-description {
+    font-size: 1.05rem;
+    color: #2d2d2d;
+    line-height: 1.8;
+    margin-bottom: 0;
+    font-weight: 300;
+}
+
+.refer-image-wrapper {
+    height: 100%;
+    min-height: 550px;
+    overflow: hidden;
+}
+
+.refer-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
 /* Responsive */
+@media (max-width: 991px) {
+    .refer-content-wrapper {
+        padding: 70px 50px;
+    }
+
+    .refer-title {
+        font-size: 2.25rem;
+    }
+
+    .refer-image-wrapper {
+        min-height: 450px;
+    }
+}
+
 @media (max-width: 768px) {
     .hero-text {
         font-size: 2rem;
@@ -130,6 +199,22 @@
     .best-sellers-title {
         font-size: 2rem;
     }
+
+    .refer-content-wrapper {
+        padding: 60px 40px;
+    }
+
+    .refer-title {
+        font-size: 2rem;
+    }
+
+    .refer-description {
+        font-size: 1rem;
+    }
+
+    .refer-image-wrapper {
+        min-height: 400px;
+    }
 }
 
 @media (max-width: 576px) {
@@ -139,5 +224,30 @@
 
     .best-sellers-section {
         padding: 40px 0 60px;
+    }
+
+    .refer-content-wrapper {
+        padding: 50px 25px;
+    }
+
+    .refer-title {
+        font-size: 1.75rem;
+    }
+
+    .refer-subtitle {
+        font-size: 0.8rem;
+        letter-spacing: 2px;
+    }
+
+    .refer-description {
+        font-size: 0.95rem;
+    }
+
+    .refer-description br {
+        display: none;
+    }
+
+    .refer-image-wrapper {
+        min-height: 350px;
     }
 }
