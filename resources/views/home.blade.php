@@ -84,21 +84,6 @@
                     </div>
                 </div>
 
-                <!-- Slide 2 -->
-                <div class="carousel-item">
-                    <div class="row g-3">
-                        <div class="col-lg-3 col-md-6 col-sm-6">
-                            <div class="product-card">
-                                <div class="product-image-wrapper">
-                                    <img src="{{ asset('images/product3.jpg') }}" alt="Orange Blossom" class="product-image">
-                                </div>
-                                <div class="product-info">
-                                    <p class="product-category">Best Selling Candles</p>
-                                    <h3 class="product-name">LINEN SPRAY</h3>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
