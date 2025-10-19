@@ -21,14 +21,6 @@
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2 class="best-sellers-title mb-0">Best Sellers</h2>
-            <div class="carousel-controls d-none d-md-flex">
-                <button class="carousel-btn" type="button" data-bs-target="#productsCarousel" data-bs-slide="prev">
-                    <i class="bi bi-chevron-left"></i>
-                </button>
-                <button class="carousel-btn" type="button" data-bs-target="#productsCarousel" data-bs-slide="next">
-                    <i class="bi bi-chevron-right"></i>
-                </button>
-            </div>
         </div>
         
         <!-- Bootstrap Carousel -->
@@ -86,12 +78,6 @@
 
                     </div>
                 </div>
-            </div>
-
-            <!-- Indicators for mobile -->
-            <div class="carousel-indicators d-md-none">
-                <button type="button" data-bs-target="#productsCarousel" data-bs-slide-to="0" class="active"></button>
-                <button type="button" data-bs-target="#productsCarousel" data-bs-slide-to="1"></button>
             </div>
         </div>
     </div>
