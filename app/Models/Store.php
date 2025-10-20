@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Store extends Model
 {
-    use HasFactory;
+    // use HasFactory;
 
     protected $fillable = [
-        'id',
+
         'name',
         'location',
         'image',
