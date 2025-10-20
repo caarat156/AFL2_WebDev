@@ -16,14 +16,14 @@ class ProductController extends Controller
     }
 
     // Method untuk halaman home (produk tertentu)
-    public function home()
-    {
-        // Ambil 4 produk best sellers berdasarkan ID
-        $bestSellers = Product::whereIn('id', [1, 9, 13, 8])->get();
+    // public function home()
+    // {
+    //     // Ambil 4 produk best sellers berdasarkan ID
+    //     $bestSellers = Product::whereIn('id', [1, 9, 13, 8])->get();
         
-        // Ambil reviews untuk ditampilkan di home
-        $reviews = Review::latest()->take(6)->get();
+    //     // Ambil reviews untuk ditampilkan di home
+    //     // $reviews = Review::latest()->take(6)->get();
         
-        return view('home', compact('bestSellers', 'reviews'));
-    }
+    //     return view('home', compact('bestSellers'));
+    // }
 }

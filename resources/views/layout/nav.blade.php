@@ -24,6 +24,9 @@
                 <li class="nav-item">
                     <a class="nav-link fw-semibold text-uppercase" href="about" style="color: #5a4634;">About</a>
                 </li>
+                {{-- <li class="nav-item">
+                    <a class="nav-link fw-semibold text-uppercase" href="/review" style="color: #5a4634;">Review</a>
+                </li> --}}
 
                 <!-- ICONS -->
                 <li class="nav-item"><a class="nav-link text-secondary" href="#"><i class="bi bi-search"></i></a></li>

@@ -94,9 +94,9 @@
 
         <div class="row g-4">
             @foreach ($reviews as $review)
-                {{-- Panggil component --}}
-                <x-review_card :review="$review" />
+            <x-review-card :review="$review" />
             @endforeach
+
         </div>
     </div>
 </section>

@@ -6,26 +6,27 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
-{
-    Schema::create('reviews', function (Blueprint $table) {
-        $table->id();
-        $table->string('name');
-        $table->tinyInteger('rating'); // 1-5
-        $table->text('comment');
-        $table->timestamps();
-    });
-}
+    {
+        Schema::create('reviews', function (Blueprint $table) {
+            $table->id();
 
+            // Relasi ke products, tapi boleh null
+            $table->foreignId('product_id')
+                    ->nullable()
+                    ->constrained('products')
+                    ->onDelete('cascade');
 
-    /**
-     * Reverse the migrations.
-     */
+            $table->string('name');
+            $table->tinyInteger('rating'); // 1–5
+            $table->text('comment');
+            $table->timestamps();
+        });
+    }
+
     public function down(): void
     {
         Schema::dropIfExists('reviews');
     }
 };
+

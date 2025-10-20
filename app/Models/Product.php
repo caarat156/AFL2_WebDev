@@ -18,4 +18,9 @@ class Product extends Model
         'net_price',
         'notes',
     ];
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
 }
