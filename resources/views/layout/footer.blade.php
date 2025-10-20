@@ -12,7 +12,6 @@
                         <ul class="list-unstyled small mb-0">
                             <li><a href="https://www.instagram.com/bylawasan.id/" class="text-decoration-none fw-semibold" style="color: #6b4e3d;">INSTAGRAM</a></li>
                             <li><a href="https://shopee.co.id/lawasan" class="text-decoration-none fw-semibold" style="color: #6b4e3d;">SHOPEE</a></li>
-                            <li><a href="https://www.tokopedia.com/bylawasan" class="text-decoration-none fw-semibold" style="color: #6b4e3d;">TOKOPEDIA</a></li>
                         </ul>
                     </div>
                     <div class="col-md-6 text-center text-md-end">
