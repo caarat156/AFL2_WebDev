@@ -10,7 +10,7 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         DB::table('products')->insert([
-            // 🔥 Scented Candle
+            //Scented Candle
             [
                 'collection_name' => 'Scented Candle',
                 'product_type' => 'Signature by Zodiac 130gr',
@@ -82,7 +82,7 @@ class ProductSeeder extends Seeder
                 'notes' => null,
             ],
 
-            // 🌸 Freshener / Fragrance
+            //Freshener / Fragrance
             [
                 'collection_name' => 'Freshener / Fragrance',
                 'product_type' => 'Mini Hanging Diffuser 10ml',
@@ -144,7 +144,7 @@ class ProductSeeder extends Seeder
                 'notes' => null,
             ],
 
-            // 💆 Treatment
+            //Treatment
             [
                 'collection_name' => 'Treatment',
                 'product_type' => 'Natural Hand Oil 20ml',

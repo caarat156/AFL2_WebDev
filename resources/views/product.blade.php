@@ -10,13 +10,13 @@
         @foreach ($products as $product)
             <div class="col-md-3 mb-4">
                 <div class="card shadow-sm border-0 h-100">
-                    {{-- Product image --}}
+                    
                     <img src="{{ asset($product->image) }}" 
                         alt="{{ $product->product_type }}" 
                         class="img-fluid rounded shadow-sm" 
                         style="height: 200px; width: 100%; object-fit: cover;">
 
-                    {{-- Product info --}}
+                    
                     <div class="card-body text-center">
                         <h5 class="card-title mb-1">{{ $product->collection_name }}</h5>
                         <p class="text-muted mb-1">{{ $product->product_type }}</p>

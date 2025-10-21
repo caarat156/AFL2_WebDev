@@ -1,4 +1,3 @@
-{{-- resources/views/home.blade.php --}}
 @extends('layout.mainlayout')
 
 @section('title', 'Home Page')
@@ -8,7 +7,6 @@
 @endpush
 
 @section('content')
-<!-- Hero Section -->
 <div class="hero-section-fullscreen">
     <img src="{{ asset('images/welcome5.jpg') }}" alt="Candle Image" class="hero-image">
     <div class="hero-overlay">
@@ -16,7 +14,6 @@
     </div>
 </div>
 
-<!-- Best Sellers Section -->
 <section class="best-sellers-section">
     <div class="container-fluid">
         <div class="d-flex justify-content-between align-items-center mb-4">
@@ -41,7 +38,6 @@
     </div>
 </section>
 
-<!-- Refer a Friend Section -->
 <section class="refer-section">
     <div class="container-fluid p-0">
         <div class="row g-0">
@@ -64,7 +60,6 @@
     </div>
 </section>
 
-<!-- Second Refer Section -->
 <section class="refer-section">
     <div class="container-fluid p-0">
         <div class="row g-0">
@@ -87,7 +82,6 @@
     </div>
 </section>
 
-<!-- Customer Reviews Section -->
 <section class="reviews-section py-5">
     <div class="container">
         <h2 class="text-center mb-4">What Our Customers Say</h2>

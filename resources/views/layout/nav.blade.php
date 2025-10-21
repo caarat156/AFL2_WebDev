@@ -9,7 +9,6 @@
             <i class="bi bi-list" style="font-size: 1.5rem; color: #6b4e3d;"></i>
         </button>
 
-        <!-- MENU ITEMS -->
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav align-items-center gap-lg-4 gap-3 mt-3 mt-lg-0">
                 <li class="nav-item">
@@ -28,7 +27,6 @@
                     <a class="nav-link fw-semibold text-uppercase" href="/review" style="color: #5a4634;">Review</a>
                 </li> --}}
 
-                <!-- ICONS -->
                 <li class="nav-item"><a class="nav-link text-secondary" href="#"><i class="bi bi-search"></i></a></li>
                 <li class="nav-item"><a class="nav-link text-secondary" href="#"><i class="bi bi-bag"></i></a></li>
                 <li class="nav-item"><a class="nav-link text-secondary" href="#"><i class="bi bi-person"></i></a></li>

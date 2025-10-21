@@ -8,10 +8,10 @@ class ReviewController extends Controller
 {
     public function index()
     {
-        // Ambil semua review dari database
+        // Ambil semua review
         $reviews = Review::latest()->get();
 
         // Kirim ke view review.blade.php
-        return view('review', compact('reviews')); // ✅ pakai plural, bukan 'review'
+        return view('review', compact('reviews')); 
     }
 }
