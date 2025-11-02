@@ -1,4 +1,3 @@
-{{-- resources/views/about.blade.php --}}
 @extends('layout.mainlayout')
 {{-- extends buat nentuin layout utama --}}
 
@@ -13,7 +12,6 @@
 @section('content')
 {{-- section untuk ngisi konten di mainlayout --}}
 <div class="container my-5 py-4">
-    <!-- Hero Section -->
     <div class="row align-items-center mb-5 pb-4">
         <div class="col-lg-6 mb-4 mb-lg-0">
             <div class="position-relative py-4">
@@ -37,9 +35,8 @@
         </div>
     </div>
 
-    <!-- Divider -->
     <hr class="my-5" style="border-color: #e8ddd4; opacity: 0.5;">
-{{-- hr adalah garis pemisah horizontal --}}
+
     <!-- Product Evolution Section -->
     <div class="row mb-5 pb-4">
         <div class="col-lg-8 mx-auto text-center">
@@ -50,7 +47,7 @@
         </div>
     </div>
 
-    <!-- Values Section  ini bentuknya pake card-->
+    <!-- Values Section -->
     <div class="row g-4 mb-5 pb-4">
         <div class="col-md-4">
             <div class="card border-0 text-center p-4 h-100" style="background-color: #faf8f6;">
@@ -81,7 +78,6 @@
         </div>
     </div>
 
-    <!-- Call to Action -->
     <div class="row">
         <div class="col-lg-8 mx-auto">
             <div class="card border-0 text-center p-5" style="background-color: #f5f0eb; border-radius: 10px;">

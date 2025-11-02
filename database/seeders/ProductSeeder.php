@@ -9,9 +9,7 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('products')->insert([ // masukkan data ke tabel products di database dan masukkin sesuai array di bawah
-            //pakai db ::table karena data yg diisi akan banuak dan db table lebih cepat dan hemat memory
-            // kalau pake model eloquent quernyanya harus dipisah2x misal Product::create([]) dst
+        DB::table('products')->insert([
             // 🔥 Scented Candle
             [
                 'collection_name' => 'Scented Candle',
@@ -84,7 +82,7 @@ class ProductSeeder extends Seeder
                 'notes' => null,
             ],
 
-            // 🌸 Freshener / Fragrance
+            //Freshener / Fragrance
             [
                 'collection_name' => 'Freshener / Fragrance',
                 'product_type' => 'Mini Hanging Diffuser 10ml',
@@ -146,7 +144,7 @@ class ProductSeeder extends Seeder
                 'notes' => null,
             ],
 
-            // 💆 Treatment
+            //Treatment
             [
                 'collection_name' => 'Treatment',
                 'product_type' => 'Natural Hand Oil 20ml',
