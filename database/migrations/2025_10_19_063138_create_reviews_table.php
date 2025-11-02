@@ -13,9 +13,9 @@ return new class extends Migration
 
             // Relasi ke products, tapi boleh null
             $table->foreignId('product_id')
-                    ->nullable()
-                    ->constrained('products')
-                    ->onDelete('cascade');
+                    ->nullable() // review bisa dibuat tanpa terhubung dengan produk tertentu
+                    ->constrained('products') // menghubungkan ke tabel products mengacu pada kolom id
+                    ->onDelete('cascade'); // jika produk dihapus, review terkait juga dihapus
 
             $table->string('name');
             $table->tinyInteger('rating'); // 1–5
@@ -24,9 +24,9 @@ return new class extends Migration
         });
     }
 
-    public function down(): void
-    {
-        Schema::dropIfExists('reviews');
-    }
+    // public function down(): void
+    // {
+    //     Schema::dropIfExists('reviews');
+    // }
 };
 

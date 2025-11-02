@@ -25,6 +25,7 @@
         
         <div class="row g-3">
             @foreach($bestSellers as $product)
+            {{-- ambil 4 produk sesuai id yang di best sellers, dari controller --}}
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="product-card">
                         <div class="product-image-wrapper">
@@ -33,6 +34,7 @@
                         <div class="product-info">
                             <p class="product-category">{{ $product->collection_name }}</p>
                             <h3 class="product-name">{{ strtoupper($product->product_type) }}</h3>
+                            
                         </div>
                     </div>
                 </div>
@@ -96,7 +98,7 @@
             @foreach ($reviews as $review)
             <x-review-card :review="$review" />
             @endforeach
-
+{{-- x-review-card untuk render komponen dari review-card.blade trs : review = "$review" untuk passing data review ke komponen --}}
         </div>
     </div>
 </section>

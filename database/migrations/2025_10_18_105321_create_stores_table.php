@@ -17,9 +17,13 @@ return new class extends Migration
         });
     }
 
-    public function down(): void
-    {
-        Schema::dropIfExists('stores');
-    }
+    // public function down(): void
+    // {
+    //     Schema::dropIfExists('stores');
+    // }
+
+    // up() = dipakai saat migrate (buat tabel)
+    // down() = dipakai saat rollback (hapus tabel)
+    // php arrtisan migrate : rollback
 };
 

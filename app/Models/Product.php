@@ -2,14 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
     // use HasFactory;
 
-    protected $fillable = [
+    protected $fillable = [ // semua hrs diisi sesuai apa aja yg ada di migrations
         'collection_name',
         'name',
         'product_type',
@@ -21,6 +20,6 @@ class Product extends Model
 
     public function reviews()
     {
-        return $this->hasMany(Review::class);
+        return $this->hasMany(Review::class); // satu produk bisa punya banyak review, laravel otomatis cari dari tabel review yg ada product_idnya
     }
 }

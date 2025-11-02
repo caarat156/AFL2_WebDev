@@ -3,13 +3,15 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\DB; //akses database langsuung lewat query builder
 
 class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('products')->insert([
+        DB::table('products')->insert([ // masukkan data ke tabel products di database dan masukkin sesuai array di bawah
+            //pakai db ::table karena data yg diisi akan banuak dan db table lebih cepat dan hemat memory
+            // kalau pake model eloquent quernyanya harus dipisah2x misal Product::create([]) dst
             // 🔥 Scented Candle
             [
                 'collection_name' => 'Scented Candle',

@@ -8,6 +8,7 @@
 
     <div class="row justify-content-center">
         @foreach ($products as $product)
+        {{-- ambil tiap item dari produk di controller satu satu dan tiap $product mewakili 1 barid data produk di db --}}
             <div class="col-md-3 mb-4">
                 <div class="card shadow-sm border-0 h-100">
                     {{-- Product image --}}
@@ -28,7 +29,8 @@
                         <p class="fw-bold mb-0">
                             Rp {{ number_format($product->price_2025 ?? $product->price_2024) }}
                         </p>
-
+                        {{-- kalau harga 2025 kosong, pakai harga 2024 --}}
+                        {{-- ?? itu anggepan e kaya biar aman klo isinya null, jadi bisa pake yg ini.... gtu --}}
                         @if ($product->net_price)
                             <p class="text-success small mb-0">
                                 <i>After disc: Rp {{ number_format($product->net_price) }}</i>
