@@ -13,6 +13,9 @@ Route::get('/', function () {
     return view('homeumum'); // tampilkan homeumum.blade.php
 })->middleware('guest')->name('homeumum');
 
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+
+
 // 🧍 Register (buat akun baru)
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
