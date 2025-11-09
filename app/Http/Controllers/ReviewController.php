@@ -12,6 +12,6 @@ class ReviewController extends Controller
         $reviews = Review::latest()->get();
         
         // Kirim ke view review.blade.php
-        return view('review', compact('reviews')); 
+        return view('/user/review', compact('reviews')); 
     }
 }

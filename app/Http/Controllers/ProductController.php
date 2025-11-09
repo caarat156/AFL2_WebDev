@@ -23,7 +23,12 @@ class ProductController extends Controller
     
         $products = $query->paginate(12);
     
-        return view('product', compact('products'));
+        return view('/user/product', compact('products'));
+    }
+
+    public function adminIndex()
+    {
+    return view('admin.adminproduct');
     }
     
 

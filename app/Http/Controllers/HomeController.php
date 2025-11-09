@@ -15,7 +15,7 @@ class HomeController extends Controller
         // Ambil review lewat ReviewController (bisa juga langsung query)
         $reviews = Review::latest()->paginate(6);
 
-        return view('home', compact('bestSellers', 'reviews'));
+        return view('/user/home', compact('bestSellers', 'reviews'));
         // compact itu buat ngirim data ke view, misal 'bestSellers' nanti di view bisa dipanggil pake $bestSellers
     }
 }
