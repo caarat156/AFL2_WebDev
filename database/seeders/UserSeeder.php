@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Admin HomeFragrance',
             'email' => 'adminlawasan@gmail.com',
-            'password' => bcrypt ('admin123'),
+            'password' => Hash::make ('admin123'),
             'role' => 'admin',
         ]);
 
@@ -22,7 +22,7 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'User 1',
             'email' => 'user1@gmail.com',
-            'password' => bcrypt ('password123'),
+            'password' => Hash::make ('password123'),
             'role' => 'user',
         ]);
 
