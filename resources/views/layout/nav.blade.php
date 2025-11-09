@@ -44,9 +44,15 @@
                     </li>
                     
                 </li>
-                
                 <li class="nav-item"><a class="nav-link text-secondary" href="#"><i class="bi bi-bag"></i></a></li>
-                <li class="nav-item"><a class="nav-link text-secondary" href="#"><i class="bi bi-person"></i></a></li>
+                                @if(Auth::check())
+                    <a href="{{ Auth::user()->role === 'admin' ? '/admin/dashboard' : '/user/dashboard' }}">
+                        <i class="icon-person"></i>
+                    </a>
+                @else
+                    <a href="/login"><i class="icon-person"></i></a>
+                @endif
+
             </ul>
         </div>
     </div>
