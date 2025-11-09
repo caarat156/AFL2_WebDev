@@ -1,3 +1,4 @@
+
 @extends('layout.mainlayout')
 
 @section('title', 'Home Page')
