@@ -20,6 +20,27 @@
                     <a class="nav-link fw-semibold text-uppercase" href="/" style="color: #5a4634;">Home</a>
                 </li>
 
+                {{-- Search --}} 
+                <li class="nav-item position-relative"> 
+                    <a class="nav-link text-secondary" href="#" id="searchToggle"> 
+                        <i class="bi bi-search"></i> 
+                    </a> 
+                    <form action="{{ route('products.index') }}" method="GET" 
+                        class="position-absolute top-100 end-0 bg-white shadow p-2 rounded d-none" 
+                        id="searchForm" style="width: 220px;"> 
+                    <input type="text" name="search" class="form-control form-control-sm" 
+                        placeholder="Search product or category..." 
+                        value="{{ request('search') }}"> 
+                    </form> 
+                </li> 
+                
+                {{-- Cart --}} 
+                <li class="nav-item"> 
+                    <a class="nav-link text-secondary" href="#">
+                        <i class="bi bi-bag"></i>
+                    </a>
+                </li>
+
                 {{-- Jika admin --}}
                 @if(Auth::check() && Auth::user()->role === 'admin')
                     <li class="nav-item">
