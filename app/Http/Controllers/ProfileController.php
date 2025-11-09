@@ -16,10 +16,11 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
+        return view('user.profile', [
             'user' => $request->user(),
         ]);
     }
+
 
     /**
      * Update the user's profile information.
@@ -57,4 +58,14 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    public function adminProfile()
+    {
+        return view('admin.profileAdmin', [
+            'user' => Auth::user()
+        ]);
+    }
+
+    
+
 }

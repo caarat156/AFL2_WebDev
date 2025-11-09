@@ -9,13 +9,17 @@ use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
-    // Tampilkan halaman login
+    /**
+     * Tampilkan halaman login.
+     */
     public function create(): View
     {
-        return view('auth.login'); // resources/views/auth/login.blade.php
+        return view('auth.login');
     }
 
-    // Handle login
+    /**
+     * Proses login.
+     */
     public function store(Request $request)
     {
         $credentials = $request->validate([
@@ -25,7 +29,13 @@ class AuthenticatedSessionController extends Controller
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended('/home');
+        
+            // 🚀 arahkan sesuai role
+            if (Auth::user()->role === 'admin') {
+                return redirect('/admin/adminproduct');
+            } else {
+                return redirect('/user/home');
+            }
         }
 
         return back()->withErrors([
@@ -33,10 +43,13 @@ class AuthenticatedSessionController extends Controller
         ]);
     }
 
-    // Logout
+    /**
+     * Logout.
+     */
     public function destroy(Request $request)
     {
         Auth::guard('web')->logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

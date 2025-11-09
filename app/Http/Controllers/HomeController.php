@@ -2,20 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use  App\Models\Review;
+use App\Models\Review;
 use App\Models\Product;
-use App\Http\Controllers\ReviewController;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
+    // 🔹 Halaman utama untuk guest (belum login)
     public function index()
     {
-        $bestSellers = Product::whereIn('id', [1, 9, 13, 8])->get();
+        return view('home');
+    }
 
-        // Ambil review lewat ReviewController (bisa juga langsung query)
+    // 🔹 Halaman home untuk user biasa
+    public function userHome()
+    {
+        $bestSellers = Product::whereIn('id', [1, 9, 13, 8])->get();
         $reviews = Review::latest()->paginate(6);
 
-        return view('home', compact('bestSellers', 'reviews'));
-        // compact itu buat ngirim data ke view, misal 'bestSellers' nanti di view bisa dipanggil pake $bestSellers
+        return view('user.home', compact('bestSellers', 'reviews'));
+    }
+
+    // 🔹 Halaman home untuk admin
+    public function adminHome()
+    {
+        // Kalau admin butuh data tambahan (misalnya statistik, dsb)
+        return view('admin.home', [
+            'user' => Auth::user()
+        ]);
     }
 }

@@ -10,6 +10,11 @@ class StoreController extends Controller
     public function index()
     {
         $stores = Store::all(); // ambil semua data
-        return view('store', compact('stores'));
+        return view('/user/store', compact('stores'));
+    }
+
+    public function adminIndex()
+    {
+        return view('admin.adminstore');
     }
 }

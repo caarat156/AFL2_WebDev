@@ -10,8 +10,9 @@ class RouteServiceProvider extends ServiceProvider
     /**
      * Path untuk redirect setelah login
      */
-    public const HOME_ADMIN = '/admin/dashboard';
-    public const HOME_USER = '/';
+    public const HOME = '/home'; 
+    public const HOME_ADMIN = '/admin/home';
+    public const HOME_USER = '/user/home';
 
     /**
      * Bootstrap services.

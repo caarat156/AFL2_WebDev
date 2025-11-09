@@ -2,33 +2,57 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\ProfileController;
 
-// 🔹 Halaman utama (bisa pakai controller yang sama)
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// 🌐 Halaman utama (public)
+Route::get('/', function () {
+    return view('homeumum'); // tampilkan homeumum.blade.php
+})->middleware('guest')->name('homeumum');
 
-// 🔹 Halaman home (setelah login)
-Route::get('/home', [HomeController::class, 'index'])
-    ->middleware('auth')
-    ->name('home');
+// 🧍 Register (buat akun baru)
+Route::middleware('guest')->group(function () {
+    Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+    Route::post('/register', [RegisteredUserController::class, 'store']);
 
-// 🔐 Login
-Route::get('/login', [AuthenticatedSessionController::class, 'create'])
-    ->middleware('guest')
-    ->name('login');
-Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+});
 
 // 🚪 Logout
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-// 🧍 Register (daftar akun baru)
-Route::get('/register', [RegisteredUserController::class, 'create'])
-    ->middleware('guest')
-    ->name('register');
-Route::post('/register', [RegisteredUserController::class, 'store'])
-    ->middleware('guest');
+// 📄 About Page (bebas diakses)
+Route::view('/about', 'about')->name('about');
 
-Route::resource('products', ProductController::class);
+
+// =============================
+// 👤 USER AREA
+// =============================
+Route::middleware(['auth'])->group(function () {
+    Route::get('/user/home', [HomeController::class, 'userHome'])->name('user.home');
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    Route::resource('/user/product', ProductController::class);
+    Route::resource('/user/store', StoreController::class);
+});
+
+
+// =============================
+// 🛠️ ADMIN AREA
+// =============================
+Route::middleware(['auth'])->group(function () {
+    Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin.home');
+
+    Route::get('/admin/adminproduct', [ProductController::class, 'adminIndex'])->name('admin.product');
+    Route::get('/admin/adminstore', [StoreController::class, 'adminIndex'])->name('admin.store');
+    Route::get('/admin/profileAdmin', [ProfileController::class, 'adminProfile'])->name('admin.profile');
+});
