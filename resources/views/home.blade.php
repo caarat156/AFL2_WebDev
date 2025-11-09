@@ -90,10 +90,15 @@
 
         <div class="row g-4">
             @foreach ($reviews as $review)
-            <x-review-card :review="$review" />
+                <x-review-card :review="$review" />
             @endforeach
-{{-- x-review-card untuk render komponen dari review-card.blade trs : review = "$review" untuk passing data review ke komponen --}}
+        </div>
+
+        {{-- Pagination di luar row --}}
+        <div class="d-flex justify-content-center mt-4">
+        {{ $reviews->links('pagination::bootstrap-5') }}
         </div>
     </div>
 </section>
 @endsection
+{{-- x-review-card untuk render komponen dari review-card.blade trs : review = "$review" untuk passing data review ke komponen --}}
