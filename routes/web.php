@@ -58,4 +58,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/admin/adminproduct', [ProductController::class, 'adminIndex'])->name('admin.product');
     Route::get('/admin/adminstore', [StoreController::class, 'adminIndex'])->name('admin.store');
     Route::get('/admin/profileAdmin', [ProfileController::class, 'adminProfile'])->name('admin.profile');
+    Route::resource('products', ProductController::class);
+    Route::get('/admin/createproduct', [ProductController::class, 'create'])->name('admin.products.create');
+    Route::post('/admin/adminproducts', [ProductController::class, 'store'])->name('admin.products.store');
 });
