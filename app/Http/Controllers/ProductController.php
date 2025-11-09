@@ -30,6 +30,36 @@ class ProductController extends Controller
     {
     return view('admin.adminproduct');
     }
+
+    public function store(Request $request)
+    {
+        // Validasi
+        $request->validate([
+            'collection_name' => 'required',
+            'product_type' => 'required',
+            'image' => 'image|max:2048'
+        ]);
+
+        // Upload image
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+        }
+
+        // Create data
+        Product::create([
+            'collection_name' => $request->collection_name,
+            'product_type' => $request->product_type,
+            'variants' => $request->variants,
+            'price_2024' => $request->price_2024,
+            'price_2025' => $request->price_2025,
+            'net_price' => $request->net_price,
+            'notes' => $request->notes,
+            'image' => $imagePath
+        ]);
+
+        return back()->with('success', 'Product created!');
+    }
     
 
 }
