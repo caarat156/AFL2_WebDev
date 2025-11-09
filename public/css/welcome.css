@@ -1,0 +1,173 @@
+.bg-light {
+    background-color: #fdfdfd !important;
+}
+
+/* Container Styling */
+.min-vh-100 {
+    font-family: 'Georgia', serif;
+}
+
+/* Logo/Icon Circle */
+.bg-primary.bg-gradient.rounded-circle {
+    background: #D4A373 !important;
+    background-image: none !important;
+    box-shadow: 0 4px 15px rgba(212, 163, 115, 0.3);
+}
+
+/* Welcome Title */
+.display-4.fw-bold {
+    color: #5C4033 !important;
+    font-weight: 500 !important;
+    letter-spacing: 1px;
+}
+
+/* Subtitle Text */
+.lead.text-muted {
+    color: #8B6F47 !important;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+/* Primary Button (Login) */
+.btn-primary {
+    background-color: #C08552 !important;
+    border-color: #C08552 !important;
+    color: #FDFAF6 !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-radius: 8px !important;
+}
+
+.btn-primary:hover {
+    background-color: #A86F42 !important;
+    border-color: #A86F42 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(192, 133, 82, 0.4) !important;
+}
+
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: #A86F42 !important;
+    border-color: #A86F42 !important;
+    box-shadow: 0 0 0 0.25rem rgba(192, 133, 82, 0.25) !important;
+}
+
+/* Outline Button (Register) */
+.btn-outline-primary {
+    color: #C08552 !important;
+    border-color: #C08552 !important;
+    background-color: transparent !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-radius: 8px !important;
+    border-width: 2px !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #C08552 !important;
+    border-color: #C08552 !important;
+    color: #FDFAF6 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(192, 133, 82, 0.3);
+}
+
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+    background-color: #C08552 !important;
+    border-color: #C08552 !important;
+    color: #FDFAF6 !important;
+    box-shadow: 0 0 0 0.25rem rgba(192, 133, 82, 0.25) !important;
+}
+
+/* Feature Icons - Secure (Shield) */
+.bg-primary.bg-opacity-10 {
+    background-color: rgba(180, 199, 168, 0.25) !important;
+}
+
+.text-primary {
+    color: #6B4423 !important;
+}
+
+/* Feature Icons - Fast (Lightning) */
+.bg-success.bg-opacity-10 {
+    background-color: rgba(232, 213, 208, 0.4) !important;
+}
+
+.text-success {
+    color: #8B6F47 !important;
+}
+
+/* Feature Icons - Quality (Star) */
+.bg-warning.bg-opacity-10 {
+    background-color: rgba(245, 230, 211, 0.5) !important;
+}
+
+.text-warning {
+    color: #C08552 !important;
+}
+
+/* Feature Titles */
+.fw-semibold {
+    color: #5C4033 !important;
+    font-weight: 500 !important;
+}
+
+/* Feature Descriptions */
+.text-muted.small {
+    color: #8B6F47 !important;
+}
+
+/* Icon Sizing */
+.bi {
+    vertical-align: middle;
+}
+
+/* Card/Feature Hover Effect */
+.col-md-4 > div {
+    transition: transform 0.3s ease;
+    border-radius: 12px;
+}
+
+.col-md-4 > div:hover {
+    transform: translateY(-5px);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2.5rem !important;
+    }
+    
+    .lead {
+        font-size: 1rem !important;
+    }
+    
+    .btn-lg {
+        padding: 0.75rem 2rem !important;
+    }
+}
+
+/* Animation for page load */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.text-center.mb-5 {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.row.g-4 {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
