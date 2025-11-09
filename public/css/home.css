@@ -74,22 +74,6 @@
     display: block;
 }
 
-.product-badge {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background-color: rgba(100, 100, 100, 0.85);
-    color: white;
-    padding: 8px 20px;
-    font-size: 0.875rem;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-}
-
-.product-badge.badge-bright {
-    background-color: rgba(139, 69, 19, 0.85);
-}
-
 .product-info {
     padding: 20px;
     background-color: #e8ddd4;
