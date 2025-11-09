@@ -87,7 +87,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->delete();
 
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully!');
+        return redirect()->route('admin.product')->with('success', 'Product deleted successfully!');
     }
 
     //create
