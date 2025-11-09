@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ProductSeeder::class,
             StoreSeeder::class,
+            UserSeeder::class,
         ]);
 
         Review::factory(100)->create();
