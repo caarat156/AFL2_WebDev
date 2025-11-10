@@ -51,12 +51,15 @@
 
                 {{-- My Review (hanya untuk user login) --}}
                 @auth
+                @if(auth()->user()->role !== 'admin')
                     <li class="nav-item">
                         <a class="nav-link fw-semibold text-uppercase" href="{{ route('user.reviews.index') }}" style="color: #5a4634;">
                             My Review
                         </a>
                     </li>
-                @endauth
+                @endif
+            @endauth
+
 
                 {{-- Search --}}
                 <li class="nav-item position-relative">
