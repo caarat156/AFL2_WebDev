@@ -49,7 +49,7 @@ class StoreController extends Controller
 
         Store::create($validated);
 
-        return redirect()->route('admin.store')
+        return redirect()->route('admin.stores')
             ->with('success', 'Store added successfully!');
     }
 
@@ -88,7 +88,7 @@ class StoreController extends Controller
 
         $store->save();
 
-        return redirect()->route('admin.store')
+        return redirect()->route('admin.stores')
             ->with('success', 'Store updated successfully!');
     }
 
@@ -104,7 +104,7 @@ class StoreController extends Controller
 
         $store->delete();
 
-        return redirect()->route('admin.store')
+        return redirect()->route('admin.stores')
             ->with('success', 'Store deleted successfully!');
     }
 }
