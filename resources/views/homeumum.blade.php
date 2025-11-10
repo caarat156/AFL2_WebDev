@@ -30,12 +30,12 @@
                     {{-- Action Buttons --}}
                     <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
                         <a href="{{ route('login') }}" 
-                           class="btn btn-primary btn-lg px-5 py-3 shadow-sm">
+                            class="btn btn-primary btn-lg px-5 py-3 shadow-sm">
                             <i class="bi bi-box-arrow-in-right me-2"></i>
                             Login
                         </a>
                         <a href="{{ route('register') }}" 
-                           class="btn btn-outline-primary btn-lg px-5 py-3">
+                            class="btn btn-outline-primary btn-lg px-5 py-3">
                             <i class="bi bi-person-plus me-2"></i>
                             Register
                         </a>
