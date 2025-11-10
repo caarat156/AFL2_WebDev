@@ -47,6 +47,14 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
 
     // review route
     Route::resource('reviews', ReviewController::class);
+
+    Route::get('/user/reviews/create', [ReviewController::class, 'create'])->name('user.reviews.create');
+    Route::post('/user/reviews/store', [ReviewController::class, 'store'])->name('user.reviews.store');
+
+    Route::get('/user/reviews/{id}/edit', [ReviewController::class, 'edit'])->name('user.reviews.edit');
+    Route::put('/user/reviews/{id}', [ReviewController::class, 'update'])->name('user.reviews.update');
+    Route::delete('/user/reviews/{id}', [ReviewController::class, 'destroy'])->name('user.reviews.destroy');
+
 });
 
 

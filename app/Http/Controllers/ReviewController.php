@@ -1,39 +1,91 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Auth;
 use App\Models\Review;
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class ReviewController extends Controller
 {
+    // Tampilkan semua review milik user login
     public function index()
+    {
+        $reviews = Review::where('user_id', Auth::id())->latest()->get();
+        return view('user.review', compact('reviews'));
+    }
+
+    // Tampilkan form tambah review
+    public function create()
+    {
+        $products = Product::all();
+        return view('user.createreview', compact('products'));
+    }
+    
+    // Simpan review baru
+    public function store(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'nullable|exists:products,id',
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string',
+        ]);
+
+        Review::create([
+            'product_id' => $request->product_id,
+            'user_id' => Auth::id(),
+            'name' => Auth::user()->name,
+            'rating' => $request->rating,
+            'comment' => $request->comment,
+        ]);
+
+        return redirect()->route('user.reviews.index')->with('success', 'Review added!');
+    }
+
+    // Tampilkan form edit review
+public function edit($id)
 {
-    $reviews = Review::where('user_id', Auth::id())->latest()->get();
-    return view('user.review', compact('reviews'));
+    $review = Review::where('id', $id)
+        ->where('user_id', Auth::id()) // biar user cuma bisa edit review-nya sendiri
+        ->firstOrFail();
+
+    $products = Product::all();
+    return view('user.updatereview', compact('review', 'products'));
 }
 
-public function create()
+// Update review
+public function update(Request $request, $id)
 {
-    return view('user.createreview');
-}
+    $review = Review::where('id', $id)
+        ->where('user_id', Auth::id())
+        ->firstOrFail();
 
-public function store(Request $request)
-{
     $request->validate([
         'product_id' => 'nullable|exists:products,id',
         'rating' => 'required|integer|min:1|max:5',
         'comment' => 'required|string',
     ]);
 
-    Review::create([
+    $review->update([
         'product_id' => $request->product_id,
-        'user_id' => Auth::id(),
-        'name' => Auth::user()->name,
         'rating' => $request->rating,
         'comment' => $request->comment,
     ]);
 
-    return redirect()->route('user.reviews.index')->with('success', 'Review added!');
+    return redirect()->route('user.reviews.index')->with('success', 'Review updated!');
 }
+
+// Hapus review
+public function destroy($id)
+{
+    $review = Review::where('id', $id)
+        ->where('user_id', Auth::id())
+        ->firstOrFail();
+
+    $review->delete();
+
+    return redirect()->route('user.reviews.index')->with('success', 'Review deleted!');
+}
+
 }
