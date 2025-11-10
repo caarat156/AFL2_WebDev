@@ -65,11 +65,11 @@
                             @auth
                                 @if(auth()->user()->role === 'admin')
                                     <div class="d-flex justify-content-center gap-2 mt-3">
-                                        <a href="{{ route('products.edit', $product->id) }}" 
+                                        <a href="{{ route('admin.products.edit', $product->id) }}" 
                                             class="btn btn-sm btn-warning px-3">
                                             Update
                                         </a>
-                                        <form action="{{ route('products.destroy', $product->id) }}" 
+                                        <form action="{{ route('admin.products.destroy', $product->id) }}" 
                                                 method="POST" 
                                                 onsubmit="return confirm('Are you sure you want to delete this product?');">
                                             @csrf

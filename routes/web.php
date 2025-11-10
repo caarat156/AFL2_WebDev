@@ -86,9 +86,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/home', [HomeController::class, 'adminHome'])->name('home');
 
     // Admin Product Management
-    Route::get('/products', [ProductController::class, 'adminIndex'])->name('product');
+    Route::get('/adminproduct', [ProductController::class, 'adminIndex'])->name('product');
     Route::get('/createproduct', [ProductController::class, 'create'])->name('createproduct');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
     // Admin Store Management
     Route::get('/stores', [StoreController::class, 'adminIndex'])->name('store');
