@@ -84,7 +84,7 @@
                 <div class="card-body">
                     <h3 class="mb-3 fw-light" style="color: #6b4e3d;">Experience the Memories</h3>
                     <p class="mb-4 text-muted">Discover our handcrafted collection of scented products</p>
-                    <a href="{{ url('/product') }}" class="btn btn-lg px-5 py-3" style="background-color: #6b4e3d; color: white; border: none; border-radius: 30px;">
+                    <a href="{{ url('/user/product') }}" class="btn btn-lg px-5 py-3" style="background-color: #6b4e3d; color: white; border: none; border-radius: 30px;">
                         Explore Products
                     </a>
                 </div>
