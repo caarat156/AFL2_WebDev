@@ -63,12 +63,19 @@
                     <a class="nav-link text-secondary" href="#" id="searchToggle">
                         <i class="bi bi-search"></i>
                     </a>
-                    <form action="{{ url('/products') }}" method="GET" 
+
+                    @php
+                        $searchRoute = Auth::check()
+                                        ? (Auth::user()->role === 'admin' ? route('admin.product') : route('user.product'))
+                                        : route('products.index');
+                    @endphp
+
+                    <form action="{{ $searchRoute }}" method="GET" 
                         class="position-absolute top-100 end-0 bg-white shadow p-2 rounded d-none" 
                         id="searchForm" style="width: 220px;">
                         <input type="text" name="search" class="form-control form-control-sm"
                             placeholder="Search product or category..."
-                            value="{{ old('search', request('search')) }}">
+                            value="{{ request('search') }}">
                         <button type="submit" class="btn btn-sm btn-primary mt-2 w-100">Search</button>
                     </form>
                 </li>

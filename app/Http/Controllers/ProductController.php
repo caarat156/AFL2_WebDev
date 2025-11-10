@@ -30,16 +30,17 @@ class ProductController extends Controller
 {
     $query = Product::query();
 
-    if ($request->has('search')) {
-        $search = $request->input('search');
+    if ($request->has('search') && $request->search != '') {
+        $search = $request->search;
         $query->where('collection_name', 'like', "%{$search}%")
                 ->orWhere('product_type', 'like', "%{$search}%");
     }
 
-    $products = $query->get();
+    $products = $query->paginate(12); // paginate supaya halaman tidak panjang
 
     return view('user.product', compact('products'));
 }
+
 
 
     public function adminIndex()
