@@ -14,6 +14,11 @@ class StoreController extends Controller
         return view('user.store', compact('stores'));
     }
 
+    public function userIndex()
+{
+    $stores = Store::all(); // Ambil semua store, bisa ditambah filter nanti
+    return view('user.store', compact('stores'));
+}
     // 📋 Halaman admin list store
     public function adminIndex()
     {

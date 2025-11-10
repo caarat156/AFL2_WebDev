@@ -2,7 +2,7 @@
     <div class="container">
 
         {{-- Logo --}}
-        <a class="navbar-brand d-flex align-items-center" href="/">
+        <a class="navbar-brand d-flex align-items-center" href="{{ route('homeumum') }}">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" height="60" class="me-2">
         </a>
 
@@ -12,85 +12,87 @@
         </button>
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-
             <ul class="navbar-nav align-items-center gap-lg-4 gap-3 mt-3 mt-lg-0">
 
-                {{-- Menu Utama --}}
+                {{-- Home --}}
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold text-uppercase" href="/" style="color: #5a4634;">Home</a>
+                    @if(Auth::check())
+                        {{-- User login --}}
+                        <a class="nav-link fw-semibold text-uppercase" href="{{ route('user.home') }}" style="color: #5a4634;">Home</a>
+                    @else
+                        {{-- Guest --}}
+                        <a class="nav-link fw-semibold text-uppercase" href="{{ route('homeumum') }}" style="color: #5a4634;">Home</a>
+                    @endif
                 </li>
 
-                {{-- Jika admin --}}
+                {{-- Admin Menu --}}
                 @if(Auth::check() && Auth::user()->role === 'admin')
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold text-uppercase" href="/admin/adminproduct" style="color: #5a4634;">Admin Product</a>
+                        <a class="nav-link fw-semibold text-uppercase" href="{{ route('admin.product') }}" style="color: #5a4634;">Admin Product</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold text-uppercase" href="/admin/adminstore" style="color: #5a4634;">Admin Store</a>
+                        <a class="nav-link fw-semibold text-uppercase" href="{{ route('admin.store') }}" style="color: #5a4634;">Admin Store</a>
                     </li>
 
-                {{-- Jika user biasa --}}
-                @else
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold text-uppercase" href="/user/product" style="color: #5a4634;">Product</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold text-uppercase" href="/user/store" style="color: #5a4634;">Offline Stores</a>
-                    </li>
+                {{-- User biasa --}}
+                @elseif(Auth::check())
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold text-uppercase" href="{{ route('user.product') }}" style="color: #5a4634;">Product</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold text-uppercase" href="{{ route('user.store') }}" style="color: #5a4634;">Offline Stores</a>
+                </li>
                 @endif
 
+                {{-- About --}}
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold text-uppercase" href="/about" style="color: #5a4634;">About</a>
+                    <a class="nav-link fw-semibold text-uppercase" href="{{ route('about') }}" style="color: #5a4634;">About</a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link fw-semibold text-uppercase" href="{{ route('user.reviews.index') }}" style="color: #5a4634;">
-                        My Review
+                {{-- My Review (hanya untuk user login) --}}
+                @auth
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold text-uppercase" href="{{ route('user.reviews.index') }}" style="color: #5a4634;">
+                            My Review
+                        </a>
+                    </li>
+                @endauth
+
+                {{-- Search --}}
+                <li class="nav-item position-relative">
+                    <a class="nav-link text-secondary" href="#" id="searchToggle">
+                        <i class="bi bi-search"></i>
                     </a>
-                </li>
-            
-                {{-- Search --}} 
-                <li class="nav-item position-relative"> 
-                    <a class="nav-link text-secondary" href="#" id="searchToggle"> 
-                        <i class="bi bi-search"></i> 
-                    </a> 
-                    <form action="{{ route('products.index') }}" method="GET" 
+                    <form action="{{ url('/products') }}" method="GET" 
                         class="position-absolute top-100 end-0 bg-white shadow p-2 rounded d-none" 
-                        id="searchForm" style="width: 220px;"> 
-                    <input type="text" name="search" class="form-control form-control-sm" 
-                        placeholder="Search product or category..." 
-                        value="{{ request('search') }}"> 
-                    </form> 
-                </li> 
-                
-                {{-- Cart --}} 
-                <li class="nav-item"> 
+                        id="searchForm" style="width: 220px;">
+                        <input type="text" name="search" class="form-control form-control-sm"
+                            placeholder="Search product or category..."
+                            value="{{ old('search', request('search')) }}">
+                        <button type="submit" class="btn btn-sm btn-primary mt-2 w-100">Search</button>
+                    </form>
+                </li>
+
+                {{-- Cart --}}
+                <li class="nav-item">
                     <a class="nav-link text-secondary" href="#">
                         <i class="bi bi-bag"></i>
                     </a>
                 </li>
 
-                {{-- User --}}
+                {{-- User / Guest --}}
                 <li class="nav-item dropdown">
-
-                    {{-- Jika sudah login --}}
                     @if(Auth::check())
                         <a class="nav-link text-secondary dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-person-fill"></i>
                         </a>
-
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-
-                            {{-- Role Check --}}
                             @if(Auth::user()->role === 'admin')
-                                <li><a class="dropdown-item" href="/admin/profileAdmin">Admin Profile</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.profile') }}">Admin Profile</a></li>
                             @else
-                                <li><a class="dropdown-item" href="/profile">User Profile</a></li>
+                                <li><a class="dropdown-item" href="{{ route('user.profile') }}">User Profile</a></li>
                             @endif
-
                             <li><hr class="dropdown-divider"></li>
-
-                            {{-- Logout --}}
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf
@@ -99,20 +101,16 @@
                                     </button>
                                 </form>
                             </li>
-
                         </ul>
-
-                    {{-- Jika belum login --}}
-                        @else
+                    @else
                         <a class="nav-link text-secondary dropdown-toggle" href="#" id="guestDropdown" role="button" data-bs-toggle="dropdown">
                             <i class="bi bi-person"></i>
                         </a>
-
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="guestDropdown">
                             <li><a class="dropdown-item" href="{{ route('login') }}">Login</a></li>
                             <li><a class="dropdown-item" href="{{ route('register') }}">Register</a></li>
                         </ul>
-                        @endif
+                    @endif
                 </li>
             </ul>
         </div>

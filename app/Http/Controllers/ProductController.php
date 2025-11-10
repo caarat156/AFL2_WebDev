@@ -23,8 +23,24 @@ class ProductController extends Controller
     
         $products = $query->paginate(12);
     
-        return view('/user/product', compact('products'));
+        return view('user.product', compact('products'));
     }
+
+    public function userIndex(Request $request)
+{
+    $query = Product::query();
+
+    if ($request->has('search')) {
+        $search = $request->input('search');
+        $query->where('collection_name', 'like', "%{$search}%")
+                ->orWhere('product_type', 'like', "%{$search}%");
+    }
+
+    $products = $query->get();
+
+    return view('user.product', compact('products'));
+}
+
 
     public function adminIndex()
 {

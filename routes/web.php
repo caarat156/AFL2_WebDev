@@ -9,79 +9,95 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 
-// 🌐 Halaman utama (public)
+/*
+|--------------------------------------------------------------------------
+| 🌐 Public Routes
+|--------------------------------------------------------------------------
+*/
+
+// 🏠 Halaman utama (untuk pengunjung belum login)
 Route::get('/', function () {
-    return view('homeumum'); // tampilkan homeumum.blade.php
+    return view('homeumum');
 })->middleware('guest')->name('homeumum');
 
+// 📦 Daftar produk (bisa diakses siapa pun)
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 
+// 📄 About page
+Route::view('/about', 'about')->name('about');
 
-// 🧍 Register (buat akun baru)
+// 🧾 Daftar toko offline (public)
+Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
+
+
+/*
+|--------------------------------------------------------------------------
+| 🔐 Authentication Routes
+|--------------------------------------------------------------------------
+*/
 Route::middleware('guest')->group(function () {
+    // Register
     Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
     Route::post('/register', [RegisteredUserController::class, 'store']);
 
+    // Login
     Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 });
 
-// 🚪 Logout
+// Logout
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-// 📄 About Page (bebas diakses)
-Route::view('/about', 'about')->name('about');
 
-
-// =============================
-// 👤 USER AREA
-// =============================
+/*
+|--------------------------------------------------------------------------
+| 👤 USER AREA
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
+    // Dashboard User
     Route::get('/home', [HomeController::class, 'userHome'])->name('home');
+    Route::get('/product', [ProductController::class, 'userIndex'])->name('product');
 
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // User stores → URL: /user/stores
+    Route::get('/stores', [StoreController::class, 'userIndex'])->name('store');
+
+
+    // Profil User
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // review route
+    // Review (pakai resource, otomatis generate: index, create, store, edit, update, destroy)
     Route::resource('reviews', ReviewController::class);
 
-    Route::get('/user/reviews/create', [ReviewController::class, 'create'])->name('user.reviews.create');
-    Route::post('/user/reviews/store', [ReviewController::class, 'store'])->name('user.reviews.store');
-
-    Route::get('/user/reviews/{id}/edit', [ReviewController::class, 'edit'])->name('user.reviews.edit');
-    Route::put('/user/reviews/{id}', [ReviewController::class, 'update'])->name('user.reviews.update');
-    Route::delete('/user/reviews/{id}', [ReviewController::class, 'destroy'])->name('user.reviews.destroy');
-
 });
 
 
+/*
+|--------------------------------------------------------------------------
+| 🛠️ ADMIN AREA
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+    // Dashboard Admin
+    Route::get('/home', [HomeController::class, 'adminHome'])->name('home');
 
+    // Admin Product Management
+    Route::get('/products', [ProductController::class, 'adminIndex'])->name('product');
+    Route::get('/createproduct', [ProductController::class, 'create'])->name('createproduct');
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
 
+    // Admin Store Management
+    Route::get('/stores', [StoreController::class, 'adminIndex'])->name('store');
+    Route::get('/stores/create', [StoreController::class, 'create'])->name('createstore');
+    Route::post('/stores', [StoreController::class, 'store'])->name('stores.store');
+    Route::get('/stores/{id}/edit', [StoreController::class, 'edit'])->name('stores.edit');
+    Route::put('/stores/{id}', [StoreController::class, 'update'])->name('stores.update');
+    Route::delete('/stores/{id}', [StoreController::class, 'destroy'])->name('stores.destroy');
 
-
-// =============================
-// 🛠️ ADMIN AREA
-// =============================
-Route::middleware(['auth'])->group(function () {
-    Route::get('/admin/home', [HomeController::class, 'adminHome'])->name('admin.home');
-
-    Route::get('/admin/adminproduct', [ProductController::class, 'adminIndex'])->name('admin.product');
-    Route::get('/admin/adminstore', [StoreController::class, 'adminIndex'])->name('admin.store');
-    Route::get('/admin/profileAdmin', [ProfileController::class, 'adminProfile'])->name('admin.profile');
-    Route::resource('products', ProductController::class);
-    Route::post('/admin/adminproducts', [ProductController::class, 'store'])->name('admin.products.store');
-    Route::get('/admin/createproduct', [ProductController::class, 'create'])->name('admin.createproduct');
+    // Admin Profile
+    Route::get('/profile', [ProfileController::class, 'adminProfile'])->name('profile');
 });
-
-Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
-
-// ADMIN routes
-Route::get('/admin/stores', [StoreController::class, 'adminIndex'])->name('admin.store');
-Route::get('/admin/stores/create', [StoreController::class, 'create'])->name('admin.createstore');
-Route::post('/admin/stores', [StoreController::class, 'store'])->name('stores.store');
-Route::get('/admin/stores/{id}/edit', [StoreController::class, 'edit'])->name('stores.edit');
-Route::put('/admin/stores/{id}', [StoreController::class, 'update'])->name('stores.update');
-Route::delete('/admin/stores/{id}', [StoreController::class, 'destroy'])->name('stores.destroy');

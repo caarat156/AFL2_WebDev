@@ -15,7 +15,7 @@
                     {{-- Logo atau Icon --}}
                     <div class="mb-4">
                         <div class="bg-primary bg-gradient rounded-circle d-inline-flex align-items-center justify-content-center" 
-                             style="width: 100px; height: 100px;">
+                                style="width: 100px; height: 100px;">
                             <i class="bi bi-shop text-white" style="font-size: 3rem;"></i>
                         </div>
                     </div>
