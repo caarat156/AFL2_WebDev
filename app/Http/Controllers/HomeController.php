@@ -27,8 +27,8 @@ class HomeController extends Controller
     public function adminHome()
     {
         // Kalau admin butuh data tambahan (misalnya statistik, dsb)
-        return view('admin.adminproduct', [
-            'user' => Auth::user() // Kirim data user admin ke view
+        return view('admin.home', [
+            'user' => Auth::user()
         ]);
     }
 }

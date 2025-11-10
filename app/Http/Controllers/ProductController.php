@@ -93,7 +93,7 @@ class ProductController extends Controller
 
     $product->save();
 
-    return redirect()->route('admin.product')
+    return redirect()->route('admin.products')
     ->with('success', 'Product updated successfully!');
 
 }
@@ -104,7 +104,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id); //cari product berdasarkan id, kalo ga ada error 404
         $product->delete();
 
-        return redirect()->route('admin.product')->with('success', 'Product deleted successfully!');
+        return redirect()->route('admin.products')->with('success', 'Product deleted successfully!');
     }
 
     //create
@@ -132,7 +132,7 @@ public function store(Request $request)
 
     Product::create($validated);
 
-    return redirect()->route('admin.product')->with('success', 'Product added successfully!');
+    return redirect()->route('admin.products')->with('success', 'Product added successfully!');
 }
 
 }

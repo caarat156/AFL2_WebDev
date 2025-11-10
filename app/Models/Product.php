@@ -10,7 +10,6 @@ class Product extends Model
 
     protected $fillable = [ // semua hrs diisi sesuai apa aja yg ada di migrations
         'collection_name',
-        'name',
         'product_type',
         'variants',
         'price_2024',

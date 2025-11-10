@@ -25,7 +25,7 @@
                 <hr class="my-4">
 
                 {{-- 🏠 Back to Admin Product Page --}}
-                <a href="{{ route('admin.product') }}" class="btn btn-outline-primary px-4">
+                <a href="{{ route('admin.products') }}" class="btn btn-outline-primary px-4">
                     Back to Product Management
                 </a>
             </div>

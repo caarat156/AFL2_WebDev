@@ -15,24 +15,23 @@ use App\Http\Controllers\ReviewController;
 |--------------------------------------------------------------------------
 */
 
-// 🏠 Halaman utama (untuk pengunjung belum login)
+// 🏠 Halaman utama (belum login)
 Route::get('/', function () {
     return view('homeumum');
 })->middleware('guest')->name('homeumum');
 
-// 📦 Daftar produk (bisa diakses siapa pun)
+// 📦 Semua produk (public)
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 
-// 📄 About page
+// 📄 About
 Route::view('/about', 'about')->name('about');
 
-// 🧾 Daftar toko offline (public)
+// 🏪 Daftar toko (public)
 Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
-
 
 /*
 |--------------------------------------------------------------------------
-| 🔐 Authentication Routes
+| 🔐 Authentication
 |--------------------------------------------------------------------------
 */
 Route::middleware('guest')->group(function () {
@@ -50,31 +49,29 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-
 /*
 |--------------------------------------------------------------------------
 | 👤 USER AREA
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
-    // Dashboard User
+    // 🏠 Dashboard User
     Route::get('/home', [HomeController::class, 'userHome'])->name('home');
-    Route::get('/product', [ProductController::class, 'userIndex'])->name('product');
 
-    // User stores → URL: /user/stores
-    Route::get('/stores', [StoreController::class, 'userIndex'])->name('store');
+    // 📦 Produk (same as public index)
+    Route::get('/products', [ProductController::class, 'userIndex'])->name('products');
 
+    // 🏪 Store List
+    Route::get('/stores', [StoreController::class, 'userIndex'])->name('stores');
 
-    // Profil User
+    // 👤 Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Review (pakai resource, otomatis generate: index, create, store, edit, update, destroy)
+    // 💬 Reviews
     Route::resource('reviews', ReviewController::class);
-
 });
-
 
 /*
 |--------------------------------------------------------------------------
@@ -82,25 +79,25 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    // Dashboard Admin
+    // 🏠 Dashboard Admin
     Route::get('/home', [HomeController::class, 'adminHome'])->name('home');
 
-    // Admin Product Management
-    Route::get('/adminproduct', [ProductController::class, 'adminIndex'])->name('product');
-    Route::get('/createproduct', [ProductController::class, 'create'])->name('createproduct');
+    // 📦 Product Management
+    Route::get('/adminproduct', [ProductController::class, 'adminIndex'])->name('products'); 
+    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
-    // Admin Store Management
-    Route::get('/stores', [StoreController::class, 'adminIndex'])->name('store');
-    Route::get('/stores/create', [StoreController::class, 'create'])->name('createstore');
+    // 🏪 Store Management
+    Route::get('/stores', [StoreController::class, 'adminIndex'])->name('stores');
+    Route::get('/stores/create', [StoreController::class, 'create'])->name('stores.create');
     Route::post('/stores', [StoreController::class, 'store'])->name('stores.store');
     Route::get('/stores/{id}/edit', [StoreController::class, 'edit'])->name('stores.edit');
     Route::put('/stores/{id}', [StoreController::class, 'update'])->name('stores.update');
     Route::delete('/stores/{id}', [StoreController::class, 'destroy'])->name('stores.destroy');
 
-    // Admin Profile
+    // 👤 Admin Profile
     Route::get('/profile', [ProfileController::class, 'adminProfile'])->name('profile');
 });
