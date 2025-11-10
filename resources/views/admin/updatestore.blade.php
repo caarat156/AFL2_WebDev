@@ -7,7 +7,7 @@
     <h2 class="text-center mb-4">Edit Store</h2>
 
     <div class="card p-4 shadow-sm mx-auto" style="max-width: 600px;">
-        <form action="{{ route('stores.update', $store->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.stores.update', $store->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -35,9 +35,9 @@
                     <div class="mt-3 text-center">
                         <p class="small text-muted mb-1">Current Image:</p>
                         <img src="{{ asset($store->image) }}"
-                             alt="{{ $store->name }}"
-                             class="img-fluid rounded shadow-sm"
-                             style="height: 150px; object-fit: cover;">
+                            alt="{{ $store->name }}"
+                            class="img-fluid rounded shadow-sm"
+                            style="height: 150px; object-fit: cover;">
                     </div>
                 @endif
             </div>

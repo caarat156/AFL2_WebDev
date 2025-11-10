@@ -7,7 +7,7 @@
     <h2 class="text-center mb-4">Edit Product</h2>
 
     <div class="card p-4 shadow-sm mx-auto" style="max-width: 600px;">
-        <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
