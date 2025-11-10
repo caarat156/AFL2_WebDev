@@ -11,7 +11,7 @@ class HomeController extends Controller
     // 🔹 Halaman utama untuk guest (belum login)
     public function index()
     {
-        return view('home');
+        return view('homeumum');
     }
 
     // 🔹 Halaman home untuk user biasa
@@ -27,7 +27,7 @@ class HomeController extends Controller
     public function adminHome()
     {
         // Kalau admin butuh data tambahan (misalnya statistik, dsb)
-        return view('admin.home', [
+        return view('admin.adminproduct', [
             'user' => Auth::user()
         ]);
     }

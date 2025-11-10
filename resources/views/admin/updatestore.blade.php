@@ -44,7 +44,7 @@
 
             {{-- 🔘 Tombol --}}
             <div class="d-flex justify-content-between">
-                <a href="{{ route('admin.store') }}" class="btn btn-secondary">Back</a>
+                <a href="{{ route('admin.stores') }}" class="btn btn-secondary">Back</a>
                 <button type="submit" class="btn btn-success">Update Store</button>
             </div>
         </form>

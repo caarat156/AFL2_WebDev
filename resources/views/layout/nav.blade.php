@@ -28,19 +28,19 @@
                 {{-- Admin Menu --}}
                 @if(Auth::check() && Auth::user()->role === 'admin')
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold text-uppercase" href="{{ route('admin.product') }}" style="color: #5a4634;">Admin Product</a>
+                        <a class="nav-link fw-semibold text-uppercase" href="{{ route('admin.products') }}" style="color: #5a4634;">Admin Product</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fw-semibold text-uppercase" href="{{ route('admin.store') }}" style="color: #5a4634;">Admin Store</a>
+                        <a class="nav-link fw-semibold text-uppercase" href="{{ route('admin.stores') }}" style="color: #5a4634;">Admin Store</a>
                     </li>
 
                 {{-- User biasa --}}
                 @elseif(Auth::check())
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold text-uppercase" href="{{ route('user.product') }}" style="color: #5a4634;">Product</a>
+                    <a class="nav-link fw-semibold text-uppercase" href="{{ route('user.products') }}" style="color: #5a4634;">Product</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold text-uppercase" href="{{ route('user.store') }}" style="color: #5a4634;">Offline Stores</a>
+                    <a class="nav-link fw-semibold text-uppercase" href="{{ route('user.stores') }}" style="color: #5a4634;">Offline Stores</a>
                 </li>
                 @endif
 
@@ -69,7 +69,7 @@
 
                     @php
                         $searchRoute = Auth::check()
-                                        ? (Auth::user()->role === 'admin' ? route('admin.product') : route('user.product'))
+                                        ? (Auth::user()->role === 'admin' ? route('admin.products') : route('user.products'))
                                         : route('products.index');
                     @endphp
 

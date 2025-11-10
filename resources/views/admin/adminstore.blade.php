@@ -10,7 +10,7 @@
         {{-- Tombol hanya muncul untuk admin --}}
         @auth
             @if(auth()->user()->role === 'admin')
-                <a href="{{ route('admin.createstore') }}" class="btn btn-primary">
+                <a href="{{ route('admin.stores.create') }}" class="btn btn-primary">
                     + Add New Store
                 </a>
             @endif

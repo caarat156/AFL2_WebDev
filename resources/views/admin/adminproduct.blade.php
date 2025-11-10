@@ -9,7 +9,7 @@
     
         @auth
             @if(auth()->user()->role === 'admin')
-                <a href="{{ route('admin.createproduct') }}" class="btn btn-primary">
+                <a href="{{ route('admin.products.create') }}" class="btn btn-primary">
                     + Add New Product
                 </a>
             @endif
