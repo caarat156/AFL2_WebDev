@@ -15,8 +15,6 @@
             @endif
         @endauth
     </div>
-    
-    
 
     {{-- 🌿 Info ketika user sedang melakukan pencarian --}}
     @if(request('search'))
@@ -83,7 +81,6 @@
                                     </div>
                                 @endif
                             @endauth
-
                         </div>
                     </div>
                 </div>

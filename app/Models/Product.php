@@ -12,10 +12,12 @@ class Product extends Model
         'collection_name',
         'name',
         'product_type',
+        'variants',
         'price_2024',
         'price_2025',
         'net_price',
         'notes',
+        'image',
     ];
 
     public function reviews()
