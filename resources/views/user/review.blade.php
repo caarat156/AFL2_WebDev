@@ -1,10 +1,14 @@
-{{-- @extends('layout.mainlayout')
+@extends('layout.mainlayout')
 
-@section('title', 'All Reviews')
+@section('title', 'My Reviews')
 
 @section('content')
 <div class="container py-5">
-    <h1 class="text-center mb-4">All Customer Reviews</h1>
+    <h1 class="text-center mb-4">My Reviews</h1>
+
+    <div class="text-end mb-3">
+        <a href="{{ route('user.reviews.create') }}" class="btn btn-primary">Add New Review</a>
+    </div>
 
     <div class="row g-4">
         @forelse ($reviews as $review)
@@ -23,14 +27,24 @@
                         </div>
                         <p class="card-text text-muted">"{{ $review->comment }}"</p>
                     </div>
-                    <div class="card-footer bg-transparent text-end">
+                    <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
                         <small class="text-secondary">Posted on {{ $review->created_at->format('M d, Y') }}</small>
+                        <div>
+                            <a href="{{ route('user.reviews.edit', $review->id) }}" class="btn btn-sm btn-warning">Edit</a>
+
+                            <form action="{{ route('user.reviews.destroy', $review->id) }}" method="POST" class="d-inline" 
+                                    onsubmit="return confirm('Are you sure you want to delete this review?');">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
         @empty
-            <p class="text-center text-muted">No reviews yet.</p>
+            <p class="text-center text-muted">No reviews yet. Be the first to add one!</p>
         @endforelse
     </div>
 </div>
-@endsection --}}
+@endsection

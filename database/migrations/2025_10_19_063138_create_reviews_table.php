@@ -16,7 +16,7 @@ return new class extends Migration
                     ->nullable() // review bisa dibuat tanpa terhubung dengan produk tertentu
                     ->constrained('products') // menghubungkan ke tabel products mengacu pada kolom id
                     ->onDelete('cascade'); // jika produk dihapus, review terkait juga dihapus
-
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name');
             $table->tinyInteger('rating'); // 1–5
             $table->text('comment');

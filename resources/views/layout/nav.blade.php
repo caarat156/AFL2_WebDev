@@ -43,7 +43,12 @@
                     <a class="nav-link fw-semibold text-uppercase" href="/about" style="color: #5a4634;">About</a>
                 </li>
 
-
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold text-uppercase" href="{{ route('user.reviews.index') }}" style="color: #5a4634;">
+                        My Review
+                    </a>
+                </li>
+            
                 {{-- Search --}} 
                 <li class="nav-item position-relative"> 
                     <a class="nav-link text-secondary" href="#" id="searchToggle"> 
