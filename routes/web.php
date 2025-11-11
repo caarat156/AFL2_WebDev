@@ -9,11 +9,6 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 
-/*
-|--------------------------------------------------------------------------
-| 🌐 Public Routes
-|--------------------------------------------------------------------------
-*/
 
 // 🏠 Halaman utama (belum login)
 Route::get('/', function () {
@@ -29,11 +24,7 @@ Route::view('/about', 'about')->name('about');
 // 🏪 Daftar toko (public)
 Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
 
-/*
-|--------------------------------------------------------------------------
-| 🔐 Authentication
-|--------------------------------------------------------------------------
-*/
+
 Route::middleware('guest')->group(function () {
     // Register
     Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
@@ -49,11 +40,7 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')
     ->name('logout');
 
-/*
-|--------------------------------------------------------------------------
-| 👤 USER AREA
-|--------------------------------------------------------------------------
-*/
+
 Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
     // 🏠 Dashboard User
     Route::get('/home', [HomeController::class, 'userHome'])->name('home');
@@ -73,11 +60,7 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
     Route::resource('reviews', ReviewController::class);
 });
 
-/*
-|--------------------------------------------------------------------------
-| 🛠️ ADMIN AREA
-|--------------------------------------------------------------------------
-*/
+
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
     // 🏠 Dashboard Admin
     Route::get('/home', [HomeController::class, 'adminHome'])->name('home');

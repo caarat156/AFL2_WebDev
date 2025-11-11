@@ -11,9 +11,9 @@
                 {{-- 🖼️ Foto Profil --}}
                 <div class="mb-4">
                     <img src="{{ asset('images/default-avatar.png') }}" 
-                         alt="User Profile"
-                         class="rounded-circle shadow-sm"
-                         style="width: 120px; height: 120px; object-fit: cover;">
+                        alt="User Profile"
+                        class="rounded-circle shadow-sm"
+                        style="width: 120px; height: 120px; object-fit: cover;">
                 </div>
 
                 {{-- 👤 Informasi User --}}
@@ -25,7 +25,7 @@
                 <hr class="my-4">
 
                 {{-- 🏠 Tombol Back ke halaman Product --}}
-                <a href="{{ route('user.product') }}" class="btn btn-outline-primary px-4">
+                <a href="{{ route('user.products') }}" class="btn btn-outline-primary px-4">
                     Back to Products
                 </a>
             </div>

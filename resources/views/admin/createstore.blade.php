@@ -26,7 +26,10 @@
             <input type="file" name="image">
         </div>
 
+        <div class="d-flex justify-content-between">
+        <a href="{{ route('admin.stores') }}" class="btn btn-secondary">Back</a>
         <button type="submit" class="btn-submit">Save Store</button>
+        </div>
     </form>
 </div>
 @endsection
