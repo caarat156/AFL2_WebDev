@@ -1,22 +1,17 @@
 @extends('layout.mainlayout')
-{{-- extends buat nentuin layout utama --}}
 
 @section('title', 'About Lawasan')
-{{-- isi bagian yield title di mainlayout --}}
 
 @push('styles')
-{{-- pushh nambahin css spesifik buat halaman ini --}}
 <link rel="stylesheet" href="{{ asset('css/about.css') }}">
 @endpush
 
 @section('content')
-{{-- section untuk ngisi konten di mainlayout --}}
 <div class="container my-5 py-4">
     <div class="row align-items-center mb-5 pb-4">
         <div class="col-lg-6 mb-4 mb-lg-0">
             <div class="position-relative py-4">
                 <span class="quote-mark quote-open">"</span>
-                {{-- tanda kutip besar --}}
                 <h1 class="display-4 fw-light mb-4 position-relative" style="color: #6b4e3d;">
                     a scent can bring back a thousand memories
                 </h1>
@@ -37,7 +32,6 @@
 
     <hr class="my-5" style="border-color: #e8ddd4; opacity: 0.5;">
 
-    <!-- Product Evolution Section -->
     <div class="row mb-5 pb-4">
         <div class="col-lg-8 mx-auto text-center">
             <h2 class="mb-4 fw-light" style="color: #6b4e3d;">Our Journey</h2>
@@ -47,7 +41,6 @@
         </div>
     </div>
 
-    <!-- Values Section -->
     <div class="row g-4 mb-5 pb-4">
         <div class="col-md-4">
             <div class="card border-0 text-center p-4 h-100" style="background-color: #faf8f6;">

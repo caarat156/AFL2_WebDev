@@ -10,14 +10,14 @@ class ProfileUpdateRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        return true; // pastikan route memakai 'auth'
+        return true; 
     }
 
     protected function prepareForValidation(): void
     {
         if ($this->has('email')) {
             $this->merge([
-                'email' => strtolower($this->input('email')), // aman
+                'email' => strtolower($this->input('email')), 
             ]);
         }
     }

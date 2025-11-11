@@ -12,11 +12,11 @@ class EmailVerificationNotificationController extends Controller
     /**
      * Send a new email verification notification.
      */
-    public function store(Request $request): RedirectResponse //kirim email verifikasi baru
+    public function store(Request $request): RedirectResponse 
     {
-        if (Auth::user()->hasVerifiedEmail()) { //cek apakah email user sudah terverifikasi
+        if (Auth::user()->hasVerifiedEmail()) { 
             if (Auth::user()->role === 'admin') {
-                return redirect()->route('admin.product'); //arahkan ke halaman admin.product kalau sudah verifikasi
+                return redirect()->route('admin.product'); 
             } else {
                 return redirect()->route('user.home');
             }
@@ -24,8 +24,8 @@ class EmailVerificationNotificationController extends Controller
         
         Auth::user()->sendEmailVerificationNotification();
 
-        $request->user()->sendEmailVerificationNotification(); //kirim email verifikasi baru
+        $request->user()->sendEmailVerificationNotification(); 
 
-        return back()->with('status', 'verification-link-sent'); //kembali ke halaman sebelumnya dengan pesan status bahwa link verifikasi telah dikirim
+        return back()->with('status', 'verification-link-sent'); 
     }
 }

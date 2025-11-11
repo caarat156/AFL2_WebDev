@@ -8,15 +8,13 @@
         <div class="col-md-6">
 
             <div class="card shadow-lg border-0 rounded-4 p-4 text-center">
-                {{-- 🖼️ Profile Picture --}}
                 <div class="mb-4">
                     <img src="{{ asset('images/default-avatar.png') }}" 
-                         alt="Admin Profile"
-                         class="rounded-circle shadow-sm"
-                         style="width: 120px; height: 120px; object-fit: cover;">
+                        alt="Admin Profile"
+                        class="rounded-circle shadow-sm"
+                        style="width: 120px; height: 120px; object-fit: cover;">
                 </div>
 
-                {{-- 👤 Admin Info --}}
                 <h4 class="mb-1">{{ Auth::user()->name ?? 'Admin Name' }}</h4>
                 <p class="text-muted mb-3">{{ Auth::user()->email ?? 'admin@example.com' }}</p>
 
@@ -24,7 +22,6 @@
 
                 <hr class="my-4">
 
-                {{-- 🏠 Back to Admin Product Page --}}
                 <a href="{{ route('admin.products') }}" class="btn btn-outline-primary px-4">
                     Back to Product Management
                 </a>

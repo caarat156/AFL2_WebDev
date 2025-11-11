@@ -3,43 +3,42 @@
 namespace App\Http\Controllers\Auth; 
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request; //ambil data yang dikirim user
-use Illuminate\Support\Facades\Auth; //untuk autentikasi
-use Illuminate\View\View; //untuk menampilkan view halaman login
+use Illuminate\Http\Request; 
+use Illuminate\Support\Facades\Auth; 
+use Illuminate\View\View; 
 
-class AuthenticatedSessionController extends Controller //mengelola sesi login/logout dan extend ini artinya mewarisi fungsionalitas dasar dari Controller Laravel
+class AuthenticatedSessionController extends Controller 
 {
     /**
      * Tampilkan halaman login.
      */
-    public function create(): View //panggil file auth/login.blade.php
+    public function create(): View 
     {
-        return view('auth.login'); //menampilkan halaman login
+        return view('auth.login'); 
     }
 
     /**
      * Proses login.
      */
-    public function store(Request $request) //mengelola data yang dikirim user saat login
+    public function store(Request $request) 
     {
-        $credentials = $request->validate([ //cek input user
+        $credentials = $request->validate([ 
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
 
-        if (Auth::attempt($credentials,  //coba login dengan data yang sudah dicek
-        $request->boolean('remember'))) { //klo user klik remember me laravel akan simpan session lebih lama
-            $request->session()->regenerate(); //menghindari session fixation attack dengan ganti session id
+        if (Auth::attempt($credentials,  
+        $request->boolean('remember'))) { 
+            $request->session()->regenerate(); 
         
-            // 🚀 arahkan sesuai role
             if (Auth::user()->role === 'admin') {
-                return redirect('/admin/adminproduct'); //klo ini admin lgsg diarahkan ke adminproduct
+                return redirect('/admin/adminproduct'); 
             } else {
-                return redirect('/user/home'); //klo bukan admin diarahkan ke home user
+                return redirect('/user/home'); 
             }
         }
 
-        return back()->withErrors([ // kalau login gagal balik ke halaman login dengan pesan error
+        return back()->withErrors([ 
             'email' => 'Email atau password salah.',
         ]);
     }
@@ -49,11 +48,11 @@ class AuthenticatedSessionController extends Controller //mengelola sesi login/l
      */
     public function destroy(Request $request)
     {
-        Auth::guard('web')->logout(); //logout user dari guard web
+        Auth::guard('web')->logout(); 
 
-        $request->session()->invalidate(); //hapus data session lama
-        $request->session()->regenerateToken(); //menghindari CSRF attack dengan ganti token CSRF
+        $request->session()->invalidate(); 
+        $request->session()->regenerateToken(); 
 
-        return redirect('/'); //arahkan ke halaman utama setelah logout
+        return redirect('/'); 
     }
 }

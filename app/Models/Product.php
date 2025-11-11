@@ -8,7 +8,7 @@ class Product extends Model
 {
     // use HasFactory;
 
-    protected $fillable = [ // semua hrs diisi sesuai apa aja yg ada di migrations
+    protected $fillable = [ 
         'collection_name',
         'product_type',
         'variants',
@@ -21,6 +21,6 @@ class Product extends Model
 
     public function reviews()
     {
-        return $this->hasMany(Review::class); // satu produk bisa punya banyak review, laravel otomatis cari dari tabel review yg ada product_idnya
+        return $this->hasMany(Review::class); 
     }
 }

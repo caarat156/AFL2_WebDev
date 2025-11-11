@@ -35,7 +35,7 @@ class RegisteredUserController extends Controller
         'password' => ['required', 'confirmed', Rules\Password::defaults()],
     ]);
 
-    // Buat user baru (default role = 'user')
+    
     $user = User::create([
         'name' => $request->name,
         'email' => $request->email,
@@ -48,7 +48,6 @@ class RegisteredUserController extends Controller
     // 🚫 jangan auto login
     // Auth::login($user);
 
-    // Arahkan ke halaman login setelah register
     return redirect()->route('login')->with('success', 'Registration successful! Please login.');
 }
 

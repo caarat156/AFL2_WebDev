@@ -8,7 +8,6 @@
         <div class="col-md-6">
 
             <div class="card shadow-lg border-0 rounded-4 p-4 text-center">
-                {{-- 🖼️ Foto Profil --}}
                 <div class="mb-4">
                     <img src="{{ asset('images/default-avatar.png') }}" 
                         alt="User Profile"
@@ -16,7 +15,6 @@
                         style="width: 120px; height: 120px; object-fit: cover;">
                 </div>
 
-                {{-- 👤 Informasi User --}}
                 <h4 class="mb-1">{{ Auth::user()->name ?? 'User Name' }}</h4>
                 <p class="text-muted mb-3">{{ Auth::user()->email ?? 'user@example.com' }}</p>
 
@@ -24,7 +22,6 @@
 
                 <hr class="my-4">
 
-                {{-- 🏠 Tombol Back ke halaman Product --}}
                 <a href="{{ route('user.products') }}" class="btn btn-outline-primary px-4">
                     Back to Products
                 </a>

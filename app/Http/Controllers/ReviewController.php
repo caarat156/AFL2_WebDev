@@ -9,21 +9,18 @@ use App\Models\Product;
 
 class ReviewController extends Controller
 {
-    // Tampilkan semua review milik user login
     public function index()
     {
         $reviews = Review::where('user_id', Auth::id())->latest()->get();
         return view('user.review', compact('reviews'));
     }
 
-    // Tampilkan form tambah review
     public function create()
     {
         $products = Product::all();
         return view('user.createreview', compact('products'));
     }
     
-    // Simpan review baru
     public function store(Request $request)
     {
         $request->validate([
@@ -43,18 +40,16 @@ class ReviewController extends Controller
         return redirect()->route('user.reviews.index')->with('success', 'Review added!');
     }
 
-    // Tampilkan form edit review
 public function edit($id)
 {
     $review = Review::where('id', $id)
-        ->where('user_id', Auth::id()) // biar user cuma bisa edit review-nya sendiri
+        ->where('user_id', Auth::id()) 
         ->firstOrFail();
 
     $products = Product::all();
     return view('user.updatereview', compact('review', 'products'));
 }
 
-// Update review
 public function update(Request $request, $id)
 {
     $review = Review::where('id', $id)
@@ -76,7 +71,6 @@ public function update(Request $request, $id)
     return redirect()->route('user.reviews.index')->with('success', 'Review updated!');
 }
 
-// Hapus review
 public function destroy($id)
 {
     $review = Review::where('id', $id)

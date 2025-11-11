@@ -3,14 +3,14 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB; //akses database langsuung lewat query builder
+use Illuminate\Support\Facades\DB; 
 
 class ProductSeeder extends Seeder
 {
     public function run(): void
     {
         DB::table('products')->insert([
-            // 🔥 Scented Candle
+            //Scented Candle
             [
                 'collection_name' => 'Scented Candle',
                 'product_type' => 'Signature by Zodiac 130gr',

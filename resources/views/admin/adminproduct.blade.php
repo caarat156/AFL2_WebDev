@@ -16,14 +16,12 @@
         @endauth
     </div>
 
-    {{-- 🌿 Info ketika user sedang melakukan pencarian --}}
     @if(request('search'))
         <p class="text-center text-muted mb-4">
             Showing results for: <strong>"{{ request('search') }}"</strong>
         </p>
     @endif
 
-    {{-- 🌿 Jika tidak ada produk ditemukan --}}
     @if($products->isEmpty())
         <p class="text-center text-secondary fs-5 mt-5">
             No products found.

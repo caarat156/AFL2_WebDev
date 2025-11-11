@@ -14,7 +14,7 @@ class ConfirmablePasswordController extends Controller
     /**
      * Show the confirm password view.
      */
-    public function show(): View //nampilin halaman konfirmasi password
+    public function show(): View 
     {
         return view('auth.confirm-password');
     }
@@ -24,17 +24,17 @@ class ConfirmablePasswordController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        if (! Auth::guard('web')->validate([ //cek apaakah password yang dimasukkan sesuai dengan user yang sedang login
+        if (! Auth::guard('web')->validate([ 
             'email' => $request->user()->email,
             'password' => $request->password,
         ])) {
-            throw ValidationException::withMessages([ //kalau pw salah ambil error validasi
+            throw ValidationException::withMessages([ 
                 'password' => __('auth.password'),
             ]);
         }
 
-        $request->session()->put('auth.password_confirmed_at', time()); //simpan waktu konfirmasi password di session
+        $request->session()->put('auth.password_confirmed_at', time()); 
 
-        return redirect()->intended(route('homeumum', absolute: false)); //arahkan user ke halaman yang diminta sebelum konfirmasi password
+        return redirect()->intended(route('homeumum', absolute: false)); 
     }
 }

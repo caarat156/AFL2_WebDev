@@ -9,7 +9,6 @@ class Review extends Model
 {
     use HasFactory;
 
-    // Izinkan kolom-kolom ini diisi lewat create()
     protected $fillable = [
         'product_id',
         'user_id',

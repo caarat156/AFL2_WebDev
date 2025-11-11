@@ -23,7 +23,6 @@
         
         <div class="row g-3">
             @foreach($bestSellers as $product)
-            {{-- ambil 4 produk sesuai id yang di best sellers, dari controller --}}
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="product-card">
                         <div class="product-image-wrapper">
@@ -95,11 +94,9 @@
             @endforeach
         </div>
 
-        {{-- Pagination di luar row --}}
         <div class="d-flex justify-content-center mt-4">
         {{ $reviews->links('pagination::bootstrap-5') }}
         </div>
     </div>
 </section>
 @endsection
-{{-- x-review-card untuk render komponen dari review-card.blade trs : review = "$review" untuk passing data review ke komponen --}}

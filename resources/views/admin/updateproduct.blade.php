@@ -46,7 +46,6 @@
                 <textarea name="notes" id="notes" class="form-control" rows="3">{{ old('notes', $product->notes) }}</textarea>
             </div>
 
-            {{-- Gambar produk --}}
             <div class="mb-3">
                 <label for="image" class="form-label">Product Image</label>
                 <input type="file" name="image" id="image" class="form-control">

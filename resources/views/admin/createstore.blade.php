@@ -8,19 +8,16 @@
     <form action="{{ route('admin.stores.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
-        {{-- 🏪 Nama Toko --}}
         <div class="form-group">
             <label>Store Name</label>
             <input type="text" name="name" required>
         </div>
 
-        {{-- 📍 Lokasi --}}
         <div class="form-group">
             <label>Location</label>
             <input type="text" name="location" required>
         </div>
 
-        {{-- 🖼️ Gambar --}}
         <div class="form-group">
             <label>Store Image</label>
             <input type="file" name="image">

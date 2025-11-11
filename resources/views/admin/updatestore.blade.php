@@ -11,7 +11,6 @@
             @csrf
             @method('PUT')
 
-            {{-- 🏪 Nama Toko --}}
             <div class="mb-3">
                 <label for="name" class="form-label">Store Name</label>
                 <input type="text" name="name" id="name"
@@ -19,7 +18,6 @@
                         value="{{ old('name', $store->name) }}" required>
             </div>
 
-            {{-- 📍 Lokasi --}}
             <div class="mb-3">
                 <label for="location" class="form-label">Location</label>
                 <input type="text" name="location" id="location"
@@ -27,7 +25,6 @@
                         value="{{ old('location', $store->location) }}" required>
             </div>
 
-            {{-- 🖼️ Gambar --}}
             <div class="mb-3">
                 <label for="image" class="form-label">Store Image</label>
                 <input type="file" name="image" id="image" class="form-control">
@@ -42,7 +39,6 @@
                 @endif
             </div>
 
-            {{-- 🔘 Tombol --}}
             <div class="d-flex justify-content-between">
                 <a href="{{ route('admin.stores') }}" class="btn btn-secondary">Back</a>
                 <button type="submit" class="btn btn-success">Update Store</button>

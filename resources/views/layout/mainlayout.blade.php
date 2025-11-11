@@ -17,10 +17,8 @@
 <body>
 
     @include('layout.nav')
-    {{-- include untuk menyisipkan otongan file lain --}}
     <main class="min-vh-100">
         @yield('content')
-        {{-- yield digunakan untuk menandai bagian yang akan diisi oleh konten dari file lain --}}
     </main>
 
     @include('layout.footer')

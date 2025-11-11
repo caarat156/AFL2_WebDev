@@ -11,14 +11,14 @@ return new class extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
 
-            // Relasi ke products, tapi boleh null
+
             $table->foreignId('product_id')
-                    ->nullable() // review bisa dibuat tanpa terhubung dengan produk tertentu
-                    ->constrained('products') // menghubungkan ke tabel products mengacu pada kolom id
-                    ->onDelete('cascade'); // jika produk dihapus, review terkait juga dihapus
+                    ->nullable() 
+                    ->constrained('products') 
+                    ->onDelete('cascade'); 
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('name');
-            $table->tinyInteger('rating'); // 1–5
+            $table->tinyInteger('rating'); 
             $table->text('comment');
             $table->timestamps();
         });

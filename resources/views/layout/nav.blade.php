@@ -1,12 +1,10 @@
 <nav class="navbar navbar-expand-lg navbar-light shadow-sm py-3" style="background-color: #f6efe8;">
     <div class="container">
 
-        {{-- Logo --}}
         <a class="navbar-brand d-flex align-items-center" href="{{ route('homeumum') }}">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" height="60" class="me-2">
         </a>
 
-        {{-- Toggle --}}
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <i class="bi bi-list" style="font-size: 1.5rem; color: #6b4e3d;"></i>
         </button>
@@ -14,18 +12,14 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav align-items-center gap-lg-4 gap-3 mt-3 mt-lg-0">
 
-                {{-- Home --}}
                 <li class="nav-item">
                     @if(Auth::check())
-                        {{-- User login --}}
                         <a class="nav-link fw-semibold text-uppercase" href="{{ route('user.home') }}" style="color: #5a4634;">Home</a>
                     @else
-                        {{-- Guest --}}
                         <a class="nav-link fw-semibold text-uppercase" href="{{ route('homeumum') }}" style="color: #5a4634;">Home</a>
                     @endif
                 </li>
 
-                {{-- Admin Menu --}}
                 @if(Auth::check() && Auth::user()->role === 'admin')
                     <li class="nav-item">
                         <a class="nav-link fw-semibold text-uppercase" href="{{ route('admin.products') }}" style="color: #5a4634;">Admin Product</a>
@@ -34,7 +28,6 @@
                         <a class="nav-link fw-semibold text-uppercase" href="{{ route('admin.stores') }}" style="color: #5a4634;">Admin Store</a>
                     </li>
 
-                {{-- User biasa --}}
                 @elseif(Auth::check())
                 <li class="nav-item">
                     <a class="nav-link fw-semibold text-uppercase" href="{{ route('user.products') }}" style="color: #5a4634;">Product</a>
@@ -44,12 +37,10 @@
                 </li>
                 @endif
 
-                {{-- About --}}
                 <li class="nav-item">
                     <a class="nav-link fw-semibold text-uppercase" href="{{ route('about') }}" style="color: #5a4634;">About</a>
                 </li>
 
-                {{-- My Review (hanya untuk user login) --}}
                 @auth
                 @if(auth()->user()->role !== 'admin')
                     <li class="nav-item">
@@ -61,7 +52,6 @@
             @endauth
 
 
-                {{-- Search --}}
                 <li class="nav-item position-relative">
                     <a class="nav-link text-secondary" href="#" id="searchToggle">
                         <i class="bi bi-search"></i>
@@ -83,14 +73,12 @@
                     </form>
                 </li>
 
-                {{-- Cart --}}
                 <li class="nav-item">
                     <a class="nav-link text-secondary" href="#">
                         <i class="bi bi-bag"></i>
                     </a>
                 </li>
 
-                {{-- User / Guest --}}
                 <li class="nav-item dropdown">
                     @if(Auth::check())
                         <a class="nav-link text-secondary dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">

@@ -7,7 +7,6 @@
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="mb-0">Our Stores</h1>
 
-        {{-- Tombol hanya muncul untuk admin --}}
         @auth
             @if(auth()->user()->role === 'admin')
                 <a href="{{ route('admin.stores.create') }}" class="btn btn-primary">
@@ -17,7 +16,6 @@
         @endauth
     </div>
 
-    {{-- 🌿 Jika tidak ada store ditemukan --}}
     @if($stores->isEmpty())
         <p class="text-center text-secondary fs-5 mt-5">
             No stores found.
@@ -27,14 +25,12 @@
             @foreach ($stores as $store)
                 <div class="col-md-3 mb-4">
                     <div class="card shadow-sm border-0 h-100">
-                        {{-- Gambar store --}}
                         @php
-                            // Tentukan path gambar dinamis
                             $imagePath = $store->image 
                                 ? (Str::startsWith($store->image, 'storage/')
                                     ? asset($store->image)
                                     : asset('images/' . $store->image))
-                                : asset('images/default-store.jpg'); // fallback
+                                : asset('images/default-store.jpg'); 
                         @endphp
 
                         <img src="{{ $imagePath }}" 
@@ -53,7 +49,6 @@
                                 <p class="text-secondary small mt-2">{{ $store->description }}</p>
                             @endif
 
-                            {{-- Tombol Update & Delete hanya muncul untuk admin --}}
                             @auth
                                 @if(auth()->user()->role === 'admin')
                                     <div class="d-flex justify-content-center gap-2 mt-3">
