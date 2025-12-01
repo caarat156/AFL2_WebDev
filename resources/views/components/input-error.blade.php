@@ -7,3 +7,5 @@
         @endforeach
     </ul>
 @endif
+
+{{-- ini adalah Blade component untuk menampilkan error messages di Laravel. --}}

@@ -19,7 +19,7 @@ class AuthenticatedSessionController extends Controller //mengelola sesi login/l
 
     /**
      * Proses login.
-     */
+     */ 
     public function store(Request $request) //mengelola data yang dikirim user saat login
     {
         $credentials = $request->validate([ //cek input user

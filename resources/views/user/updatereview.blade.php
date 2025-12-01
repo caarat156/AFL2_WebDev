@@ -4,20 +4,14 @@
 <div class="container mt-5">
     <h2 class="mb-4 text-center">Edit Review</h2>
 
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul class="mb-0">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
     <div class="card shadow-sm p-4 mx-auto" style="max-width: 600px; border-radius: 12px;">
         <form action="{{ route('user.reviews.update', $review->id) }}" method="POST">
             @csrf
             @method('PUT')
+            {{-- Form akan mengirim data ke route reviews.update dengan method PUT.
+            @csrf → token keamanan Laravel.
+            @method('PUT') → override method POST menjadi PUT (update resource). --}}
+
 
             <div class="mb-3">
                 <label for="product_id" class="form-label fw-semibold">Choose Product</label>
@@ -31,6 +25,8 @@
                     @endforeach
                 </select>
             </div>
+            {{-- Dropdown untuk memilih produk yang di-review.
+            selected → menandai produk yang sudah ada di review ini. --}}
 
             <div class="mb-3">
                 <label for="rating" class="form-label fw-semibold">Rating (1–5)</label>

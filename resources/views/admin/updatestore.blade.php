@@ -10,6 +10,10 @@
         <form action="{{ route('admin.stores.update', $store->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
+                {{-- Form mengarah ke route update store berdasarkan id.
+    @csrf → token CSRF untuk keamanan.
+    @method('PUT') → override method HTML menjadi PUT, karena update biasanya menggunakan method PUT/PATCH.
+    enctype="multipart/form-data" → supaya bisa upload gambar baru. --}}
 
             {{-- 🏪 Nama Toko --}}
             <div class="mb-3">

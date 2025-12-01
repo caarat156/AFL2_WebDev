@@ -10,8 +10,10 @@
         {{-- Tombol hanya muncul untuk admin --}}
         @auth
             @if(auth()->user()->role === 'admin')
+            {{-- cm bisa di buka admin --}}
                 <a href="{{ route('admin.stores.create') }}" class="btn btn-primary">
                     + Add New Store
+                    {{-- ngarahin ke halaman create store --}}
                 </a>
             @endif
         @endauth
@@ -23,6 +25,7 @@
             No stores found.
         </p>
     @else
+    {{-- klo ada ya looping nampilin store --}}
         <div class="row justify-content-center">
             @foreach ($stores as $store)
                 <div class="col-md-3 mb-4">
@@ -36,11 +39,16 @@
                                     : asset('images/' . $store->image))
                                 : asset('images/default-store.jpg'); // fallback
                         @endphp
+                        {{-- Menentukan path gambar:
+                        Ada gambar → cek apakah sudah di storage/ → pakai asset().
+                        Jika tidak → ambil dari folder images/.
+                        Kalau tidak ada gambar → pakai default-store.jpg. --}}
 
                         <img src="{{ $imagePath }}" 
                              alt="{{ $store->name }}" 
                              class="img-fluid rounded shadow-sm"
                              style="height: 200px; width: 100%; object-fit: cover;">
+                             {{-- nampilin gambar store --}}
 
                         <div class="card-body text-center">
                             <h5 class="card-title mb-1">{{ $store->name }}</h5>
@@ -60,6 +68,7 @@
                                         <a href="{{ route('admin.stores.edit', $store->id) }}" 
                                             class="btn btn-sm btn-warning px-3">
                                             Update
+                                            {{-- diarahin ke halaman edit store --}}
                                         </a>
                                         <form action="{{ route('admin.stores.destroy', $store->id) }}" 
                                                 method="POST" 
@@ -68,6 +77,7 @@
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger px-3">
                                                 Delete
+                                                {{-- diarahin ke route delete store --}}
                                             </button>
                                         </form>
                                     </div>

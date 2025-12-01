@@ -9,11 +9,6 @@ use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 
-/*
-|--------------------------------------------------------------------------
-| 🌐 Public Routes
-|--------------------------------------------------------------------------
-*/
 
 // 🏠 Halaman utama (belum login)
 Route::get('/', function () {
@@ -31,45 +26,28 @@ Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
 
 /*
 |--------------------------------------------------------------------------
-| 🔐 Authentication
-|--------------------------------------------------------------------------
-*/
-Route::middleware('guest')->group(function () {
-    // Register
-    Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
-    Route::post('/register', [RegisteredUserController::class, 'store']);
-
-    // Login
-    Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
-    Route::post('/login', [AuthenticatedSessionController::class, 'store']);
-});
-
-// Logout
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-    ->middleware('auth')
-    ->name('logout');
-
-/*
-|--------------------------------------------------------------------------
 | 👤 USER AREA
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
+// Semua URL diawali /user.
+// Nama route diawali user.
+
+Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () { //hanya bisa diakses oleh yg udah login
     // 🏠 Dashboard User
     Route::get('/home', [HomeController::class, 'userHome'])->name('home');
 
-    // 📦 Produk (same as public index)
+    // 📦 Produk (same as public index) daftar produk versi user (bisa ada fitur khusus user).
     Route::get('/products', [ProductController::class, 'userIndex'])->name('products');
 
     // 🏪 Store List
     Route::get('/stores', [StoreController::class, 'userIndex'])->name('stores');
 
-    // 👤 Profile
+    // 👤 Profile Edit profile user, update, dan hapus akun.
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // 💬 Reviews
+    // 💬 Reviews Membuat CRUD review otomatis (index, create, store, edit, update, destroy, show).
     Route::resource('reviews', ReviewController::class);
 });
 
@@ -78,11 +56,11 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
 | 🛠️ ADMIN AREA
 |--------------------------------------------------------------------------
 */
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () { //hanya bisa diakses oleh yg udah login dan itu admin
     // 🏠 Dashboard Admin
     Route::get('/home', [HomeController::class, 'adminHome'])->name('home');
 
-    // 📦 Product Management
+    // 📦 Product Management CRUD produk untuk admin: lihat, tambah, edit, update, hapus.
     Route::get('/adminproduct', [ProductController::class, 'adminIndex'])->name('products'); 
     Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
@@ -90,7 +68,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{id}', [ProductController::class, 'destroy'])->name('products.destroy');
 
-    // 🏪 Store Management
+    // 🏪 Store Management CRUD
+    // /stores itu url yg diakses, admin index itu method di controller, name stores itu nama route untuk dipake di view blade
     Route::get('/stores', [StoreController::class, 'adminIndex'])->name('stores');
     Route::get('/stores/create', [StoreController::class, 'create'])->name('stores.create');
     Route::post('/stores', [StoreController::class, 'store'])->name('stores.store');
@@ -101,3 +80,12 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // 👤 Admin Profile
     Route::get('/profile', [ProfileController::class, 'adminProfile'])->name('profile');
 });
+
+
+//get untuk nampilin sesuatu
+//post untuk ngirim / menyimpan data ke server
+//put untuk update data yang sudah ada
+//delete untuk hapus data
+//patch untuk update sebagian data 
+//resource untuk bikin route CRUD sekaligus untuk satu controller
+//middleware untuk proteksi route berdasarkan kondisi tertentu (misal harus login dulu/ siapa yg bisa akses route)

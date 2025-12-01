@@ -54,9 +54,8 @@ class StoreController extends Controller
     }
 
     // ✏️ Form edit store
-    public function edit($id)
-    {
-        $store = Store::findOrFail($id);
+    public function edit(Store $store)
+    {;
         return view('admin.updatestore', compact('store'));
     }
 

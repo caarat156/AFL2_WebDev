@@ -115,7 +115,7 @@ class ProductController extends Controller
 
 public function store(Request $request)
 {
-    $validated = $request->validate([
+    $validated = $request->validate([ //validasi input dari form
         'collection_name' => 'required|string|max:255',
         'product_type' => 'required|string|max:255',
         'price_2025' => 'nullable|numeric', //numeric karena harga
@@ -130,7 +130,7 @@ public function store(Request $request)
         $validated['image'] = 'storage/' . $path;
     }
 
-    Product::create($validated);
+    Product::create($validated); //simpan ke database
 
     return redirect()->route('admin.products')->with('success', 'Product added successfully!');
 }
