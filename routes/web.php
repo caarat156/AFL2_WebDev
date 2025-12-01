@@ -74,6 +74,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     Route::get('/profile', [ProfileController::class, 'adminProfile'])->name('profile');
 });
+require __DIR__.'/auth.php';
 
 
 //get untuk nampilin sesuatu
