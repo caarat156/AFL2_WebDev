@@ -1,19 +1,24 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+    <form method="POST" action="{{ route('register') }}"> 
+        {{-- kirim data ke route register -> registeredUserController@store --}}
         @csrf
 
         <div>
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
+            {{-- input lama jika gagal --}}
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
+                {{-- error klo nama ga valid --}}
         </div>
 
         <div class="mt-4">
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
+            {{-- validasi wajib email dan format email --}}
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
+        <!-- Password , laravel otomatis cek password =  password_confirmation -->
         <div class="mt-4">
             <x-input-label for="password" :value="__('Password')" />
 

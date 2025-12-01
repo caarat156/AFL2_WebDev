@@ -7,6 +7,7 @@
         <div class="mb-4 font-medium text-sm text-green-600">
             {{ __('A new verification link has been sent to the email address you provided during registration.') }}
         </div>
+        {{-- Jika user menekan tombol “Resend Verification Email”, maka akan muncul pesan konfirmasi bahwa email baru telah dikirim. --}}
     @endif
 
     <div class="mt-4 flex items-center justify-between">

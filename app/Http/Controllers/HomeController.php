@@ -15,15 +15,16 @@ class HomeController extends Controller
 
     public function userHome()
     {
-        $bestSellers = Product::whereIn('id', [1, 9, 13, 8])->get();
-        $reviews = Review::latest()->paginate(6);
+        $bestSellers = Product::whereIn('id', [1, 9, 13, 8])->get(); // Ambil produk best sellers berdasarkan ID
+        $reviews = Review::latest()->paginate(6); // Ambil review terbaru dengan pagination cm 6
 
-        return view('user.home', compact('bestSellers', 'reviews'));
+        return view('user.home', compact('bestSellers', 'reviews')); // Kirim data best sellers dan reviews ke view
     }
 
     public function adminHome()
     {
-        return view('admin.adminproduct', [
+        // Kalau admin butuh data tambahan (misalnya statistik, dsb)
+        return view('admin.home', [
             'user' => Auth::user()
         ]);
     }

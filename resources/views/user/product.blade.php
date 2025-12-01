@@ -11,6 +11,9 @@
             Showing results for: <strong>"{{ request('search') }}"</strong>
         </p>
     @endif
+    {{-- Menampilkan info pencarian jika ada query search di URL (?search=xxx).
+request('search') → ambil nilai search.
+Teks muncul di tengah dan warna abu-abu (text-muted). --}}
 
     @if($products->isEmpty())
         <p class="text-center text-secondary fs-5 mt-5">

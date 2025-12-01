@@ -12,6 +12,9 @@
 
     <div class="row g-4">
         @forelse ($reviews as $review)
+            {{-- Membuat grid untuk review.
+    row g-4 → grid Bootstrap dengan gutter 4.
+    @forelse → loop $reviews, kalau kosong jalankan @empty. --}}
             <div class="col-lg-4 col-md-6">
                 <div class="card h-100 shadow-sm border-0">
                     <div class="card-body">
@@ -30,6 +33,7 @@
                     <div class="card-footer bg-transparent d-flex justify-content-between align-items-center">
                         <small class="text-secondary">Posted on {{ $review->created_at->format('M d, Y') }}</small>
                         <div>
+
                             <a href="{{ route('user.reviews.edit', $review->id) }}" class="btn btn-sm btn-warning">Edit</a>
 
                             <form action="{{ route('user.reviews.destroy', $review->id) }}" method="POST" class="d-inline" 
@@ -39,6 +43,9 @@
                                 <button class="btn btn-sm btn-danger">Delete</button>
                             </form>
                         </div>
+                                            {{-- Tombol Edit mengarah ke halaman edit review.
+                    Form Delete untuk menghapus review, ada konfirmasi sebelum submit.
+                    class="d-inline" supaya form tidak memaksa baris baru. --}}
                     </div>
                 </div>
             </div>

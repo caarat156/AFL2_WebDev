@@ -2,11 +2,15 @@
 
 @section('content')
 <link rel="stylesheet" href="{{ asset('css/product.css') }}">
+{{-- nambahin css khusus untuk halaman ini dengan helper asset() --}}
 <div class="form-container">
     <h2>Create Product</h2>
 
     <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
+        {{-- Form POST ke route admin.products.store → akan memanggil method store di ProductController.
+enctype="multipart/form-data" → wajib kalau ada upload file/gambar.
+@csrf → token CSRF untuk keamanan Laravel. --}}
 
         <div class="form-group">
             <label>Collection Name</label>

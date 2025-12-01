@@ -19,8 +19,8 @@ class AuthenticatedSessionController extends Controller
 
     /**
      * Proses login.
-     */
-    public function store(Request $request) 
+     */ 
+    public function store(Request $request) //mengelola data yang dikirim user saat login
     {
         $credentials = $request->validate([ 
             'email' => ['required', 'email'],

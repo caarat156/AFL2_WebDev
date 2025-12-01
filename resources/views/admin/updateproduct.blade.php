@@ -10,11 +10,16 @@
         <form action="{{ route('admin.products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
+                {{-- Form mengarah ke route update product dengan id tertentu.
+    @csrf → token CSRF untuk keamanan.
+    @method('PUT') → override method HTML jadi PUT (karena update biasanya PUT/PATCH).
+    enctype="multipart/form-data" → supaya bisa upload gambar. --}}
 
             <div class="mb-3">
                 <label for="collection_name" class="form-label">Collection Name</label>
                 <input type="text" name="collection_name" id="collection_name"
                         class="form-control" value="{{ old('collection_name', $product->collection_name) }}" required>
+                        {{-- old ttp nampilin yg lama klo validasi gagal --}}
             </div>
 
             <div class="mb-3">
@@ -56,11 +61,15 @@
                     </div>
                 @endif
             </div>
+            {{-- Input untuk upload gambar baru.
+Jika product sudah punya gambar, ditampilkan gambar saat ini sebagai preview. --}}
 
             <div class="d-flex justify-content-between">
                 <a href="{{ route('admin.products') }}" class="btn btn-secondary">Back</a>
                 <button type="submit" class="btn btn-success">Update Product</button>
             </div>
+            {{-- Tombol Back → kembali ke halaman daftar produk.
+Tombol Update Product → submit form untuk menyimpan perubahan. --}}
         </form>
     </div>
 </div>

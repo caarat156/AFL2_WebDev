@@ -14,10 +14,10 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
+    public function edit(Request $request): View //nampilin halaman edit profile
     {
         return view('user.profile', [
-            'user' => $request->user(),
+            'user' => $request->user(), //ngirim data user yang sedang login ke view
         ]);
     }
 
@@ -25,15 +25,15 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information.
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
+    public function update(ProfileUpdateRequest $request): RedirectResponse //ngupdate profile user
     {
-        $request->user()->fill($request->validated());
+        $request->user()->fill($request->validated()); //isi data user dengan data yang sudah tervalidasi dari form
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($request->user()->isDirty('email')) { //cek apakah email user diubah
+            $request->user()->email_verified_at = null; //kalo diubah, set email_verified_at jadi null supaya user harus verifikasi email lagi
         }
 
-        $request->user()->save();
+        $request->user()->save(); // simpan ke db
 
         return Redirect::route('user.profile')->with('status', 'profile-updated');
     }
@@ -44,14 +44,14 @@ class ProfileController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'],
+            'password' => ['required', 'current_password'], //validasi password user sebelum hapus akun
         ]);
 
         $user = $request->user();
 
-        Auth::logout();
+        Auth::logout(); //logout user
 
-        $user->delete();
+        $user->delete(); //hapus user dari db
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

@@ -5,3 +5,6 @@
         {{ $status }}
     </div>
 @endif
+
+{{-- ni adalah Blade component kecil di Laravel, 
+biasanya digunakan untuk menampilkan status pesan (success message) seperti “Password reset link sent” atau “Profile updated”. --}}

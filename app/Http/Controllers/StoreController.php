@@ -49,8 +49,9 @@ public function adminIndex()
             ->with('success', 'Store added successfully!');
     }
 
+    // ✏️ Form edit store
     public function edit(Store $store)
-    {
+    {;
         return view('admin.updatestore', compact('store'));
     }
 

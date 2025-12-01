@@ -11,14 +11,14 @@ class ReviewController extends Controller
 {
     public function index()
     {
-        $reviews = Review::where('user_id', Auth::id())->latest()->get();
-        return view('user.review', compact('reviews'));
+        $reviews = Review::where('user_id', Auth::id())->latest()->get(); // Ambil review user yang login
+        return view('user.review', compact('reviews')); // Kirim data reviews ke view
     }
 
     public function create()
     {
-        $products = Product::all();
-        return view('user.createreview', compact('products'));
+        $products = Product::all(); // Ambil semua produk untuk dropdown
+        return view('user.createreview', compact('products')); // Kirim data products ke view
     }
     
     public function store(Request $request)
@@ -32,7 +32,7 @@ class ReviewController extends Controller
         Review::create([
             'product_id' => $request->product_id,
             'user_id' => Auth::id(),
-            'name' => Auth::user()->name,
+            'name' => Auth::user()->name, // ambil nama user dari data login
             'rating' => $request->rating,
             'comment' => $request->comment,
         ]);
@@ -43,8 +43,8 @@ class ReviewController extends Controller
 public function edit($id)
 {
     $review = Review::where('id', $id)
-        ->where('user_id', Auth::id()) 
-        ->firstOrFail();
+        ->where('user_id', Auth::id()) // biar user cuma bisa edit review-nya sendiri
+        ->firstOrFail(); //ambil data review atau gagal kalo ga ada
 
     $products = Product::all();
     return view('user.updatereview', compact('review', 'products'));
@@ -73,11 +73,11 @@ public function update(Request $request, $id)
 
 public function destroy($id)
 {
-    $review = Review::where('id', $id)
+    $review = Review::where('id', $id) 
         ->where('user_id', Auth::id())
-        ->firstOrFail();
+        ->firstOrFail();//ambil data review atau gagal kalo ga ada
 
-    $review->delete();
+    $review->delete(); //hapus review
 
     return redirect()->route('user.reviews.index')->with('success', 'Review deleted!');
 }

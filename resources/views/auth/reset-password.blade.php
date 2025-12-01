@@ -1,12 +1,16 @@
 <x-guest-layout>
     <form method="POST" action="{{ route('password.store') }}">
         @csrf
+        {{-- Mengirim data ke route password.store → NewPasswordController@store.
+@csrf → token keamanan anti CSRF. --}}
 
+        <!-- Password Reset Token, dikirim lewat email untuk validasi reset pw -->
         <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
+                {{-- old('email', $request->email) → otomatis isi email dari link reset. --}}
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 

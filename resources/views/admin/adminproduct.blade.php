@@ -8,14 +8,17 @@
         <h1 class="mb-0">Lawasan Collection</h1>
     
         @auth
-            @if(auth()->user()->role === 'admin')
+            @if(auth()->user()->role === 'admin') 
+            {{-- hanya akan muncul untuk admin --}}
                 <a href="{{ route('admin.products.create') }}" class="btn btn-primary">
                     + Add New Product
+                    {{-- tombol menuju halaman create product --}}
                 </a>
             @endif
         @endauth
     </div>
 
+    {{-- 🌿 Info ketika sedang melakukan pencarian --}}
     @if(request('search'))
         <p class="text-center text-muted mb-4">
             Showing results for: <strong>"{{ request('search') }}"</strong>
@@ -27,6 +30,7 @@
             No products found.
         </p>
     @else
+    {{-- looping semua produk dari controller --}}
         <div class="row justify-content-center">
             @foreach ($products as $product)
                 <div class="col-md-3 mb-4">
@@ -35,16 +39,20 @@
                         <img src="{{ asset($product->image) }}" 
                             alt="{{ $product->product_type }}" 
                             class="img-fluid rounded shadow-sm" 
+                            {{-- img-fluid untuk responsif --}}
                             style="height: 200px; width: 100%; object-fit: cover;">
 
                         <div class="card-body text-center">
+                            {{-- nampilin nama koleksi dan tipe produk --}}
                             <h5 class="card-title mb-1">{{ $product->collection_name }}</h5>
                             <p class="text-muted mb-1">{{ $product->product_type }}</p>
 
+                            {{-- nampilin varian produk klo ada --}}
                             @if ($product->variants)
                                 <p class="small text-secondary mb-2">{{ $product->variants }}</p>
                             @endif
 
+                            {{-- menambahkan ribuan separator pada harga trs pake harga 2025 klo ada klo ga ya 2024 --}}
                             <p class="fw-bold mb-0">
                                 Rp {{ number_format($product->price_2025 ?? $product->price_2024) }}
                             </p>
@@ -62,10 +70,12 @@
                             {{-- 🌸 Tombol Update & Delete hanya muncul untuk admin --}}
                             @auth
                                 @if(auth()->user()->role === 'admin')
+                                {{-- hanya admin yg bisa update & delete --}}
                                     <div class="d-flex justify-content-center gap-2 mt-3">
                                         <a href="{{ route('admin.products.edit', $product->id) }}" 
                                             class="btn btn-sm btn-warning px-3">
                                             Update
+                                            {{-- diarahkan ke halaman edit product --}}
                                         </a>
                                         <form action="{{ route('admin.products.destroy', $product->id) }}" 
                                                 method="POST" 
@@ -74,6 +84,7 @@
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-danger px-3">
                                                 Delete
+                                                {{-- diarahkan ke fungsi delete product --}}
                                             </button>
                                         </form>
                                     </div>

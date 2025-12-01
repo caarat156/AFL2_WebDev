@@ -19,6 +19,9 @@
                 <p class="text-muted mb-3">{{ Auth::user()->email ?? 'admin@example.com' }}</p>
 
                 <span class="badge bg-primary px-3 py-2">Administrator</span>
+                {{-- Menampilkan nama admin dan email dari user yang login.
+                ?? 'Admin Name' → fallback kalau tidak ada data.
+                Badge untuk menandai role Administrator. --}}
 
                 <hr class="my-4">
 

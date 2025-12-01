@@ -16,6 +16,9 @@
                             $imagePath = 'storage/products/' . $imagePath;
                         }
                     @endphp
+                    {{-- Menentukan path gambar dinamis.
+                    Kalau nama file tidak dimulai dengan 'storage/', maka otomatis ditambahkan prefix 'storage/products/'.
+                    Ini agar asset($imagePath) bisa menampilkan gambar dengan benar. --}}
 
                     <img src="{{ asset($imagePath) }}" 
                         class="card-img-top" 

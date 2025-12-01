@@ -5,9 +5,11 @@
 
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    {{-- submit email ke controller PasswordResetLinkController@store. --}}
     <form method="POST" action="{{ route('password.email') }}">
         @csrf
 
+        <!-- Email Address input email-->
         <div>
             <x-input-label for="email" :value="__('Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
@@ -21,3 +23,10 @@
         </div>
     </form>
 </x-guest-layout>
+
+{{-- Flow yang terjadi ketika dipakai:
+User masuk halaman “Forgot Password”.
+User isi email → klik submit.
+Laravel validasi email → jika valid, kirim link reset.
+User dapat link di email → klik → masuk halaman reset password untuk membuat password baru. --}}
+

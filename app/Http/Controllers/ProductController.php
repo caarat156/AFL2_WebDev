@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
+use Illuminate\Http\Request; //untuk terima input dari user
 
 class ProductController extends Controller
 {
@@ -25,7 +25,7 @@ class ProductController extends Controller
         return view('user.product', compact('products'));
     }
 
-    public function userIndex(Request $request)
+    public function userIndex(Request $request) // halaman product user
 {
     $query = Product::query();
 
@@ -42,15 +42,16 @@ class ProductController extends Controller
 
 
 
-    public function adminIndex()
+    public function adminIndex() // halaman product admin
 {
     $products = Product::all();
     return view('admin.adminproduct', compact('products'));
 }
     
-    public function edit(Product $product)
+    // ✏️ Edit produk
+    public function edit($id) //id product yg ingin di edit
     {
-    
+        $product = Product::findOrFail($id); //cari product berdasarkan id, kalo ga ada error 404
         return view('admin.updateproduct', compact('product'));
     }
 
@@ -93,6 +94,7 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
+        $product = Product::findOrFail($id); //cari product berdasarkan id, kalo ga ada error 404
         $product->delete();
 
         return redirect()->route('admin.products')->with('success', 'Product deleted successfully!');
@@ -100,15 +102,15 @@ class ProductController extends Controller
 
     public function create()
 {
-    return view('admin.createproduct');
+    return view('admin.createproduct'); //tampilkan form create product untuk admin
 }
 
 public function store(Request $request)
 {
-    $validated = $request->validate([
+    $validated = $request->validate([ //validasi input dari form
         'collection_name' => 'required|string|max:255',
         'product_type' => 'required|string|max:255',
-        'price_2025' => 'nullable|numeric',
+        'price_2025' => 'nullable|numeric', //numeric karena harga
         'variants' => 'nullable|string|max:255',
         'net_price' => 'nullable|numeric',
         'notes' => 'nullable|string',
@@ -120,7 +122,7 @@ public function store(Request $request)
         $validated['image'] = 'storage/' . $path;
     }
 
-    Product::create($validated);
+    Product::create($validated); //simpan ke database
 
     return redirect()->route('admin.products')->with('success', 'Product added successfully!');
 }
