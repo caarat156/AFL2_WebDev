@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('payment_amount', 10, 2);
             $table->string('payment_status');
             $table->date('payment_date');
-            $table->string('status')->default('pending');
+            $table->string('status')->default('on process');
             $table->timestamps();
         });
     }
