@@ -27,8 +27,7 @@ Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
 */
 // Semua URL diawali /user.
 // Nama route diawali user.
-
-Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () { //hanya bisa diakses oleh yg udah login
+    Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () { //hanya bisa diakses oleh yg udah login
     // 🏠 Dashboard User
     Route::get('/home', [HomeController::class, 'userHome'])->name('home');
 
