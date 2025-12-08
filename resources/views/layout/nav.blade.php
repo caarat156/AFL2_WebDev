@@ -27,6 +27,9 @@
                     <li class="nav-item">
                         <a class="nav-link fw-semibold text-uppercase" href="{{ route('admin.stores') }}" style="color: #5a4634;">Admin Store</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold text-uppercase" href="{{ route('admin.workshops') }}" style="color: #5a4634;">Admin Workshop</a>
+                    </li>
 
                 @elseif(Auth::check())
                 <li class="nav-item">
@@ -35,6 +38,12 @@
                 <li class="nav-item">
                     <a class="nav-link fw-semibold text-uppercase" href="{{ route('user.stores') }}" style="color: #5a4634;">Offline Stores</a>
                 </li>
+                @endif
+
+                @if(!Auth::check() || Auth::user()->role !== 'admin')
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold text-uppercase" href="{{ route('workshops.index') }}" style="color: #5a4634;">Workshop</a>
+                    </li>
                 @endif
 
                 <li class="nav-item">

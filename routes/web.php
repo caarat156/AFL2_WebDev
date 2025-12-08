@@ -8,16 +8,15 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\WorkshopController;
 
 
 Route::get('/', function () {
     return view('homeumum');
 })->middleware('guest')->name('homeumum');
-
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-
+Route::get('/workshops', [WorkshopController::class, 'index'])->name('workshops.index');
 Route::view('/about', 'about')->name('about');
-
 Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
 
 /*
@@ -35,7 +34,9 @@ Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
     Route::get('/products', [ProductController::class, 'userIndex'])->name('products');
 
     Route::get('/stores', [StoreController::class, 'userIndex'])->name('stores');
-
+    
+    Route::get('/workshops', [WorkshopController::class, 'index'])->name('workshops.index');  
+    
     // 👤 Profile Edit profile user, update, dan hapus akun.
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -70,6 +71,14 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/stores/{store}/edit', [StoreController::class, 'edit'])->name('stores.edit');
     Route::put('/stores/{id}', [StoreController::class, 'update'])->name('stores.update');
     Route::delete('/stores/{store}', [StoreController::class, 'destroy'])->name('stores.destroy');
+
+    //Workshop Management CRUD
+    Route::get('/workshops', [WorkshopController::class, 'adminIndex'])->name('workshops');
+    Route::get('/workshops/create', [WorkshopController::class, 'create'])->name('workshops.create');
+    Route::post('/workshops', [WorkshopController::class, 'store'])->name('workshops.store');
+    Route::get('/workshops/{workshop}/edit', [WorkshopController::class, 'edit'])->name('workshops.edit');
+    Route::put('/workshops/{id}', [WorkshopController::class, 'update'])->name('workshops.update');
+    Route::delete('/workshops/{workshop}', [WorkshopController::class, 'destroy'])->name('workshops.destroy');
 
     Route::get('/profile', [ProfileController::class, 'adminProfile'])->name('profile');
 });
