@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             StoreSeeder::class,
             UserSeeder::class,
+            WorkshopSeeder::class,
         ]);
 
         Review::factory(100)->create();

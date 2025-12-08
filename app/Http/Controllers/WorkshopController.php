@@ -41,12 +41,15 @@ class WorkshopController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title'       => 'required|string|max:255',
-            'description' => 'required|string',
-            'date'        => 'required|date',
-            'location'    => 'required|string|max:255',
-            'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+        'title'       => 'required|string|max:255',
+        'description' => 'required|string',
+        'price'       => 'required|numeric',
+        'date'        => 'required|date',
+        'time'        => 'required',
+        'location'    => 'required|string|max:255',
+        'capacity'    => 'required|integer',
+        'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+    ]);
 
         // Upload image jika ada
         if ($request->hasFile('image')) {
@@ -73,16 +76,22 @@ class WorkshopController extends Controller
         $validated = $request->validate([
             'title'       => 'required|string|max:255',
             'description' => 'required|string',
+            'price'       => 'required|numeric',
             'date'        => 'required|date',
+            'time'        => 'required',
             'location'    => 'required|string|max:255',
+            'capacity'    => 'required|integer',
             'image'       => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         // Update data
         $workshop->title = $validated['title'];
         $workshop->description = $validated['description'];
+        $workshop->price = $validated['price'];
         $workshop->date = $validated['date'];
+        $workshop->time = $validated['time'];
         $workshop->location = $validated['location'];
+        $workshop->capacity = $validated['capacity'];
 
         // Update image jika ada file baru
         if ($request->hasFile('image')) {
@@ -104,6 +113,8 @@ class WorkshopController extends Controller
 
     public function destroy(Workshop $workshop)
     {
+        $workshop->registrations()->delete();
+        $workshop->guestRegistrations()->delete();        
         // Hapus image jika ada
         if ($workshop->image && file_exists(public_path($workshop->image))) {
             unlink(public_path($workshop->image));
