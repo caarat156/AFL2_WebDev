@@ -33,9 +33,9 @@
                         @endphp
 
                         <img src="{{ $imagePath }}" 
-                             alt="{{ $workshop->title }}" 
-                             class="img-fluid rounded shadow-sm"
-                             style="height: 200px; width: 100%; object-fit: cover;">
+                            alt="{{ $workshop->title }}" 
+                            class="img-fluid rounded shadow-sm"
+                            style="height: 200px; width: 100%; object-fit: cover;">
 
                         <div class="card-body text-center">
                             <h5 class="card-title mb-1">{{ $workshop->title }}</h5>
@@ -57,14 +57,14 @@
 
                             {{-- admin buttons --}}
                             <div class="d-flex justify-content-center gap-2 mt-3">
-                                <a href="{{ route('admin.workshops.edit', $workshop->workshop_id) }}" 
-                                   class="btn btn-sm btn-warning px-3">
+                                <a href="{{ route('admin.workshops.edit', $workshop) }}" 
+                                class="btn btn-sm btn-warning px-3">
                                     Update
                                 </a>
 
                                 <form action="{{ route('admin.workshops.destroy', $workshop->workshop_id) }}" 
-                                      method="POST" 
-                                      onsubmit="return confirm('Are you sure you want to delete this workshop?');">
+                                    method="POST" 
+                                    onsubmit="return confirm('Are you sure you want to delete this workshop?');">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-sm btn-danger px-3">
