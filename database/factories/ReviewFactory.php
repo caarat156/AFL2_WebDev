@@ -11,7 +11,6 @@ class ReviewFactory extends Factory
     {
         return [
             'product_id' => Product::inRandomOrder()->first()?->id,
-            'user_id' => User::inRandomOrder()->first()?->id ?? User::factory(),
             'name' => $this->faker->name(),
             'rating' => $this->faker->numberBetween(1, 5),
             'comment' => $this->faker->sentence(10), 

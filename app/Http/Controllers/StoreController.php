@@ -9,19 +9,19 @@ class StoreController extends Controller
 {
     public function index()
     {
-        $stores = Store::all();
+        $stores = Store::latest()->get(); // ← Tambah latest()
         return view('user.store', compact('stores'));
     }
 
     public function userIndex()
-{
-    $stores = Store::all(); 
-    return view('user.store', compact('stores'));
-}
-
-public function adminIndex()
     {
-        $stores = Store::all();
+        $stores = Store::latest()->get(); // ← Tambah latest()
+        return view('user.store', compact('stores'));
+    }
+
+    public function adminIndex()
+    {
+        $stores = Store::latest()->get(); // ← Tambah latest()
         return view('admin.adminstore', compact('stores'));
     }
 
@@ -49,16 +49,14 @@ public function adminIndex()
             ->with('success', 'Store added successfully!');
     }
 
-    // ✏️ Form edit store
-    public function edit(Store $store)
-    {;
+    // ✏️ Form edit store dengan Route Model Binding
+    public function edit(Store $store) // ✅ Sudah benar
+    {
         return view('admin.updatestore', compact('store'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Store $store) // ← Ubah dari $id ke Store $store
     {
-        $store = Store::findOrFail($id);
-
         $request->validate([
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
@@ -69,6 +67,7 @@ public function adminIndex()
         $store->location = $request->location;
 
         if ($request->hasFile('image')) {
+            // Hapus gambar lama jika ada
             if ($store->image && file_exists(public_path($store->image))) {
                 unlink(public_path($store->image));
             }
@@ -83,8 +82,9 @@ public function adminIndex()
             ->with('success', 'Store updated successfully!');
     }
 
-    public function destroy(Store $store)
+    public function destroy(Store $store) // ✅ Sudah benar
     {
+        // Hapus gambar jika ada
         if ($store->image && file_exists(public_path($store->image))) {
             unlink(public_path($store->image));
         }
