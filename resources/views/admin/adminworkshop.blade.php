@@ -28,7 +28,7 @@
                             $imagePath = $workshop->image
                                 ? (Str::startsWith($workshop->image, 'storage/')
                                     ? asset($workshop->image)
-                                    : asset('images/' . $workshop->image))
+                                    : asset($workshop->image))
                                 : asset('images/default-workshop.jpg');
                         @endphp
 
