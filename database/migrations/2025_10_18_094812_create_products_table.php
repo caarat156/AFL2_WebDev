@@ -16,9 +16,9 @@ return new class extends Migration
         $table->string('collection_name'); 
         $table->string('product_type');
         $table->string('variants')->nullable(); 
-        $table->integer('price_2024')->nullable();
-        $table->integer('price_2025')->nullable();
-        $table->integer('net_price')->nullable();
+        $table->decimal('price_2024', 20, 0)->nullable();
+        $table->decimal('price_2025', 20, 0)->nullable();
+        $table->decimal('net_price', 20, 0)->nullable();
         $table->string('image')->nullable();
         $table->text('notes')->nullable();
         $table->timestamps(); 

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('workshop_id'); // PK
             $table->string('title');
             $table->text('description')->nullable();
-            $table->decimal('price', 10, 2)->default(0);
+            $table->decimal('price', 20, 0)->default(0);
             $table->date('date');
             $table->time('time');
             $table->string('location');
