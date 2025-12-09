@@ -23,6 +23,10 @@ enctype="multipart/form-data" → wajib kalau ada upload file (gambar).
         </div>
 
         <div class="form-group">
+            <label>Google Maps Link</label>
+            <input type="text" name="linkgmap">
+
+        <div class="form-group">
             <label>Store Image</label>
             <input type="file" name="image">
         </div>

@@ -30,6 +30,13 @@
             </div>
 
             <div class="mb-3">
+                <label for="linkgmap" class="form-label">Google Maps Link</label>
+                <input type="text" name="linkgmap" id="linkgmap"
+                        class="form-control"
+                        value="{{ old('linkgmap', $store->linkgmap) }}">
+            </div>
+
+            <div class="mb-3">
                 <label for="image" class="form-label">Store Image</label>
                 <input type="file" name="image" id="image" class="form-control">
                 @if ($store->image)

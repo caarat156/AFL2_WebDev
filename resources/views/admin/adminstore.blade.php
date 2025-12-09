@@ -41,10 +41,10 @@
                         Kalau tidak ada gambar → pakai default-store.jpg. --}}
 
                         <img src="{{ $imagePath }}" 
-                             alt="{{ $store->name }}" 
-                             class="img-fluid rounded shadow-sm"
-                             style="height: 200px; width: 100%; object-fit: cover;">
-                             {{-- nampilin gambar store --}}
+                            alt="{{ $store->name }}" 
+                            class="img-fluid rounded shadow-sm"
+                            style="height: 200px; width: 100%; object-fit: cover;">
+                            {{-- nampilin gambar store --}}
 
                         <div class="card-body text-center">
                             <h5 class="card-title mb-1">{{ $store->name }}</h5>

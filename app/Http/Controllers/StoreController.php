@@ -36,6 +36,7 @@ class StoreController extends Controller
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'linkgmap' => 'string|max:255',
         ]);
 
         if ($request->hasFile('image')) {
@@ -61,6 +62,7 @@ class StoreController extends Controller
             'name' => 'required|string|max:255',
             'location' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'linkgmap' => 'string|max:255',
         ]);
 
         $store->name = $request->name;

@@ -13,6 +13,7 @@ class Store extends Model
         'name',
         'location',
         'image',
+        'linkgmap',
         
     ];
 }

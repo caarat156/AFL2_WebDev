@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('location');
             $table->string('image')->nullable();
+            $table->string('linkgmap');
             $table->timestamps();
         });
     }

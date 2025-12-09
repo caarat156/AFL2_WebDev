@@ -27,6 +27,12 @@
                     <div class="card-body text-center">
                         <h5 class="card-title mb-1">{{ $store->name }}</h5>
                         <p class="text-muted">{{ $store->location }}</p>
+                        {{-- ✅ Tombol Google Maps --}}
+                        <a href="https://www.google.com/maps/search/?api=1&query={{ urlencode($store->location) }}" 
+                           target="_blank" 
+                           class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-geo-alt-fill"></i> Open in Maps
+                        </a>
                     </div>
                 </div>
             </div>
