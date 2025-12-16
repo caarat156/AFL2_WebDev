@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Workshop;
+use App\Models\WorkshopRegistration;
 use Illuminate\Http\Request;
 
 class WorkshopController extends Controller
@@ -23,9 +24,60 @@ class WorkshopController extends Controller
         return view('user.workshop', compact('workshops'));
     }
 
+    public function show(Workshop $workshop)
+    {
+    return view('workshopdetail', compact('workshop'));
+    }
+
     // ============================
     // ADMIN AREA
     // ============================
+    public function registerForm(Workshop $workshop)
+    {
+        return view('workshopregist', compact('workshop'));
+    }
+
+    public function storeRegistration(Request $request, Workshop $workshop)
+    {
+        $validated = $request->validate([
+            'full_name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'phone' => 'required|string|max:20',
+            'participant_count' => 'required|integer|min:1',
+        ]);
+
+        // Cek apakah user sudah terdaftar untuk workshop ini
+        $existingRegistration = WorkshopRegistration::where('workshop_id', $workshop->id)
+            ->where('email', $validated['email'])
+            ->first();
+
+        if ($existingRegistration) {
+            return redirect()->back()
+                ->with('error', 'Email ini sudah terdaftar untuk workshop ini!');
+        }
+
+        // Simpan registrasi menggunakan Model
+        WorkshopRegistration::create([
+            'workshop_id' => $workshop->id,
+            'full_name' => $validated['full_name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'participant_count' => $validated['participant_count'],
+            'registration_date' => now(),
+            'payment_status' => 'pending',
+        ]);
+
+        return redirect()->route('workshops.show', $workshop->id)
+            ->with('success', 'Registrasi berhasil! Silakan lakukan pembayaran untuk menyelesaikan pendaftaran.');
+    }
+
+    public function showParticipants(Workshop $workshop) 
+    {
+        $participants = $workshop->registrations()->get();
+    
+        return view('admin.workshopparticipant', compact('workshop', 'participants'));
+    }
+
     public function adminIndex()
     {
         $workshops = Workshop::latest()->get(); // ← Tambah latest()

@@ -35,17 +35,11 @@
                         @endif
 
                         <div class="card-body">
-                            <h5 class="card-title mb-2">{{ $workshop->title }}</h5>
-                            <p class="text-muted small mb-3">{{ Str::limit($workshop->description, 100) }}</p>
+                            <h5 class="card-title mb-3">{{ $workshop->title }}</h5>
 
                             <div class="mb-2">
                                 <i class="bi bi-calendar-event text-primary me-2"></i>
                                 <span class="small">{{ \Carbon\Carbon::parse($workshop->date)->format('d M Y') }}</span>
-                            </div>
-
-                            <div class="mb-2">
-                                <i class="bi bi-clock text-primary me-2"></i>
-                                <span class="small">{{ $workshop->time }}</span>
                             </div>
 
                             <div class="mb-2">
@@ -58,11 +52,15 @@
                                 <span class="small">Capacity: {{ $workshop->capacity }} people</span>
                             </div>
 
-                            <div class="d-flex justify-content-between align-items-center">
+                            <div class="mb-3">
                                 <p class="fw-bold text-success mb-0 fs-5">
                                     Rp {{ number_format($workshop->price, 0, ',', '.') }}
                                 </p>
                             </div>
+
+                            <a href="{{ route('workshops.show', $workshop) }}" class="btn btn-primary w-100">
+                                See Details
+                            </a>
                         </div>
                     </div>
                 </div>

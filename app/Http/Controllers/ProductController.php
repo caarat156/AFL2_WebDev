@@ -40,6 +40,11 @@ class ProductController extends Controller
         return view('user.product', compact('products'));
     }
 
+    public function show(Product $product)
+    {
+        return view('user.productdetail', compact('product'));
+    }
+
     public function adminIndex() // halaman product admin
     {
         $products = Product::latest()->get(); // ← Tambah latest()
@@ -85,6 +90,13 @@ class ProductController extends Controller
 
         return redirect()->route('admin.products')
             ->with('success', 'Product updated successfully!');
+    }
+
+    public function viewTransactions()
+    {
+        $transactions = collect([]); // Sementara kosong
+        
+        return view('admin.producttransaction', compact('transactions'));
     }
 
     public function destroy(Product $product)

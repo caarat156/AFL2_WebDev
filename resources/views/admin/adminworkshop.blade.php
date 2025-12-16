@@ -37,7 +37,7 @@
                             class="img-fluid rounded shadow-sm"
                             style="height: 200px; width: 100%; object-fit: cover;">
 
-                        <div class="card-body text-center">
+                        <div class="card-body text-center d-flex flex-column">
                             <h5 class="card-title mb-1">{{ $workshop->title }}</h5>
 
                             <p class="text-muted small mb-1">
@@ -51,28 +51,32 @@
                                 </p>
                             @endif
 
-                            <p class="text-dark fw-semibold mt-2">
+                            <p class="text-dark fw-semibold mt-2 mb-3">
                                 Rp {{ number_format($workshop->price, 0, ',', '.') }}
                             </p>
 
-                            {{-- admin buttons --}}
-                            <div class="d-flex justify-content-center gap-2 mt-3">
+                            {{-- admin buttons - dengan flex-column untuk vertikal --}}
+                            <div class="mt-auto">
+                                <a href="{{ route('admin.workshops.participants', $workshop) }}" 
+                                    class="btn btn-sm btn-info w-100 mb-2 text-white">
+                                    See Participants
+                                </a>
+                                
                                 <a href="{{ route('admin.workshops.edit', $workshop) }}" 
-                                class="btn btn-sm btn-warning px-3">
+                                    class="btn btn-sm btn-warning w-100 mb-2">
                                     Update
                                 </a>
 
-                                <form action="{{ route('admin.workshops.destroy', $workshop->workshop_id) }}" 
+                                <form action="{{ route('admin.workshops.destroy', $workshop) }}" 
                                     method="POST" 
                                     onsubmit="return confirm('Are you sure you want to delete this workshop?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger px-3">
+                                    <button type="submit" class="btn btn-sm btn-danger w-100">
                                         Delete
                                     </button>
                                 </form>
                             </div>
-
                         </div>
                     </div>
                 </div>

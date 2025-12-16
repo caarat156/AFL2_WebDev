@@ -10,10 +10,14 @@
         @auth
             @if(auth()->user()->role === 'admin') 
             {{-- hanya akan muncul untuk admin --}}
-                <a href="{{ route('admin.products.create') }}" class="btn btn-primary">
-                    + Add New Product
-                    {{-- tombol menuju halaman create product --}}
-                </a>
+                <div class="d-flex gap-2">
+                    <a href="{{ route('admin.transactions') }}" class="btn btn-success">
+                        View All User Transactions
+                    </a>
+                    <a href="{{ route('admin.products.create') }}" class="btn btn-primary">
+                        + Add New Product
+                    </a>
+                </div>
             @endif
         @endauth
     </div>

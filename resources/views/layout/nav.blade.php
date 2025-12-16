@@ -83,9 +83,18 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link text-secondary" href="#">
-                        <i class="bi bi-bag"></i>
-                    </a>
+                    @auth
+                        <a class="nav-link text-secondary position-relative" href="{{ route('user.cart') }}" title="Shopping Cart">
+                            <i class="bi bi-bag" style="font-size: 1.25rem;"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartBadge" style="display: none;">
+                                0
+                            </span>
+                        </a>
+                    @else
+                        <a class="nav-link text-secondary position-relative" href="{{ route('login') }}" title="Shopping Cart">
+                            <i class="bi bi-bag" style="font-size: 1.25rem;"></i>
+                        </a>
+                    @endauth
                 </li>
 
                 <li class="nav-item dropdown">

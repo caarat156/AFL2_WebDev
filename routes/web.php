@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\WorkshopController;
 
 
@@ -15,7 +16,11 @@ Route::get('/', function () {
     return view('homeumum');
 })->middleware('guest')->name('homeumum');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/workshops', [WorkshopController::class, 'index'])->name('workshops.index');
+Route::get('/workshops/{workshop}', [WorkshopController::class, 'show'])->name('workshops.show');
+Route::get('/workshops/{workshop}/register', [WorkshopController::class, 'registerForm'])->name('workshops.register');
+Route::post('/workshops/{workshop}/register', [WorkshopController::class, 'storeRegistration'])->name('workshops.store-registration');
 Route::view('/about', 'about')->name('about');
 Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
 
@@ -32,12 +37,19 @@ Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
 
     // 📦 Produk (same as public index) daftar produk versi user (bisa ada fitur khusus user).
     Route::get('/products', [ProductController::class, 'userIndex'])->name('products');
+    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 
     Route::get('/stores', [StoreController::class, 'userIndex'])->name('stores');
     
     Route::get('/workshops', [WorkshopController::class, 'index'])->name('workshops.index');  
     
-    // 👤 Profile Edit profile user, update, dan hapus akun.
+    // � Cart
+    Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    Route::delete('/cart/{cart}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::patch('/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
+    
+    //���👤 Profile Edit profile user, update, dan hapus akun.
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -62,6 +74,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{id}', [ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::get('/transactions', [ProductController::class, 'viewTransactions'])->name('transactions');
 
     // 🏪 Store Management CRUD
     // /stores itu url yg diakses, admin index itu method di controller, name stores itu nama route untuk dipake di view blade
@@ -79,7 +92,8 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/workshops/{workshop}/edit', [WorkshopController::class, 'edit'])->name('workshops.edit');
     Route::put('/workshops/{id}', [WorkshopController::class, 'update'])->name('workshops.update');
     Route::delete('/workshops/{workshop}', [WorkshopController::class, 'destroy'])->name('workshops.destroy');
-
+    Route::get('/workshops/{workshop}/participants', [WorkshopController::class, 'showParticipants'])->name('workshops.participants'); 
+    
     Route::get('/profile', [ProfileController::class, 'adminProfile'])->name('profile');
 });
 require __DIR__.'/auth.php';
