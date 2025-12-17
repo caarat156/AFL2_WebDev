@@ -76,7 +76,7 @@
                 <form action="{{ route('user.cart.add') }}" method="POST" id="addToCartForm">
                     @csrf
                     <input type="hidden" name="product_id" value="{{ $product->id }}">
-                    <input type="hidden" name="quantity" id="quantityInput" value="1">
+                    <input type="hidden" name="quantity" id="quantity" value="1">
                     <button type="submit" class="btn btn-success btn-lg w-100">
                         <i class="bi bi-cart-plus me-2"></i>Add to Cart
                     </button>
@@ -85,14 +85,11 @@
                     <i class="bi bi-arrow-left me-2"></i>Back to Products
                 </a>
             </div>
-        </div>
-    </div>
-</div>
-
-<script>
-    function addToCart() {
-        const quantity = document.getElementById('quantity').value;
-        alert('Added ' + quantity + ' item(s) to cart!');
-    }
+            
+            <script>
+                function addToCart() {
+                    const quantity = document.getElementById('quantity').value;
+                    alert('Added ' + quantity + ' item(s) to cart!');
+                }
 </script>
 @endsection
