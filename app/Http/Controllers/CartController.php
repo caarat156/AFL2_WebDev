@@ -62,10 +62,8 @@ class CartController extends Controller
             ->with('success', 'Product removed from cart!');
     }
 
-    // Update quantity
     public function update(Request $request, Cart $cart)
     {
-        // Pastikan hanya user yang punya cart dapat update
         if ($cart->user_id !== auth()->id()) {
             abort(403, 'Unauthorized');
         }
@@ -76,7 +74,34 @@ class CartController extends Controller
 
         $cart->update($validated);
 
+        // ✅ Selalu return JSON untuk AJAX request
+        if ($request->expectsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Quantity updated!',
+                'cart' => $cart
+            ]);
+        }
+
         return redirect()->route('user.cart')
             ->with('success', 'Quantity updated!');
+    }
+
+    public function checkout(Request $request)
+    {
+        $selectedItems = $request->input('selected_items', []);
+        
+        if (empty($selectedItems)) {
+            return redirect()->back()->with('error', 'Please select at least one item');
+        }
+        
+        // Ambil data item yang dipilih
+        $cartItems = Cart::whereIn('id', $selectedItems)
+            ->where('user_id', auth()->id())
+            ->with('product')
+            ->get();
+        
+        // Redirect ke halaman checkout
+        return view('user.checkout', compact('cartItems'));
     }
 }

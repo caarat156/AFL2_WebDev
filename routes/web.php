@@ -31,7 +31,7 @@ Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
 */
 // Semua URL diawali /user.
 // Nama route diawali user.
-    Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () { //hanya bisa diakses oleh yg udah login
+Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () { //hanya bisa diakses oleh yg udah login
     // 🏠 Dashboard User
     Route::get('/home', [HomeController::class, 'userHome'])->name('home');
 
@@ -43,13 +43,23 @@ Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
     
     Route::get('/workshops', [WorkshopController::class, 'index'])->name('workshops.index');  
     
-    // � Cart
+    // 🛒 Cart Routes
     Route::get('/cart', [CartController::class, 'index'])->name('cart');
     Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
+    
+    // ✅ Route untuk form delete (dengan Cart model binding)
     Route::delete('/cart/{cart}', [CartController::class, 'remove'])->name('cart.remove');
+    
+    // ✅ Route untuk AJAX delete (dengan ID biasa, bukan model binding)
+    Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+    
+    // Route untuk update quantity
     Route::patch('/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
     
-    //���👤 Profile Edit profile user, update, dan hapus akun.
+    // Route checkout
+    Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
+    
+    //👤 Profile Edit profile user, update, dan hapus akun.
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

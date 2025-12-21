@@ -19,3 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+// Load page-specific scripts
+import './cart';
