@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\WorkshopController;
+use App\Http\Controllers\AddressController;
 
 
 Route::get('/', function () {
@@ -66,6 +67,15 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () { 
 
     // 💬 Reviews Membuat CRUD review otomatis (index, create, store, edit, update, destroy, show).
     Route::resource('reviews', ReviewController::class);
+
+    // 📍 Address Routes
+    Route::get('/addresses', [AddressController::class, 'index'])->name('addresses');
+    Route::get('/addresses/create', [AddressController::class, 'create'])->name('addresses.create');
+    Route::post('/addresses', [AddressController::class, 'store'])->name('addresses.store');
+    Route::get('/addresses/{address}/edit', [AddressController::class, 'edit'])->name('addresses.edit');
+    Route::put('/addresses/{address}', [AddressController::class, 'update'])->name('addresses.update');
+    Route::delete('/addresses/{address}', [AddressController::class, 'destroy'])->name('addresses.destroy');
+    Route::post('/addresses/{address}/set-default', [AddressController::class, 'setDefault'])->name('addresses.set-default');
 });
 
 /*
