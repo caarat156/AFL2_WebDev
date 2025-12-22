@@ -50,14 +50,14 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () { 
     // ✅ Route untuk form delete (dengan Cart model binding)
     Route::delete('/cart/{cart}', [CartController::class, 'remove'])->name('cart.remove');
     
-    // ✅ Route untuk AJAX delete (dengan ID biasa, bukan model binding)
-    Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
-    
     // Route untuk update quantity
     Route::patch('/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
     
     // Route checkout
     Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
+    Route::get('/user/checkout', function () {
+        return redirect()->route('user.cart');
+    });
     
     //👤 Profile Edit profile user, update, dan hapus akun.
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile');
