@@ -70,7 +70,7 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('workshops.store-registration', $workshop) }}" method="POST">
+                    <form action="{{ route('workshops.storeRegistration', $workshop) }}" method="POST">
                         @csrf
 
                         <!-- Full Name -->

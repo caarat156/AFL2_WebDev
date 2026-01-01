@@ -7,7 +7,7 @@
     <h2 class="text-center mb-4">Edit Workshop</h2>
 
     <div class="card p-4 shadow-sm mx-auto" style="max-width: 650px;">
-        <form action="{{ route('admin.workshops.update', $workshop->workshop_id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('admin.workshops.update', $workshop->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 

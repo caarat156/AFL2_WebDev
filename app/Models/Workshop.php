@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Workshop extends Model
 {
-    protected $primaryKey = 'workshop_id';
+    protected $table = 'workshops';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
 
     protected $fillable = [
         'title',
@@ -16,17 +18,24 @@ class Workshop extends Model
         'time',
         'location',
         'capacity',
-        'image'
+        'image',
     ];
 
-public function registrations()
-{
-    return $this->hasMany(WorkshopRegistration::class, 'workshop_id');
-}
+    /**
+     * Get the route key for implicit model binding
+     */
+    public function getRouteKeyName()
+    {
+        return 'id';
+    }
 
-// Relasi ke guest registration
-public function guestRegistrations()
-{
-    return $this->hasMany(GuestWorkshopRegistration::class, 'workshop_id');
-}
+    public function registrations()
+    {
+        return $this->hasMany(WorkshopRegistration::class, 'workshop_id', 'id');
+    }
+
+    public function guestRegistrations()
+    {
+        return $this->hasMany(GuestWorkshopRegistration::class, 'workshop_id', 'id');
+    }
 }

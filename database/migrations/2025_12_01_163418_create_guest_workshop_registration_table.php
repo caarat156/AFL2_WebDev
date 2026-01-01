@@ -10,35 +10,30 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up()
-{
-    Schema::create('guest_workshop_registration', function (Blueprint $table) {
-        $table->id('guest_workshop_registration_id');
+    {
+        Schema::create('guest_workshop_registration', function (Blueprint $table) {
+            $table->id();
+        
+            $table->foreignId('guest_id')
+                    ->constrained('guest', 'guest_id')
+                    ->cascadeOnDelete();
+        
+            $table->foreignId('workshop_id')
+                    ->constrained('workshops')
+                    ->cascadeOnDelete();
+        
+            $table->date('registration_date');
+            $table->string('payment_status')->default('pending');
+            $table->string('payment_method')->nullable();
+            $table->decimal('payment_amount', 10, 2)->nullable();
+            $table->date('payment_date')->nullable();
+        
+            $table->timestamps();
+        });
+    }
 
-        $table->unsignedBigInteger('guest_id');
-        $table->unsignedBigInteger('workshop_id');
-
-        $table->date('registration_date');
-        $table->string('payment_status');
-        $table->string('payment_method');
-        $table->decimal('payment_amount', 10, 2);
-        $table->date('payment_date')->nullable();
-
-        $table->timestamps();
-
-        // Foreign Keys
-        $table->foreign('guest_id')
-                ->references('guest_id')->on('guest')
-                ->onDelete('cascade');
-
-            $table->foreign('workshop_id')
-                ->references('workshop_id')->on('workshops')
-                ->onDelete('cascade');
-    });
-}
-
-public function down()
-{
-    Schema::dropIfExists('guest_workshop_registration');
-}
-
+    public function down()
+    {
+        Schema::dropIfExists('guest_workshop_registration');
+    }
 };

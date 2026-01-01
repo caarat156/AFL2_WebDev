@@ -13,29 +13,25 @@ return new class extends Migration
     {
         Schema::create('workshop_registration', function (Blueprint $table) {
             $table->id('workshop_registration_id');
-    
-            $table->unsignedBigInteger('workshop_id');
-            $table->unsignedBigInteger('user_id');
-    
+            $table->foreignId('workshop_id')
+                    ->constrained('workshops')
+                    ->cascadeOnDelete();
+            $table->foreignId('user_id')
+                    ->constrained('users')
+                    ->cascadeOnDelete();
+            $table->string('full_name');
+            $table->string('email');
+            $table->string('phone');
+            $table->integer('participant_count');
             $table->date('registration_date');
-            $table->string('payment_status');
-            $table->string('payment_method');
-            $table->decimal('payment_amount', 10, 2);
+            $table->string('payment_status')->default('pending');
+            $table->string('payment_method')->nullable();
+            $table->decimal('payment_amount', 10, 2)->nullable();
             $table->date('payment_date')->nullable();
-    
             $table->timestamps();
-    
-            // Foreign Keys
-            $table->foreign('workshop_id')
-                    ->references('workshop_id')->on('workshops')
-                    ->onDelete('cascade');
-        
-                $table->foreign('user_id')
-                    ->references('id')->on('users')
-                    ->onDelete('cascade');
         });
     }
-    
+
     public function down()
     {
         Schema::dropIfExists('workshop_registration');

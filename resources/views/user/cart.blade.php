@@ -134,14 +134,14 @@
                             {{-- DELETE --}}
                             <td class="text-center">
                                 <form action="{{ route('user.cart.remove', $item) }}" method="POST"
-                                      onsubmit="return confirm('Remove this item?')">
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button type="submit" class="btn btn-sm btn-danger">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
+                                    onsubmit="return confirm('Remove this item?')">
+                                  @csrf
+                                  @method('DELETE')
+                              
+                                  <button class="btn btn-danger btn-sm">
+                                      <i class="bi bi-trash"></i>
+                                  </button>
+                              </form>
                             </td>
                         </tr>
                         @endforeach
@@ -152,33 +152,25 @@
             {{-- ================= CHECKOUT ================= --}}
             <form action="{{ route('user.checkout') }}" method="POST" id="checkoutForm">
                 @csrf
-                
-                <!-- Hidden input untuk selected items -->
-                <input type="hidden" id="selectedItemsInput" name="selected_items" value="">
-
+                <div id="selectedInputs"></div> {{-- ini penting --}}
                 <div class="row mt-4">
                     <div class="col-md-6 offset-md-6">
                         <div class="card shadow-sm">
                             <div class="card-body">
                                 <h5 class="card-title mb-3">Order Summary</h5>
-
                                 <div class="d-flex justify-content-between mb-2">
                                     <span>Items Selected:</span>
                                     <span id="itemsCount">0</span>
                                 </div>
-
                                 <div class="d-flex justify-content-between mb-2">
                                     <span>Subtotal:</span>
                                     <span id="subtotalAmount">Rp 0</span>
                                 </div>
-
                                 <hr>
-
                                 <div class="d-flex justify-content-between mb-3">
                                     <strong>Total:</strong>
                                     <strong id="totalAmount">Rp 0</strong>
                                 </div>
-
                                 <button type="submit" class="btn btn-success w-100" id="checkoutBtn" disabled>
                                     <i class="bi bi-credit-card me-2"></i>Proceed to Checkout
                                 </button>
@@ -187,6 +179,7 @@
                     </div>
                 </div>
             </form>
+            
             @endif
 
             <div class="mt-4">
@@ -200,87 +193,91 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const selectAllCheckbox = document.getElementById('selectAll');
-    const itemCheckboxes = document.querySelectorAll('.item-checkbox');
-    const quantityInputs = document.querySelectorAll('.quantity-input');
-    const checkoutBtn = document.getElementById('checkoutBtn');
-    const checkoutForm = document.getElementById('checkoutForm');
-
-    // Select All functionality
-    selectAllCheckbox?.addEventListener('change', function() {
-        itemCheckboxes.forEach(checkbox => {
-            checkbox.checked = this.checked;
+    document.addEventListener('DOMContentLoaded', function () {
+    
+        const selectAllCheckbox = document.getElementById('selectAll');
+        const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+        const quantityInputs = document.querySelectorAll('.quantity-input');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const checkoutForm = document.getElementById('checkoutForm');
+        const selectedInput = document.getElementById('selectedItemsInput');
+    
+        // ================= SELECT ALL =================
+        selectAllCheckbox?.addEventListener('change', function () {
+            itemCheckboxes.forEach(cb => cb.checked = this.checked);
+            updateSummary();
         });
-        updateSummary();
-    });
-
-    // Individual checkbox change
-    itemCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', updateSummary);
-    });
-
-    // Update quantity
-    quantityInputs.forEach(input => {
-        input.addEventListener('change', function() {
-            const cartId = this.dataset.cartId;
-            const quantity = this.value;
-
-            fetch(`/user/cart/${cartId}`, {
-                method: 'PATCH',
-                headers: {
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ quantity: quantity })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if(data.success) {
-                    // Update data-quantity untuk recalc summary
-                    const checkbox = input.closest('tr').querySelector('.item-checkbox');
-                    checkbox.dataset.quantity = quantity;
-                    updateSummary();
-                }
-            })
-            .catch(err => console.error('Error:', err));
+    
+        // ================= SINGLE CHECKBOX =================
+        itemCheckboxes.forEach(cb => {
+            cb.addEventListener('change', updateSummary);
         });
-    });
-
-    // Update summary
-    function updateSummary() {
-        let totalItems = 0;
-        let totalAmount = 0;
-        let selectedIds = [];
-
-        itemCheckboxes.forEach(checkbox => {
-            if(checkbox.checked) {
+    
+        // ================= QUANTITY CHANGE =================
+        quantityInputs.forEach(input => {
+            input.addEventListener('change', function () {
+                const row = this.closest('tr');
+                const checkbox = row.querySelector('.item-checkbox');
+    
                 const price = parseFloat(checkbox.dataset.price);
-                const quantity = parseInt(checkbox.dataset.quantity);
-                const subtotal = price * quantity;
-
-                totalItems += quantity;
-                totalAmount += subtotal;
-                selectedIds.push(checkbox.value);
-            }
+                const quantity = parseInt(this.value);
+    
+                // update data attribute
+                checkbox.dataset.quantity = quantity;
+    
+                // update subtotal column
+                const subtotalCell = row.children[4];
+                subtotalCell.textContent =
+                    'Rp ' + (price * quantity).toLocaleString('id-ID');
+    
+                updateSummary();
+            });
         });
+    
+        // ================= SUMMARY =================
+        function updateSummary() {
+    let totalItems = 0;
+    let totalAmount = 0;
+    let selectedIds = [];
 
-        document.getElementById('itemsCount').textContent = totalItems;
-        document.getElementById('subtotalAmount').textContent = 'Rp ' + totalAmount.toLocaleString('id-ID');
-        document.getElementById('totalAmount').textContent = 'Rp ' + totalAmount.toLocaleString('id-ID');
-        document.getElementById('selectedItemsInput').value = JSON.stringify(selectedIds);
-        
-        checkoutBtn.disabled = selectedIds.length === 0;
-    }
+    document.getElementById('selectedInputs').innerHTML = '';
 
-    // Prevent checkout if no items selected
-    checkoutForm?.addEventListener('submit', function(e) {
-        const selectedIds = JSON.parse(document.getElementById('selectedItemsInput').value || '[]');
-        if(selectedIds.length === 0) {
-            e.preventDefault();
-            alert('Please select at least one item');
+    document.querySelectorAll('.item-checkbox').forEach(checkbox => {
+        if (checkbox.checked) {
+            const price = parseFloat(checkbox.dataset.price);
+            const quantity = parseInt(checkbox.dataset.quantity);
+
+            totalItems += quantity;
+            totalAmount += price * quantity;
+            selectedIds.push(checkbox.value);
+
+            // ⬇️ BUAT INPUT HIDDEN
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'selected_items[]';
+            input.value = checkbox.value;
+            document.getElementById('selectedInputs').appendChild(input);
         }
     });
-});
-</script>
+
+    document.getElementById('itemsCount').textContent = totalItems;
+    document.getElementById('subtotalAmount').textContent =
+        'Rp ' + totalAmount.toLocaleString('id-ID');
+    document.getElementById('totalAmount').textContent =
+        'Rp ' + totalAmount.toLocaleString('id-ID');
+
+    document.getElementById('checkoutBtn').disabled = selectedIds.length === 0;
+}
+    
+        // ================= PREVENT EMPTY CHECKOUT =================
+        checkoutForm?.addEventListener('submit', function (e) {
+            if (!selectedInput.value || selectedInput.value === '[]') {
+                e.preventDefault();
+                alert('Please select at least one item');
+            }
+        });
+    
+    });
+    </script>
+
 @endsection

@@ -12,6 +12,10 @@ class WorkshopRegistration extends Model
     protected $fillable = [
         'workshop_id',
         'user_id',
+        'full_name',
+        'email',
+        'phone',
+        'participant_count',
         'registration_date',
         'payment_status',
         'payment_method',

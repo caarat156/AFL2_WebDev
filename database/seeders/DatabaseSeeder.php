@@ -12,8 +12,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ProductSeeder::class,
             StoreSeeder::class,
-            UserSeeder::class,
+            UserSeeder::class,        // User must come before Review
             WorkshopSeeder::class,
+            ReviewSeeder::class,       // Review after User
         ]);
 
         Review::factory(100)->create();

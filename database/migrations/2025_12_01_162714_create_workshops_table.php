@@ -12,7 +12,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('workshops', function (Blueprint $table) {
-            $table->id('workshop_id'); // PK
+            $table->id(); // <-- id (DEFAULT)
             $table->string('title');
             $table->text('description')->nullable();
             $table->decimal('price', 20, 0)->default(0);
@@ -20,7 +20,7 @@ return new class extends Migration
             $table->time('time');
             $table->string('location');
             $table->integer('capacity');
-            $table->string('image')->nullable(); // path gambar
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

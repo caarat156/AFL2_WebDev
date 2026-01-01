@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class GuestWorkshopRegistration extends Model
 {
     protected $table = 'guest_workshop_registration';
-    protected $primaryKey = 'guest_workshop_registration_id';
 
     protected $fillable = [
         'guest_id',
@@ -16,7 +15,7 @@ class GuestWorkshopRegistration extends Model
         'payment_status',
         'payment_method',
         'payment_amount',
-        'payment_date'
+        'payment_date',
     ];
 
     public function guest()
@@ -29,4 +28,3 @@ class GuestWorkshopRegistration extends Model
         return $this->belongsTo(Workshop::class, 'workshop_id');
     }
 }
-
