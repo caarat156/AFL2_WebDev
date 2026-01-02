@@ -102,7 +102,15 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
         Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
         Route::delete('/cart/{cart}', [CartController::class, 'remove'])->name('cart.remove');
         Route::patch('/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
-        Route::post('/checkout', [CartController::class, 'checkout'])->name('checkout');
+        // buka halaman checkout
+Route::get('/user/checkout', [CartController::class, 'checkoutPage'])
+->name('checkout.page');
+
+// proses checkout + snap token
+Route::post('/user/checkout', [CartController::class, 'checkoutProcess'])
+->name('checkout.process');
+
+        
     });
 
 
@@ -124,7 +132,14 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
     Route::post('/addresses/{address}/set-default', [AddressController::class, 'setDefault'])->name('addresses.set-default');
 
     // 💳 Payment
-    Route::post('/payment/snap-token', [PaymentController::class, 'createSnapToken'])->name('payment.snap-token');
+    Route::post('/payment/snap-token',[PaymentController::class, 'createSnapToken'])->name('payment.snap-token');
+    Route::post('/midtrans/callback', [PaymentController::class, 'callback']);
+    Route::get('/payment/finish', [PaymentController::class, 'finish'])
+    ->middleware('auth')
+    ->name('payment.finish');
+
+
+
 });
 
 /*

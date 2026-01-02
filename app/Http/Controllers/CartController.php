@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Orders;
+use App\Models\Order_Items;
+use Illuminate\Support\Facades\DB;
+
 
 class CartController extends Controller
 {
@@ -113,31 +117,57 @@ class CartController extends Controller
     // }
 
     public function checkout(Request $request)
-    {
-        $selectedItems = $request->input('selected_items', []);
-    
-        if (!$selectedItems || count($selectedItems) === 0) {
-            return redirect()->back()->with('error', 'No items selected');
-        }
-    
-        $cartItems = Cart::with('product')
-            ->whereIn('id', $selectedItems)
-            ->where('user_id', auth()->id())
-            ->get();
-    
-        // Hitung total
-        $total = $cartItems->sum(function($item) {
-            return ($item->product->price_2025 ?? $item->product->price_2024) * $item->quantity;
-        });
-    
-        return view('user.checkout', compact('cartItems', 'total'));
+{
+    $selectedItems = $request->input('selected_items');
+
+    if (!$selectedItems || count($selectedItems) === 0) {
+        return redirect()->route('user.cart')
+            ->with('error', 'No items selected');
     }
-    
-    
 
+    $cartItems = Cart::with('product')
+        ->whereIn('cart_id', $selectedItems)
+        ->where('user_id', auth()->id())
+        ->get();
 
+    if ($cartItems->isEmpty()) {
+        return redirect()->route('user.cart')
+            ->with('error', 'Cart items not found');
+    }
 
-    
+    // 🧮 HITUNG TOTAL
+    $total = $cartItems->sum(function ($item) {
+        return ($item->product->price_2025 ?? $item->product->price_2024)
+            * $item->quantity;
+    });
 
+    // 🔥 CREATE ORDER + ITEMS
+    DB::transaction(function () use ($cartItems, $total, &$order) {
+
+        $order = Orders::create([
+            'user_id' => auth()->id(),
+            'total_price' => $total,
+            'order_date' => now(),
+            'payment_status' => 'pending',
+            'status' => 'on process'
+        ]);
+
+        foreach ($cartItems as $item) {
+            OrderItem::create([
+                'order_id' => $order->order_id,
+                'product_id' => $item->product_id,
+                'quantity' => $item->quantity,
+                'unit_price' =>
+                    ($item->product->price_2025 ?? $item->product->price_2024),
+                'sub_total' =>
+                    $item->quantity *
+                    ($item->product->price_2025 ?? $item->product->price_2024),
+            ]);
+        }
+    });
+
+    // 👉 kirim order ke view
+    return view('user.checkout', compact('cartItems', 'total', 'order'));
+}
 
 }

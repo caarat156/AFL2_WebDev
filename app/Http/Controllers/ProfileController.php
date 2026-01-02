@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Orders;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,46 +13,55 @@ use Illuminate\View\View;
 class ProfileController extends Controller
 {
     /**
-     * Display the user's profile form.
+     * Display the user's profile page
      */
-    public function edit(Request $request): View //nampilin halaman edit profile
+    public function edit(Request $request): View
     {
+        $user = $request->user();
+
+        // 🔥 AMBIL RIWAYAT PEMBELIAN USER
+        $orders = Orders::with('items.product')
+            ->where('user_id', $user->id)
+            ->where('payment_status', 'paid')
+            ->latest()
+            ->get();
+
         return view('user.profile', [
-            'user' => $request->user(), //ngirim data user yang sedang login ke view
+            'user' => $user,
+            'orders' => $orders, // 👈 kirim ke blade
         ]);
     }
 
-
     /**
-     * Update the user's profile information.
+     * Update the user's profile information
      */
-    public function update(ProfileUpdateRequest $request): RedirectResponse //ngupdate profile user
+    public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated()); //isi data user dengan data yang sudah tervalidasi dari form
+        $request->user()->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) { //cek apakah email user diubah
-            $request->user()->email_verified_at = null; //kalo diubah, set email_verified_at jadi null supaya user harus verifikasi email lagi
+        if ($request->user()->isDirty('email')) {
+            $request->user()->email_verified_at = null;
         }
 
-        $request->user()->save(); // simpan ke db
+        $request->user()->save();
 
-        return Redirect::route('user.profile')->with('status', 'profile-updated');
+        return Redirect::route('user.profile')
+            ->with('status', 'profile-updated');
     }
 
     /**
-     * Delete the user's account.
+     * Delete the user's account
      */
     public function destroy(Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
-            'password' => ['required', 'current_password'], //validasi password user sebelum hapus akun
+            'password' => ['required', 'current_password'],
         ]);
 
         $user = $request->user();
 
-        Auth::logout(); //logout user
-
-        $user->delete(); //hapus user dari db
+        Auth::logout();
+        $user->delete();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -65,7 +75,4 @@ class ProfileController extends Controller
             'user' => Auth::user()
         ]);
     }
-
-    
-
 }

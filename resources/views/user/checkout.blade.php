@@ -22,6 +22,7 @@
                 <td>
                     Rp {{ number_format(($item->product->price_2025 ?? $item->product->price_2024) * $item->quantity,0,',','.') }}
                 </td>
+                
             </tr>
             @endforeach
         </tbody>
@@ -29,6 +30,81 @@
 
     <h4>Total: Rp {{ number_format($total,0,',','.') }}</h4>
 
-    <button class="btn btn-primary mt-3">Pay Now</button>
+    <h5 class="mt-4">Payment Method</h5>
+
+<div class="form-check">
+    <input class="form-check-input" type="radio" name="payment_method" value="gopay" checked>
+    <label class="form-check-label">GoPay</label>
 </div>
+
+<div class="form-check">
+    <input class="form-check-input" type="radio" name="payment_method" value="shopeepay">
+    <label class="form-check-label">ShopeePay</label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="radio" name="payment_method" value="bank_transfer">
+    <label class="form-check-label">Bank Transfer</label>
+</div>
+
+<div class="form-check">
+    <input class="form-check-input" type="radio" name="payment_method" value="credit_card">
+    <label class="form-check-label">Credit Card</label>
+</div>
+
+
+<button id="payBtn" class="btn btn-success mt-3">
+    Pay Now
+</button>
+
+{{-- Midtrans Snap --}}
+<script src="https://app.sandbox.midtrans.com/snap/snap.js"
+    data-client-key="{{ config('midtrans.client_key') }}">
+</script>
+
+{{-- Script Payment --}}
+<script>
+    document.getElementById('payBtn').addEventListener('click', function () {
+        const paymentMethod = document.querySelector(
+            'input[name="payment_method"]:checked'
+        ).value;
+    
+        fetch('{{ route("user.payment.snap-token") }}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({
+                order_id: @json($order->order_id),
+                payment_method: paymentMethod
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (!data.snap_token) {
+                alert('Snap token tidak ditemukan');
+                return;
+            }
+    
+            snap.pay(data.snap_token, {
+                onSuccess: function (result) {
+                    window.location.href = "{{ route('user.payment.finish') }}?order_id=" + result.order_id + "&transaction_status=" + result.transaction_status;
+                },
+                onPending: function (result) {
+                    window.location.href = "{{ route('user.payment.finish') }}?order_id=" + result.order_id + "&transaction_status=" + result.transaction_status;
+                },
+                onError: function () {
+                    alert('Pembayaran gagal');
+                }
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Terjadi error. Cek console!');
+        });
+    });
+    </script>
+
+    </div>
 @endsection

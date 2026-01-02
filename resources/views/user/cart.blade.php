@@ -269,14 +269,6 @@
     document.getElementById('checkoutBtn').disabled = selectedIds.length === 0;
 }
     
-        // ================= PREVENT EMPTY CHECKOUT =================
-        checkoutForm?.addEventListener('submit', function (e) {
-            if (!selectedInput.value || selectedInput.value === '[]') {
-                e.preventDefault();
-                alert('Please select at least one item');
-            }
-        });
-    
     });
     </script>
 

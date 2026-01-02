@@ -16,4 +16,14 @@ class Order_Items extends Model
         'unit_price',
         'sub_total',
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_id', 'id');
+    }
+
+    public function order()
+    {
+        return $this->belongsTo(Orders::class, 'order_id', 'order_id');
+    }
 }

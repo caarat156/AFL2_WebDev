@@ -136,6 +136,48 @@
                 </div>
             </div>
 
+            {{-- Purchase History --}}
+<div class="card shadow-lg border-0 rounded-4 mb-4">
+    <div class="card-header bg-success text-white">
+        <h5 class="mb-0">
+            <i class="bi bi-bag-check me-2"></i>Purchase History
+        </h5>
+    </div>
+
+    <div class="card-body p-4">
+        @if($orders->isEmpty())
+            <p class="text-muted text-center mb-0">No purchases yet</p>
+        @else
+            @foreach($orders as $order)
+                <div class="border rounded-3 p-3 mb-3">
+                    <div class="d-flex justify-content-between mb-2">
+                        <strong>Order #{{ $order->order_id }}</strong>
+                        <span class="badge bg-success">Paid</span>
+                    </div>
+
+                    <small class="text-muted">
+                        {{ $order->order_date->format('d M Y') }}
+                    </small>
+
+                    <ul class="mt-2 mb-2">
+                        @foreach($order->items as $item)
+                            <li>
+                                {{ $item->product->product_type }}
+                                × {{ $item->quantity }}
+                            </li>
+                        @endforeach
+                    </ul>
+
+                    <strong>
+                        Total: Rp {{ number_format($order->total_price,0,',','.') }}
+                    </strong>
+                </div>
+            @endforeach
+        @endif
+    </div>
+</div>
+
+
             {{-- Danger Zone --}}
             <div class="card shadow-lg border-0 rounded-4 border-danger">
                 <div class="card-header bg-danger text-white">
