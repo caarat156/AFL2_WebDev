@@ -118,15 +118,13 @@ class CartController extends Controller
 
     public function checkout(Request $request)
 {
-    $selectedItems = $request->input('selected_items');
-
-    if (!$selectedItems || count($selectedItems) === 0) {
-        return redirect()->route('user.cart')
-            ->with('error', 'No items selected');
-    }
+    $request->validate([
+        'selected_items' => 'required|array|min:1',
+        'selected_items.*' => 'required|integer|exists:cart,id',
+    ]);
 
     $cartItems = Cart::with('product')
-        ->whereIn('cart_id', $selectedItems)
+        ->whereIn('id', $request->selected_items)
         ->where('user_id', auth()->id())
         ->get();
 
@@ -135,15 +133,12 @@ class CartController extends Controller
             ->with('error', 'Cart items not found');
     }
 
-    // 🧮 HITUNG TOTAL
-    $total = $cartItems->sum(function ($item) {
-        return ($item->product->price_2025 ?? $item->product->price_2024)
-            * $item->quantity;
-    });
+    $total = $cartItems->sum(fn ($item) =>
+        ($item->product->price_2025 ?? $item->product->price_2024)
+        * $item->quantity
+    );
 
-    // 🔥 CREATE ORDER + ITEMS
     DB::transaction(function () use ($cartItems, $total, &$order) {
-
         $order = Orders::create([
             'user_id' => auth()->id(),
             'total_price' => $total,
@@ -153,20 +148,19 @@ class CartController extends Controller
         ]);
 
         foreach ($cartItems as $item) {
-            OrderItem::create([
-                'order_id' => $order->order_id,
+            Order_Items::create([
+                'order_id'   => $order->order_id,
                 'product_id' => $item->product_id,
-                'quantity' => $item->quantity,
+                'quantity'   => $item->quantity,
                 'unit_price' =>
                     ($item->product->price_2025 ?? $item->product->price_2024),
-                'sub_total' =>
+                'sub_total'  =>
                     $item->quantity *
                     ($item->product->price_2025 ?? $item->product->price_2024),
             ]);
         }
     });
 
-    // 👉 kirim order ke view
     return view('user.checkout', compact('cartItems', 'total', 'order'));
 }
 

@@ -150,8 +150,9 @@
             </div>
 
             {{-- ================= CHECKOUT ================= --}}
-            <form action="{{ route('user.checkout') }}" method="POST" id="checkoutForm">
+            <form action="{{ route('user.checkout') }}" method="POST">
                 @csrf
+                
                 <div id="selectedInputs"></div> {{-- ini penting --}}
                 <div class="row mt-4">
                     <div class="col-md-6 offset-md-6">
@@ -200,7 +201,7 @@
         const quantityInputs = document.querySelectorAll('.quantity-input');
         const checkoutBtn = document.getElementById('checkoutBtn');
         const checkoutForm = document.getElementById('checkoutForm');
-        const selectedInput = document.getElementById('selectedItemsInput');
+        const selectedInputsContainer = document.getElementById('selectedInputs');
     
         // ================= SELECT ALL =================
         selectAllCheckbox?.addEventListener('change', function () {
@@ -256,7 +257,8 @@
             input.type = 'hidden';
             input.name = 'selected_items[]';
             input.value = checkbox.value;
-            document.getElementById('selectedInputs').appendChild(input);
+            selectedInputsContainer.appendChild(input);
+
         }
     });
 

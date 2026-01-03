@@ -102,14 +102,12 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
         Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
         Route::delete('/cart/{cart}', [CartController::class, 'remove'])->name('cart.remove');
         Route::patch('/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
-        // buka halaman checkout
-Route::get('/user/checkout', [CartController::class, 'checkoutPage'])
-->name('checkout.page');
-
-// proses checkout + snap token
-Route::post('/user/checkout', [CartController::class, 'checkoutProcess'])
-->name('checkout.process');
-
+        Route::get('/cart', [CartController::class, 'index'])->name('cart');
+    
+        Route::post('/checkout', [CartController::class, 'checkout'])
+            ->name('checkout');
+    ;
+    
         
     });
 
