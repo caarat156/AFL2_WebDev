@@ -69,40 +69,57 @@
             'input[name="payment_method"]:checked'
         ).value;
     
-        fetch('{{ route("user.payment.snap-token") }}', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: JSON.stringify({
-                order_id: @json($order->order_id),
-                payment_method: paymentMethod
-            })
-        })
-        .then(res => res.json())
-        .then(data => {
-            if (!data.snap_token) {
-                alert('Snap token tidak ditemukan');
-                return;
-            }
-    
-            snap.pay(data.snap_token, {
-                onSuccess: function (result) {
-                    window.location.href = "{{ route('user.payment.finish') }}?order_id=" + result.order_id + "&transaction_status=" + result.transaction_status;
-                },
-                onPending: function (result) {
-                    window.location.href = "{{ route('user.payment.finish') }}?order_id=" + result.order_id + "&transaction_status=" + result.transaction_status;
-                },
-                onError: function () {
-                    alert('Pembayaran gagal');
-                }
-            });
-        })
-        .catch(err => {
-            console.error(err);
-            alert('Terjadi error. Cek console!');
-        });
+        fetch('/user/payment/snap-token', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+    },
+    body: JSON.stringify({
+        order_id: @json($order->order_id),
+        payment_method: paymentMethod
+    })
+})
+.then(async res => {
+    const text = await res.text();
+    console.log('RAW RESPONSE:', text);
+    try {
+        return JSON.parse(text);
+    } catch (e) {
+        throw new Error('Response bukan JSON');
+    }
+})
+.then(data => {
+    console.log('JSON DATA:', data);
+
+    if (!data.snap_token) {
+        alert('Snap token tidak ditemukan');
+        return;
+    }
+
+    snap.pay(data.snap_token, {
+        onSuccess: function (result) {
+            window.location.href =
+                "{{ route('user.payment.finish') }}" +
+                "?order_id=" + result.order_id +
+                "&transaction_status=" + result.transaction_status;
+        },
+        onPending: function (result) {
+            window.location.href =
+                "{{ route('user.payment.finish') }}" +
+                "?order_id=" + result.order_id +
+                "&transaction_status=" + result.transaction_status;
+        },
+        onError: function () {
+            alert('Pembayaran gagal');
+        }
+    });
+})
+.catch(err => {
+    console.error('FETCH ERROR:', err);
+    alert('Terjadi error. Cek console!');
+});
+
     });
     </script>
 
