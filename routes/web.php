@@ -132,8 +132,9 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
     Route::post('/payment/snap-token',[PaymentController::class, 'createSnapToken'])->name('payment.snap-token');
     Route::post('/midtrans/callback', [PaymentController::class, 'callback']);
     Route::get('/payment/finish', [PaymentController::class, 'finish'])
-    ->middleware('auth')
-    ->name('payment.finish');
+    ->name('user.payment.finish')
+    ->middleware('auth');
+
 
 
 

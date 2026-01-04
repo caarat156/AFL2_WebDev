@@ -45,4 +45,24 @@ class PaymentController extends Controller
         ]);
     }
 
+    public function finish(Request $request)
+{
+    $orderId = $request->order_id;
+
+    // update status order
+    $order = Orders::where('order_id', $orderId)->first();
+
+    if ($order) {
+        $order->update([
+            'status' => 'paid'
+        ]);
+    }
+
+    // redirect ke profile (purchase history ada di situ)
+    return redirect()
+        ->route('user.profile')
+        ->with('success', 'Payment successful!');
+}
+
+
 }
