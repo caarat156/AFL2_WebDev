@@ -102,7 +102,6 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
         Route::post('/cart/add', [CartController::class, 'add'])->name('cart.add');
         Route::delete('/cart/{cart}', [CartController::class, 'remove'])->name('cart.remove');
         Route::patch('/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
-        Route::get('/cart', [CartController::class, 'index'])->name('cart');
     
         Route::post('/checkout', [CartController::class, 'checkout'])
             ->name('checkout');

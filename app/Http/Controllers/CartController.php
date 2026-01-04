@@ -116,15 +116,17 @@ class CartController extends Controller
     //     return view('user.checkout', compact('cartItems', 'total'));
     // }
 
-    public function checkout(Request $request)
+public function checkout(Request $request)
 {
+    // 1️⃣ VALIDASI (SESUI MIGRATION)
     $request->validate([
         'selected_items' => 'required|array|min:1',
-        'selected_items.*' => 'required|integer|exists:cart,id',
+        'selected_items.*' => 'required|integer|exists:cart,cart_id',
     ]);
 
+    // 2️⃣ AMBIL CART (PAKAI cart_id)
     $cartItems = Cart::with('product')
-        ->whereIn('id', $request->selected_items)
+        ->whereIn('cart_id', $request->selected_items)
         ->where('user_id', auth()->id())
         ->get();
 
@@ -133,10 +135,14 @@ class CartController extends Controller
             ->with('error', 'Cart items not found');
     }
 
-    $total = $cartItems->sum(fn ($item) =>
-        ($item->product->price_2025 ?? $item->product->price_2024)
-        * $item->quantity
-    );
+    // 3️⃣ HITUNG TOTAL
+    $total = $cartItems->sum(function ($item) {
+        return ($item->product->price_2025 ?? $item->product->price_2024)
+            * $item->quantity;
+    });
+
+    // 4️⃣ TRANSACTION
+    $order = null;
 
     DB::transaction(function () use ($cartItems, $total, &$order) {
         $order = Orders::create([
@@ -144,12 +150,12 @@ class CartController extends Controller
             'total_price' => $total,
             'order_date' => now(),
             'payment_status' => 'pending',
-            'status' => 'on process'
+            'status' => 'on process',
         ]);
 
         foreach ($cartItems as $item) {
             Order_Items::create([
-                'order_id'   => $order->order_id,
+                'order_id'   => $order->order_id, // ✔️ BENAR
                 'product_id' => $item->product_id,
                 'quantity'   => $item->quantity,
                 'unit_price' =>

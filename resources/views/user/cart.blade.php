@@ -96,7 +96,7 @@
                             <td class="text-center">
                                 <input type="checkbox"
                                     class="form-check-input item-checkbox"
-                                    value="{{ $item->id }}"
+                                    data-id="{{ $item->cart_id }}"
                                     data-price="{{ $item->product->price_2025 ?? $item->product->price_2024 }}"
                                     data-quantity="{{ $item->quantity }}">
                             </td>
@@ -150,7 +150,7 @@
             </div>
 
             {{-- ================= CHECKOUT ================= --}}
-            <form action="{{ route('user.checkout') }}" method="POST">
+            <form action="{{ route('user.checkout') }}" method="POST" id="checkoutForm">
                 @csrf
                 
                 <div id="selectedInputs"></div> {{-- ini penting --}}
@@ -203,6 +203,13 @@
         const checkoutForm = document.getElementById('checkoutForm');
         const selectedInputsContainer = document.getElementById('selectedInputs');
     
+        checkoutForm.addEventListener('submit', function (e) {
+    if (document.querySelectorAll('input[name="selected_items[]"]').length === 0) {
+        e.preventDefault();
+        alert('Please select at least one item to checkout.');
+    }
+});
+
         // ================= SELECT ALL =================
         selectAllCheckbox?.addEventListener('change', function () {
             itemCheckboxes.forEach(cb => cb.checked = this.checked);
@@ -241,7 +248,7 @@
     let totalAmount = 0;
     let selectedIds = [];
 
-    document.getElementById('selectedInputs').innerHTML = '';
+    selectedInputsContainer.innerHTML = '';
 
     document.querySelectorAll('.item-checkbox').forEach(checkbox => {
         if (checkbox.checked) {
@@ -256,7 +263,7 @@
             const input = document.createElement('input');
             input.type = 'hidden';
             input.name = 'selected_items[]';
-            input.value = checkbox.value;
+            input.value = checkbox.dataset.id;
             selectedInputsContainer.appendChild(input);
 
         }
