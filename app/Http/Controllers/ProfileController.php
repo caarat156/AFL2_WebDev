@@ -25,7 +25,15 @@ class ProfileController extends Controller
             ->where('payment_status', 'paid, settlement, completed')
             ->latest()
             ->get();
-           
+
+            // if ($transactionStatus == 'settlement' || $transactionStatus == 'capture') {
+            //     $order->payment_status = 'paid';
+            
+            //     if ($order->source_type == 'workshop') {
+            //         WorkshopRegistration::where('id', $order->source_id)
+            //             ->update(['payment_status' => 'paid']);
+            //     }
+            // }
 
         return view('user.profile', [
             'user' => $user,

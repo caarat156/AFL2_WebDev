@@ -75,36 +75,64 @@ class WorkshopController extends Controller
         return view('workshopregist', compact('workshop'));
     }
 
-    public function storeRegistration(Workshop $workshop, Request $request)
-    {
-        $validated = $request->validate([
-            'full_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'phone' => 'required|string|max:20',
-            'participant_count' => 'required|integer|min:1',
-        ]);
+    public function storeRegistration(Request $request, Workshop $workshop)
+{
+    $request->validate([
+        'full_name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'phone' => 'required|string|max:20',
+        'participant_count' => 'required|integer|min:1',
+        'payment_method' => 'required|string|in:gopay,shopeepay,bank_transfer,credit_card',
+    ]);
 
-        // Cek apakah user sudah terdaftar untuk workshop ini
-        $existingRegistration = WorkshopRegistration::where('workshop_id', $workshop->id)
-            ->where('email', $validated['email'])
-            ->first();
+    $totalPrice = $workshop->price * $request->participant_count;
 
-        if ($existingRegistration) {
-            return redirect()->back()
-                ->with('error', 'Email ini sudah terdaftar untuk workshop ini!');
-        }
+    $registration = WorkshopRegistration::create([
+        'workshop_id' => $workshop->id,
+        'user_id' => auth()->id(),
+        'full_name' => $request->full_name,
+        'email' => $request->email,
+        'phone' => $request->phone,
+        'participant_count' => $request->participant_count,
+        'registration_date' => now()->toDateString(),
+        'payment_status' => 'pending',
+        'payment_method' => $request->payment_method,
+        'payment_amount' => $totalPrice
+    ]);
 
-        // Add workshop_id, user_id, and timestamps AFTER validation
-        $validated['workshop_id'] = $workshop->id;
-        $validated['user_id'] = auth()->id();
-        $validated['registration_date'] = now()->toDateString();
-        $validated['payment_status'] = 'pending';
+    // Konfigurasi Midtrans
+    \Midtrans\Config::$serverKey = config('midtrans.server_key');
+    \Midtrans\Config::$isProduction = config('midtrans.is_production');
+    \Midtrans\Config::$isSanitized = true;
+    \Midtrans\Config::$is3ds = true;
 
-        // Simpan registrasi menggunakan Model
-        WorkshopRegistration::create($validated);
+    $params = [
+        'transaction_details' => [
+            'order_id' => 'WS-' . $registration->workshop_registration_id,
+            'gross_amount' => $totalPrice,
+        ],
+        'customer_details' => [
+            'first_name' => $registration->full_name,
+            'email' => $registration->email,
+            'phone' => $registration->phone,
+        ],
+        'item_details' => [
+            [
+                'id' => $workshop->id,
+                'price' => $workshop->price,
+                'quantity' => $registration->participant_count,
+                'name' => $workshop->title,
+            ]
+        ]
+    ];
 
-        return redirect()->route('workshops.index')->with('success', 'Registrasi berhasil!');
-    }
+    $snapToken = \Midtrans\Snap::getSnapToken($params);
+
+    return response()->json([
+        'snap_token' => $snapToken
+    ]);
+}
+
 
     // ============================
     // ADMIN AREA

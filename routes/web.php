@@ -38,6 +38,10 @@ Route::get('/workshops/{workshop}/register',
 Route::post('/workshops/{workshop}/register', 
     [WorkshopController::class, 'storeRegistration']
 )->middleware('auth')->name('workshops.storeRegistration');
+Route::get('/workshop/payment/{order}', [PaymentController::class, 'workshopPayment'])
+    ->name('workshop.payment')
+    ->middleware('auth');
+
 
 // GUEST ONLY
 Route::post('/workshops/{workshop}/guest-register',

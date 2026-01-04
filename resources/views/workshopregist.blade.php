@@ -70,7 +70,7 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('workshops.storeRegistration', $workshop) }}" method="POST">
+                    <form id="registrationForm">
                         @csrf
 
                         <!-- Full Name -->
@@ -157,6 +157,27 @@
                                 Harga per peserta: Rp {{ number_format($workshop->price, 0, ',', '.') }}
                             </small>
                         </div>
+                        <h5 class="mt-4">Payment Method</h5>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="payment_method" value="gopay" checked>
+                            <label class="form-check-label">GoPay</label>
+                        </div>
+                        
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="payment_method" value="shopeepay">
+                            <label class="form-check-label">ShopeePay</label>
+                        </div>
+                        
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="payment_method" value="bank_transfer">
+                            <label class="form-check-label">Bank Transfer</label>
+                        </div>
+                        
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="payment_method" value="credit_card">
+                            <label class="form-check-label">Credit Card</label>
+                        </div>
 
                         <!-- Action Buttons -->
                         <div class="d-flex gap-2">
@@ -168,8 +189,6 @@
                             </a>
                         </div>
                     </form>
-                </div>
-            </div>
 
             <!-- Info Card -->
             <div class="alert alert-info mt-4" role="alert">
@@ -197,4 +216,58 @@
         });
     }
 </script>
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
+
+<script>
+document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+    e.preventDefault(); // cegah form submit biasa
+
+    // Ambil data dari form
+    const form = e.target;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+
+    // Hitung total harga (hanya untuk double-check)
+    const participantCount = parseInt(data.participant_count) || 1;
+    const totalPrice = participantCount * {{ $workshop->price }};
+
+    // Kirim AJAX ke server untuk simpan registrasi & dapat Snap token
+    const response = await fetch("{{ route('workshops.storeRegistration', $workshop) }}", {
+        method: "POST",
+        headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+        const error = await response.json();
+        alert("Terjadi error: " + (error.message || "Cek form Anda."));
+        return;
+    }
+
+    const result = await response.json(); // server akan return snap_token
+    const snapToken = result.snap_token;
+
+    // Panggil Snap popup
+    snap.pay(snapToken, {
+        onSuccess: function(result){
+            alert("Pembayaran sukses!");
+            window.location.href = "{{ route('user.profile') }}";
+        },
+        onPending: function(result){
+            alert("Pembayaran pending, silakan selesaikan di aplikasi payment Anda.");
+        },
+        onError: function(result){
+            alert("Pembayaran gagal: " + result.status_message);
+        },
+        onClose: function(){
+            alert('Anda menutup popup pembayaran.');
+        }
+    });
+});
+</script>
+
 @endsection
