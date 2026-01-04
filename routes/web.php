@@ -134,6 +134,9 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
     Route::get('/payment/finish', [PaymentController::class, 'finish'])
     ->name('user.payment.finish')
     ->middleware('auth');
+Route::post('/midtrans/notification', [PaymentController::class, 'callback']);
+
+
 
 
 

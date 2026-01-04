@@ -22,9 +22,10 @@ class ProfileController extends Controller
         // 🔥 AMBIL RIWAYAT PEMBELIAN USER
         $orders = Orders::with('items.product')
             ->where('user_id', $user->id)
-            ->where('payment_status', 'paid')
+            ->where('payment_status', 'paid, settlement, completed')
             ->latest()
             ->get();
+           
 
         return view('user.profile', [
             'user' => $user,

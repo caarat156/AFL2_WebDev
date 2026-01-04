@@ -98,22 +98,16 @@
     }
 
     snap.pay(data.snap_token, {
-        onSuccess: function (result) {
-            window.location.href =
-                "{{ route('user.payment.finish') }}" +
-                "?order_id=" + result.order_id +
-                "&transaction_status=" + result.transaction_status;
-        },
-        onPending: function (result) {
-            window.location.href =
-                "{{ route('user.payment.finish') }}" +
-                "?order_id=" + result.order_id +
-                "&transaction_status=" + result.transaction_status;
-        },
-        onError: function () {
-            alert('Pembayaran gagal');
-        }
-    });
+    onSuccess: function(result) {
+        window.location.href = "{{ route('user.profile') }}";
+    },
+    onPending: function(result) {
+        window.location.href = "{{ route('user.profile') }}";
+    },
+    onError: function(result) {
+        alert('Payment failed');
+    }
+});
 })
 .catch(err => {
     console.error('FETCH ERROR:', err);

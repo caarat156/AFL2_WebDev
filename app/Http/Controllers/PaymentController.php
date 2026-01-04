@@ -7,6 +7,7 @@ use Midtrans\Snap;
 use Midtrans\Config;
 use App\Models\Orders;
 use App\Models\Cart;
+use Midtrans\Notification;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -46,23 +47,97 @@ class PaymentController extends Controller
     }
 
     public function finish(Request $request)
-{
-    $orderId = $request->order_id;
+    {
+        dd($request->all());
 
-    // update status order
+        $orderId = str_replace('ORD-', '', $request->order_id);
+    
+        if ($request->transaction_status === 'settlement'
+            || $request->transaction_status === 'capture') {
+    
+            Orders::where('order_id', $orderId)->update([
+                'payment_status' => 'paid',
+                'status' => 'completed',
+            ]);
+        }
+    
+        return redirect()
+            ->route('user.profile')
+            ->with('success', 'Pembayaran berhasil 🎉');
+    }
+    
+
+
+public function notificationHandler(Request $request)
+{
+    Config::$serverKey = config('midtrans.server_key');
+    Config::$isProduction = config('midtrans.is_production');
+
+    $notification = new Notification();
+
+    $orderId = $notification->order_id;
+    $transactionStatus = $notification->transaction_status;
+    $fraudStatus = $notification->fraud_status;
+
     $order = Orders::where('order_id', $orderId)->first();
 
-    if ($order) {
-        $order->update([
-            'status' => 'paid'
-        ]);
+    if (!$order) {
+        return response()->json(['message' => 'Order not found'], 404);
     }
 
-    // redirect ke profile (purchase history ada di situ)
-    return redirect()
-        ->route('user.profile')
-        ->with('success', 'Payment successful!');
+    if (
+        $transactionStatus == 'capture' && $fraudStatus == 'accept' ||
+        $transactionStatus == 'settlement'
+    ) {
+        $order->payment_status = 'paid';
+    } elseif ($transactionStatus == 'pending') {
+        $order->payment_status = 'pending';
+    } elseif (in_array($transactionStatus, ['deny', 'cancel', 'expire'])) {
+        $order->payment_status = 'failed';
+    }
+
+    $order->save();
+
+    return response()->json(['message' => 'OK']);
 }
+
+    public function callback(Request $request)
+    {
+        // 🔐 CONFIG MIDTRANS
+        Config::$serverKey = config('midtrans.server_key');
+        Config::$isProduction = config('midtrans.is_production');
+
+        // 📩 TERIMA NOTIFIKASI
+        $notification = new Notification();
+
+        $transactionStatus = $notification->transaction_status;
+        $paymentType = $notification->payment_type;
+        $orderId = $notification->order_id;
+        $fraudStatus = $notification->fraud_status;
+
+        // 🔍 CARI ORDER
+        $order = Orders::where('order_id', $orderId)->first();
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
+        // 🧠 LOGIKA STATUS
+        if ($transactionStatus == 'settlement' || $transactionStatus == 'capture') {
+            $order->payment_status = 'paid';
+        } elseif ($transactionStatus == 'pending') {
+            $order->payment_status = 'pending';
+        } elseif (in_array($transactionStatus, ['expire', 'cancel', 'deny'])) {
+            $order->payment_status = 'failed';
+        }
+
+        $order->payment_method = $paymentType;
+        $order->save();
+
+        return response()->json(['message' => 'Callback processed']);
+    }
+
+
 
 
 }
