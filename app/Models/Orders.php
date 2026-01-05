@@ -13,14 +13,19 @@ class Orders extends Model
         'midtrans_order_id',
         'user_id',
         'total_price',
-        'order_date' => 'datetime',
+        'order_date',
         'payment_method',
         'payment_amount',
         'payment_status',
-        'payment_date' => 'datetime',
+        'payment_date',
         'status',
-        
     ];
+
+    protected $casts = [
+    'order_date' => 'datetime',
+    'payment_date' => 'datetime',
+    ];
+
 
     public function user()
     {
