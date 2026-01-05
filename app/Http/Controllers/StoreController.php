@@ -67,6 +67,8 @@ class StoreController extends Controller
 
         $store->name = $request->name;
         $store->location = $request->location;
+        $store->linkgmap = $request->linkgmap;
+
 
         if ($request->hasFile('image')) {
             // Hapus gambar lama jika ada

@@ -172,7 +172,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/stores/create', [StoreController::class, 'create'])->name('stores.create');
     Route::post('/stores', [StoreController::class, 'store'])->name('stores.store');
     Route::get('/stores/{store}/edit', [StoreController::class, 'edit'])->name('stores.edit');
-    Route::put('/stores/{id}', [StoreController::class, 'update'])->name('stores.update');
+    Route::put('/stores/{store}', [StoreController::class, 'update'])->name('stores.update');
     Route::delete('/stores/{store}', [StoreController::class, 'destroy'])->name('stores.destroy');
 
     // 🎓 Workshops
