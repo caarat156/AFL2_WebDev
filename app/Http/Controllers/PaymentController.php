@@ -137,7 +137,18 @@ public function notificationHandler(Request $request)
         return response()->json(['message' => 'Callback processed']);
     }
 
-
+    public function showProfile()
+    {
+        $user = Auth::user();
+    
+        // History produk
+        $orders = $user->orders()->with('items.product')->get();
+    
+        // History workshop
+        $workshopRegistrations = $user->workshopRegistrations()->with('workshop')->get();
+    
+        return view('user.profile', compact('orders', 'workshopRegistrations'));
+    }
 
 
 }

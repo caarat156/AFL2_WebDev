@@ -177,6 +177,44 @@
     </div>
 </div>
 
+{{-- Workshop Registration History --}}
+<div class="card shadow-lg border-0 rounded-4 mb-4">
+    <div class="card-header bg-warning text-white">
+        <h5 class="mb-0">
+            <i class="bi bi-journal-check me-2"></i>Workshop Registration History
+        </h5>
+    </div>
+
+    <div class="card-body p-4">
+        @if($workshopRegistrations->isEmpty())
+            <p class="text-muted text-center mb-0">No workshop registrations yet</p>
+        @else
+            @foreach($workshopRegistrations as $registration)
+                <div class="border rounded-3 p-3 mb-3">
+                    <div class="d-flex justify-content-between mb-2">
+                        <strong>{{ $registration->workshop->title }}</strong>
+                        <span class="badge 
+                            @if($registration->payment_status == 'paid') bg-success
+                            @elseif($registration->payment_status == 'pending') bg-warning
+                            @else bg-danger @endif
+                        ">
+                            {{ ucfirst($registration->payment_status) }}
+                        </span>
+                    </div>
+
+                    <small class="text-muted">
+                        {{ \Carbon\Carbon::parse($registration->registration_date)->format('d M Y') }}
+                        | {{ $registration->participant_count }} participant(s)
+                    </small>
+
+                    <p class="mt-2 mb-0">
+                        Total: Rp {{ number_format($registration->payment_amount ?? ($registration->workshop->price * $registration->participant_count),0,',','.') }}
+                    </p>
+                </div>
+            @endforeach
+        @endif
+    </div>
+</div>
 
             {{-- Danger Zone --}}
             <div class="card shadow-lg border-0 rounded-4 border-danger">
