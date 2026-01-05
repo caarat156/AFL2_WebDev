@@ -15,39 +15,40 @@
 
     {{-- Filter & Stats --}}
     <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card text-center border-primary">
-                <div class="card-body">
+        <div class="col-md-4">
+            <div class="card text-center border-primary h-100">
+                <div class="card-body d-flex flex-column justify-content-center">
                     <h5 class="card-title">Total Transactions</h5>
-                    <h2 class="text-primary">{{ $transactions->count() }}</h2>
+                    <h2 class="text-primary mb-0">
+                        {{ $transactions->count() }}
+                    </h2>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-center border-success">
-                <div class="card-body">
+
+        <div class="col-md-4">
+            <div class="card text-center border-success h-100">
+                <div class="card-body d-flex flex-column justify-content-center">
                     <h5 class="card-title">Completed</h5>
-                    <h2 class="text-success">{{ $transactions->where('status', 'completed')->count() }}</h2>
+                    <h2 class="text-success mb-0">
+                        {{ $transactions->where('status', 'completed')->count() }}
+                    </h2>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card text-center border-warning">
-                <div class="card-body">
+
+        <div class="col-md-4">
+            <div class="card text-center border-warning h-100">
+                <div class="card-body d-flex flex-column justify-content-center">
                     <h5 class="card-title">Pending</h5>
-                    <h2 class="text-warning">{{ $transactions->where('status', 'pending')->count() }}</h2>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
-            <div class="card text-center border-danger">
-                <div class="card-body">
-                    <h5 class="card-title">Cancelled</h5>
-                    <h2 class="text-danger">{{ $transactions->where('status', 'cancelled')->count() }}</h2>
+                    <h2 class="text-warning mb-0">
+                        {{ $transactions->where('status', 'pending')->count() }}
+                    </h2>
                 </div>
             </div>
         </div>
     </div>
+
 
     {{-- Transactions Table --}}
     <div class="card shadow-sm border-0">
