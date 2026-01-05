@@ -10,6 +10,7 @@ class WorkshopRegistration extends Model
     protected $primaryKey = 'workshop_registration_id';
 
     protected $fillable = [
+        'midtrans_order_id',
         'workshop_id',
         'user_id',
         'full_name',

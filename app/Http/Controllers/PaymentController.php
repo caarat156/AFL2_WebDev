@@ -17,54 +17,56 @@ class PaymentController extends Controller
     // ================= SNAP TOKEN =================
 
 
-    public function createSnapToken(Request $request)
-    {
-        Config::$serverKey = config('midtrans.server_key');
-        Config::$isProduction = config('midtrans.is_production');
-        Config::$isSanitized = true;
-        Config::$is3ds = true;
-    
-        $orderId = $request->order_id;
-    
-        $order = Orders::where('order_id', $orderId)->firstOrFail();
-    
-        $params = [
-            'transaction_details' => [
-                'order_id' => $order->order_id,
-                'gross_amount' => $order->total_price,
-            ],
-            'customer_details' => [
-                'first_name' => auth()->user()->name,
-                'email' => auth()->user()->email,
-            ],
-        ];
-    
-        $snapToken = Snap::getSnapToken($params);
-    
-        return response()->json([
-            'snap_token' => $snapToken
-        ]);
-    }
+public function createSnapToken(Request $request)
+{
+    Config::$serverKey = config('midtrans.server_key');
+    Config::$isProduction = config('midtrans.is_production');
+    Config::$isSanitized = true;
+    Config::$is3ds = true;
+
+    // ⬇️ ini MIDTRANS order id
+    $midtransOrderId = $request->midtrans_order_id;
+
+    $order = Orders::where('midtrans_order_id', $midtransOrderId)->firstOrFail();
+
+    $params = [
+        'transaction_details' => [
+            'order_id' => $order->midtrans_order_id, // ✅ WAJIB
+            'gross_amount' => $order->total_price,
+        ],
+        'customer_details' => [
+            'first_name' => auth()->user()->name,
+            'email' => auth()->user()->email,
+        ],
+    ];
+
+    $snapToken = Snap::getSnapToken($params);
+
+    return response()->json([
+        'snap_token' => $snapToken
+    ]);
+}
+
 
     public function finish(Request $request)
     {
-        dd($request->all());
+        $midtransOrderId = $request->order_id; // dari Midtrans
 
-        $orderId = str_replace('ORD-', '', $request->order_id);
-    
-        if ($request->transaction_status === 'settlement'
-            || $request->transaction_status === 'capture') {
-    
-            Orders::where('order_id', $orderId)->update([
+        if (
+            $request->transaction_status === 'settlement' ||
+            $request->transaction_status === 'capture'
+        ) {
+            Orders::where('midtrans_order_id', $midtransOrderId)->update([
                 'payment_status' => 'paid',
                 'status' => 'completed',
             ]);
         }
-    
+
         return redirect()
             ->route('user.profile')
             ->with('success', 'Pembayaran berhasil 🎉');
     }
+
     
 
 
@@ -79,7 +81,7 @@ public function notificationHandler(Request $request)
     $transactionStatus = $notification->transaction_status;
     $fraudStatus = $notification->fraud_status;
 
-    $order = Orders::where('order_id', $orderId)->first();
+    $order = Orders::where('midtrans_order_id', $orderId)->first();
 
     if (!$order) {
         return response()->json(['message' => 'Order not found'], 404);
@@ -116,7 +118,7 @@ public function notificationHandler(Request $request)
         $fraudStatus = $notification->fraud_status;
 
         // 🔍 CARI ORDER
-        $order = Orders::where('order_id', $orderId)->first();
+        $order = Orders::where('midtrans_order_id', $orderId)->first();
 
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);

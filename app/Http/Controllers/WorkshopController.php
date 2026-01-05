@@ -7,6 +7,7 @@ use App\Models\WorkshopRegistration;
 use App\Models\Guest;
 use App\Models\GuestWorkshopRegistration;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class WorkshopController extends Controller
 {
@@ -88,17 +89,19 @@ class WorkshopController extends Controller
     $totalPrice = $workshop->price * $request->participant_count;
 
     $registration = WorkshopRegistration::create([
+        'midtrans_order_id' => 'WORK-' . Str::uuid(),
         'workshop_id' => $workshop->id,
         'user_id' => auth()->id(),
         'full_name' => $request->full_name,
         'email' => $request->email,
         'phone' => $request->phone,
         'participant_count' => $request->participant_count,
-        'registration_date' => now()->toDateString(),
+        'registration_date' => now(),
         'payment_status' => 'pending',
-        'payment_method' => $request->payment_method,
-        'payment_amount' => $totalPrice
+        'payment_method' => 'gopay',
+        'payment_amount' => 250000,
     ]);
+
 
     // Konfigurasi Midtrans
     \Midtrans\Config::$serverKey = config('midtrans.server_key');

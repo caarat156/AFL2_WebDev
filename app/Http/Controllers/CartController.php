@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Orders;
 use App\Models\Order_Items;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 
 class CartController extends Controller
@@ -146,6 +147,7 @@ public function checkout(Request $request)
 
     DB::transaction(function () use ($cartItems, $total, &$order) {
         $order = Orders::create([
+            'midtrans_order_id' => 'PROD-' . Str::uuid(),
             'user_id' => auth()->id(),
             'total_price' => $total,
             'order_date' => now(),

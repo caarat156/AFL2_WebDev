@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id('order_id');
+            $table->string('midtrans_order_id')->unique();
             $table->foreignId('user_id')
                     ->constrained('users')
                     ->cascadeOnDelete();

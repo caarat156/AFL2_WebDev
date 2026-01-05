@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('workshop_registration', function (Blueprint $table) {
             $table->id('workshop_registration_id');
+            $table->string('midtrans_order_id')->unique();
             $table->foreignId('workshop_id')
                     ->constrained('workshops')
                     ->cascadeOnDelete();

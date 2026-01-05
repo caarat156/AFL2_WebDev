@@ -10,6 +10,7 @@ class Orders extends Model
     protected $primaryKey = 'order_id';
 
     protected $fillable = [
+        'midtrans_order_id',
         'user_id',
         'total_price',
         'order_date',

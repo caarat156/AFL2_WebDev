@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Orders;
+use App\Models\WorkshopRegistration;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,25 +20,24 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        // 🔥 AMBIL RIWAYAT PEMBELIAN USER
+        // 🔥 RIWAYAT PEMBELIAN USER
         $orders = Orders::with('items.product')
             ->where('user_id', $user->id)
-            ->where('payment_status', 'paid, settlement, completed')
+            ->whereIn('payment_status', ['paid', 'settlement', 'completed'])
             ->latest()
             ->get();
 
-            // if ($transactionStatus == 'settlement' || $transactionStatus == 'capture') {
-            //     $order->payment_status = 'paid';
-            
-            //     if ($order->source_type == 'workshop') {
-            //         WorkshopRegistration::where('id', $order->source_id)
-            //             ->update(['payment_status' => 'paid']);
-            //     }
-            // }
+        // 🔥 RIWAYAT REGISTRASI WORKSHOP
+        $workshopRegistrations = WorkshopRegistration::with('workshop')
+            ->where('user_id', $user->id)
+            ->where('payment_status', 'paid')
+            ->orderBy('registration_date', 'desc')
+            ->get();
 
         return view('user.profile', [
             'user' => $user,
-            'orders' => $orders, // 👈 kirim ke blade
+            'orders' => $orders,
+            'workshopRegistrations' => $workshopRegistrations,
         ]);
     }
 

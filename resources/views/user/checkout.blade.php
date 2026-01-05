@@ -64,58 +64,48 @@
 
 {{-- Script Payment --}}
 <script>
-    document.getElementById('payBtn').addEventListener('click', function () {
-        const paymentMethod = document.querySelector(
-            'input[name="payment_method"]:checked'
-        ).value;
-    
-        fetch('/user/payment/snap-token', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-    },
-    body: JSON.stringify({
-        order_id: @json($order->order_id),
-        payment_method: paymentMethod
+document.getElementById('payBtn').addEventListener('click', function () {
+    const paymentMethod = document.querySelector(
+        'input[name="payment_method"]:checked'
+    ).value;
+
+    fetch('/user/payment/snap-token', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({
+            midtrans_order_id: @json($order->midtrans_order_id), // ✅ FIX
+            payment_method: paymentMethod
+        })
     })
-})
-.then(async res => {
-    const text = await res.text();
-    console.log('RAW RESPONSE:', text);
-    try {
-        return JSON.parse(text);
-    } catch (e) {
-        throw new Error('Response bukan JSON');
-    }
-})
-.then(data => {
-    console.log('JSON DATA:', data);
+    .then(res => res.json())
+    .then(data => {
+        if (!data.snap_token) {
+            alert('Snap token tidak ditemukan');
+            return;
+        }
 
-    if (!data.snap_token) {
-        alert('Snap token tidak ditemukan');
-        return;
-    }
-
-    snap.pay(data.snap_token, {
-    onSuccess: function(result) {
-        window.location.href = "{{ route('user.profile') }}";
-    },
-    onPending: function(result) {
-        window.location.href = "{{ route('user.profile') }}";
-    },
-    onError: function(result) {
-        alert('Payment failed');
-    }
-});
-})
-.catch(err => {
-    console.error('FETCH ERROR:', err);
-    alert('Terjadi error. Cek console!');
-});
-
+        snap.pay(data.snap_token, {
+            onSuccess: function () {
+                window.location.href = "{{ route('user.profile') }}";
+            },
+            onPending: function () {
+                window.location.href = "{{ route('user.profile') }}";
+            },
+            onError: function () {
+                alert('Payment failed');
+            }
+        });
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Terjadi error. Cek console!');
     });
-    </script>
+});
+</script>
+
 
     </div>
 @endsection
