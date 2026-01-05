@@ -1,39 +1,126 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('password.store') }}">
-        @csrf
-        {{-- Mengirim data ke route password.store → NewPasswordController@store.
-@csrf → token keamanan anti CSRF. --}}
+@extends('layout.mainlayout')
 
-        <!-- Password Reset Token, dikirim lewat email untuk validasi reset pw -->
-        <input type="hidden" name="token" value="{{ $request->route('token') }}">
+@section('title', 'Reset Password')
 
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email', $request->email)" required autofocus autocomplete="username" />
-                {{-- old('email', $request->email) → otomatis isi email dari link reset. --}}
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+@push('styles')
+<style>
+    .login-wrapper {
+        min-height: 100vh;
+        background-color: #f6efe8;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .login-card {
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 12px;
+        width: 100%;
+        max-width: 420px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+
+    .login-logo img {
+        height: 70px;
+    }
+
+    .login-title {
+        color: #5a4634;
+        font-weight: 600;
+    }
+
+    .login-btn {
+        background-color: #6b4e3d;
+        border: none;
+    }
+
+    .login-btn:hover {
+        background-color: #5a4634;
+    }
+
+    .form-label {
+        color: #5a4634;
+        font-weight: 500;
+    }
+</style>
+@endpush
+
+@section('content')
+<div class="login-wrapper">
+    <div class="login-card">
+
+        {{-- LOGO --}}
+        <div class="login-logo text-center mb-4">
+            <img src="{{ asset('images/logo.png') }}" alt="Band Logo">
         </div>
 
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-            <x-text-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+        <h4 class="text-center mb-2 login-title">Reset Password</h4>
+        <p class="text-center text-muted mb-4 small">
+            Create a new password for your account
+        </p>
 
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+        <form method="POST" action="{{ route('password.store') }}">
+            @csrf
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                                type="password"
-                                name="password_confirmation" required autocomplete="new-password" />
+            {{-- TOKEN --}}
+            <input type="hidden" name="token" value="{{ $request->route('token') }}">
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+            {{-- EMAIL --}}
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    class="form-control"
+                    value="{{ old('email', $request->email) }}"
+                    required
+                    autofocus
+                >
+                @error('email')
+                    <div class="text-danger small mt-1">{{ $message }}</div>
+                @enderror
+            </div>
 
-        <div class="flex items-center justify-end mt-4">
-            <x-primary-button>
-                {{ __('Reset Password') }}
-            </x-primary-button>
-        </div>
-    </form>
-</x-guest-layout>
+            {{-- PASSWORD --}}
+            <div class="mb-3">
+                <label for="password" class="form-label">New Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="form-control"
+                    required
+                >
+                @error('password')
+                    <div class="text-danger small mt-1">{{ $message }}</div>
+                @enderror
+            </div>
+
+            {{-- CONFIRM PASSWORD --}}
+            <div class="mb-3">
+                <label for="password_confirmation" class="form-label">
+                    Confirm Password
+                </label>
+                <input
+                    type="password"
+                    id="password_confirmation"
+                    name="password_confirmation"
+                    class="form-control"
+                    required
+                >
+                @error('password_confirmation')
+                    <div class="text-danger small mt-1">{{ $message }}</div>
+                @enderror
+            </div>
+
+            {{-- ACTION --}}
+            <button type="submit" class="btn login-btn text-white w-100 py-2">
+                Reset Password
+            </button>
+
+        </form>
+    </div>
+</div>
+@endsection
