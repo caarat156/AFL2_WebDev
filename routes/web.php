@@ -124,14 +124,28 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
     Route::resource('reviews', ReviewController::class);
 
     // 📍 Address
-    Route::get('/addresses', [AddressController::class, 'index'])->name('addresses');
-    Route::get('/addresses/create', [AddressController::class, 'create'])->name('addresses.create');
-    Route::post('/addresses', [AddressController::class, 'store'])->name('addresses.store');
-    Route::get('/addresses/{address}/edit', [AddressController::class, 'edit'])->name('addresses.edit');
-    Route::put('/addresses/{address}', [AddressController::class, 'update'])->name('addresses.update');
-    Route::delete('/addresses/{address}', [AddressController::class, 'destroy'])->name('addresses.destroy');
-    Route::post('/addresses/{address}/set-default', [AddressController::class, 'setDefault'])->name('addresses.set-default');
 
+    Route::middleware(['auth'])->group(function () {
+        
+        // 1. Menampilkan List & Form Tambah
+        Route::get('/addresses', [AddressController::class, 'index'])->name('addresses.index');
+        Route::get('/addresses/create', [AddressController::class, 'create'])->name('addresses.create');
+        Route::post('/addresses', [AddressController::class, 'store'])->name('addresses.store');
+    
+        // 2. Edit & Update 
+        // (Pakai {id} biar aman, method PUT sesuai Blade)
+        Route::get('/addresses/edit/{id}', [AddressController::class, 'edit'])->name('addresses.edit');
+        Route::put('/addresses/update/{id}', [AddressController::class, 'update'])->name('addresses.update');
+    
+        // 3. Delete 
+        // (Method DELETE sesuai Blade)
+        Route::delete('/addresses/delete/{id}', [AddressController::class, 'destroy'])->name('addresses.destroy');
+    
+        // 4. Set Default 
+        // (Method PUT karena kita meng-update status, sesuai Blade)
+        Route::put('/addresses/default/{id}', [AddressController::class, 'setDefault'])->name('addresses.set-default');
+    
+    });
     // 💳 Payment
     Route::post('/payment/snap-token',[PaymentController::class, 'createSnapToken'])->name('payment.snap-token');
     Route::post('/midtrans/callback', [PaymentController::class, 'callback']);

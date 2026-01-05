@@ -7,113 +7,66 @@ use Illuminate\Http\Request;
 
 class AddressController extends Controller
 {
-    public function index()
+    // ================= SET DEFAULT =================
+    public function setDefault($id)
     {
-        $addresses = auth()->user()->addresses;
-        return view('user.addresses.index', compact('addresses'));
+        // 1. Reset semua alamat user ini jadi NON-DEFAULT (0)
+        Address::where('user_id', auth()->id())
+            ->update(['is_default' => 0]);
+
+        // 2. Set alamat yang dipilih jadi DEFAULT (1)
+        Address::where('address_id', $id)
+            ->where('user_id', auth()->id())
+            ->update(['is_default' => 1]);
+
+        return back()->with('success', 'Alamat utama berhasil diubah.');
     }
 
-    public function create()
+    // ================= DELETE =================
+    public function destroy($id)
     {
-        return view('user.addresses.create');
+        // Cari manual biar pasti ketemu
+        $address = Address::where('address_id', $id)
+            ->where('user_id', auth()->id())
+            ->first();
+
+        if ($address) {
+            $address->delete();
+            return back()->with('success', 'Alamat berhasil dihapus.');
+        }
+
+        return back()->with('error', 'Alamat tidak ditemukan.');
     }
 
-    public function store(Request $request)
+    // ================= EDIT (UPDATE) =================
+    public function update(Request $request, $id)
     {
-        $validated = $request->validate([
-            'label' => 'nullable|string|max:50',
-            'recipient_name' => 'required|string|max:100',
-            'phone' => 'required|string|max:20',
-            'street' => 'required|string',
-            'city' => 'required|string|max:50',
-            'province' => 'required|string|max:50',
-            'postal_code' => 'required|string|max:10',
-            'is_default' => 'boolean',
+        $request->validate([
+            'recipient_name' => 'required|string|max:255',
+            'phone_number'   => 'required|string|max:20',
+            'address_line'   => 'required|string',
+            'city'           => 'required|string',
+            'province'       => 'required|string',
+            'postal_code'    => 'required|string',
         ]);
 
-        if ($validated['is_default'] ?? false) {
-            auth()->user()->addresses()->update(['is_default' => false]);
+        $address = Address::where('address_id', $id)
+            ->where('user_id', auth()->id())
+            ->first();
+
+        if (!$address) {
+            return back()->with('error', 'Alamat tidak ditemukan.');
         }
 
-        auth()->user()->addresses()->create($validated);
-
-        // Check if coming from cart
-        $from = $request->query('from', 'addresses');
-        
-        if ($from === 'cart') {
-            return redirect()->route('user.cart')
-                ->with('success', 'Address added successfully!');
-        }
-
-        return redirect()->route('user.addresses')
-            ->with('success', 'Address added successfully!');
-    }
-
-    public function edit(Address $address)
-    {
-        if ($address->user_id !== auth()->id()) {
-            abort(403, 'Unauthorized');
-        }
-        return view('user.addresses.edit', compact('address'));
-    }
-
-    public function update(Request $request, Address $address)
-    {
-        if ($address->user_id !== auth()->id()) {
-            abort(403, 'Unauthorized');
-        }
-
-        $validated = $request->validate([
-            'label' => 'nullable|string|max:50',
-            'recipient_name' => 'required|string|max:100',
-            'phone' => 'required|string|max:20',
-            'street' => 'required|string',
-            'city' => 'required|string|max:50',
-            'province' => 'required|string|max:50',
-            'postal_code' => 'required|string|max:10',
-            'is_default' => 'boolean',
+        $address->update([
+            'recipient_name' => $request->recipient_name,
+            'phone_number'   => $request->phone_number,
+            'address_line'   => $request->address_line,
+            'city'           => $request->city,
+            'province'       => $request->province,
+            'postal_code'    => $request->postal_code,
         ]);
 
-        if ($validated['is_default'] ?? false) {
-            auth()->user()->addresses()->update(['is_default' => false]);
-        } else {
-            $validated['is_default'] = false;
-        }
-
-        $address->update($validated);
-
-        // Check if coming from cart
-        $from = $request->query('from', 'addresses');
-        
-        if ($from === 'cart') {
-            return redirect()->route('user.cart')
-                ->with('success', 'Address updated successfully!');
-        }
-
-        return redirect()->route('user.addresses')
-            ->with('success', 'Address updated successfully!');
-    }
-
-    public function destroy(Address $address)
-    {
-        if ($address->user_id !== auth()->id()) {
-            abort(403, 'Unauthorized');
-        }
-        $address->delete();
-
-        return redirect()->route('user.addresses')
-            ->with('success', 'Address deleted!');
-    }
-
-    public function setDefault(Address $address)
-    {
-        if ($address->user_id !== auth()->id()) {
-            abort(403, 'Unauthorized');
-        }
-        
-        auth()->user()->addresses()->update(['is_default' => false]);
-        $address->update(['is_default' => true]);
-
-        return back()->with('success', 'Default address updated!');
+        return back()->with('success', 'Alamat berhasil diperbarui.');
     }
 }

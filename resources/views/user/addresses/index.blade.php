@@ -59,11 +59,10 @@
                                         <a href="{{ route('user.addresses.edit', $address) }}" class="btn btn-sm btn-warning">
                                             <i class="bi bi-pencil"></i> Edit
                                         </a>
-                                        <form action="{{ route('user.addresses.destroy', $address) }}" method="POST">
+                                        <form action="{{ route('address.destroy', $address->address_id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Yakin hapus alamat ini?');">
                                             @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">
-                                                <i class="bi bi-trash"></i>
+                                            @method('DELETE') <button type="submit" class="btn btn-sm btn-danger">
+                                                Delete
                                             </button>
                                         </form>
                                     </div>

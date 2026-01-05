@@ -13,12 +13,13 @@ class Orders extends Model
         'midtrans_order_id',
         'user_id',
         'total_price',
-        'order_date',
+        'order_date' => 'datetime',
         'payment_method',
         'payment_amount',
         'payment_status',
-        'payment_date',
+        'payment_date' => 'datetime',
         'status',
+        
     ];
 
     public function user()

@@ -83,13 +83,16 @@ class WorkshopController extends Controller
         'email' => 'required|email|max:255',
         'phone' => 'required|string|max:20',
         'participant_count' => 'required|integer|min:1',
-        'payment_method' => 'required|string|in:gopay,shopeepay,bank_transfer,credit_card',
+        // 'payment_method' => ... (Gak wajib validasi ini krn dipilih di Midtrans nanti)
     ]);
 
     $totalPrice = $workshop->price * $request->participant_count;
 
+    // 1️⃣ KITA BUAT ID-NYA DULUAN BIAR SAMA
+    $midtransOrderId = 'WORK-' . Str::uuid();
+
     $registration = WorkshopRegistration::create([
-        'midtrans_order_id' => 'WORK-' . Str::uuid(),
+        'midtrans_order_id' => $midtransOrderId, // ✅ Pakai variabel tadi
         'workshop_id' => $workshop->id,
         'user_id' => auth()->id(),
         'full_name' => $request->full_name,
@@ -98,10 +101,8 @@ class WorkshopController extends Controller
         'participant_count' => $request->participant_count,
         'registration_date' => now(),
         'payment_status' => 'pending',
-        'payment_method' => 'gopay',
-        'payment_amount' => 250000,
+        'payment_amount' => $totalPrice, // Pastikan amount sesuai hitungan
     ]);
-
 
     // Konfigurasi Midtrans
     \Midtrans\Config::$serverKey = config('midtrans.server_key');
@@ -111,7 +112,7 @@ class WorkshopController extends Controller
 
     $params = [
         'transaction_details' => [
-            'order_id' => 'WS-' . $registration->workshop_registration_id,
+            'order_id' => $midtransOrderId, // ✅ SEKARANG SAMA PERSIS DGN DATABASE
             'gross_amount' => $totalPrice,
         ],
         'customer_details' => [
@@ -124,7 +125,7 @@ class WorkshopController extends Controller
                 'id' => $workshop->id,
                 'price' => $workshop->price,
                 'quantity' => $registration->participant_count,
-                'name' => $workshop->title,
+                'name' => substr($workshop->title, 0, 50), // Nama dipotong biar gak error midtrans kepanjangan
             ]
         ]
     ];
@@ -135,7 +136,6 @@ class WorkshopController extends Controller
         'snap_token' => $snapToken
     ]);
 }
-
 
 
 

@@ -103,41 +103,63 @@ public function notificationHandler(Request $request)
     return response()->json(['message' => 'OK']);
 }
 
-    public function callback(Request $request)
-    {
-        // 🔐 CONFIG MIDTRANS
-        Config::$serverKey = config('midtrans.server_key');
-        Config::$isProduction = config('midtrans.is_production');
+    // Jangan lupa import Model di paling atas file:
+// use App\Models\WorkshopRegistration;
 
-        // 📩 TERIMA NOTIFIKASI
-        $notification = new Notification();
+public function callback(Request $request)
+{
+    // 🔐 CONFIG MIDTRANS
+    Config::$serverKey = config('midtrans.server_key');
+    Config::$isProduction = config('midtrans.is_production');
 
-        $transactionStatus = $notification->transaction_status;
-        $paymentType = $notification->payment_type;
-        $orderId = $notification->order_id;
-        $fraudStatus = $notification->fraud_status;
+    // 📩 TERIMA NOTIFIKASI
+    $notification = new Notification();
 
-        // 🔍 CARI ORDER
-        $order = Orders::where('midtrans_order_id', $orderId)->first();
+    $transactionStatus = $notification->transaction_status;
+    $paymentType = $notification->payment_type;
+    $orderId = $notification->order_id;
 
-        if (!$order) {
-            return response()->json(['message' => 'Order not found'], 404);
+    // 🔍 LOGIKA PENCARIAN GANDA (ORDER ATAU WORKSHOP?)
+    $targetTransaction = null;
+    $type = '';
+
+    // Cek apakah ini Order Produk?
+    $order = Orders::where('midtrans_order_id', $orderId)->first();
+    
+    if ($order) {
+        $targetTransaction = $order;
+        $type = 'product';
+    } else {
+        // Kalau bukan Produk, Cek apakah ini Workshop?
+        $workshop = \App\Models\WorkshopRegistration::where('midtrans_order_id', $orderId)->first();
+        if ($workshop) {
+            $targetTransaction = $workshop;
+            $type = 'workshop';
         }
-
-        // 🧠 LOGIKA STATUS
-        if ($transactionStatus == 'settlement' || $transactionStatus == 'capture') {
-            $order->payment_status = 'paid';
-        } elseif ($transactionStatus == 'pending') {
-            $order->payment_status = 'pending';
-        } elseif (in_array($transactionStatus, ['expire', 'cancel', 'deny'])) {
-            $order->payment_status = 'failed';
-        }
-
-        $order->payment_method = $paymentType;
-        $order->save();
-
-        return response()->json(['message' => 'Callback processed']);
     }
+
+    // Kalau di kedua tabel gak ketemu, balikin 404
+    if (!$targetTransaction) {
+        return response()->json(['message' => 'Order not found in both tables'], 404);
+    }
+
+    // 🧠 LOGIKA STATUS (Sama untuk keduanya)
+    if ($transactionStatus == 'settlement' || $transactionStatus == 'capture') {
+        $targetTransaction->payment_status = 'paid';
+    } elseif ($transactionStatus == 'pending') {
+        $targetTransaction->payment_status = 'pending';
+    } elseif (in_array($transactionStatus, ['expire', 'cancel', 'deny'])) {
+        $targetTransaction->payment_status = 'failed';
+    }
+
+    // Simpan Payment Method (Jika kolomnya ada di tabel workshop)
+    // Pastikan tabel workshop_registration punya kolom 'payment_method'
+    $targetTransaction->payment_method = $paymentType;
+    
+    $targetTransaction->save();
+
+    return response()->json(['message' => 'Callback processed for ' . $type]);
+}
 
     public function showProfile()
     {

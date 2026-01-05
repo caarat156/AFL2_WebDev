@@ -156,7 +156,7 @@
                     </div>
 
                     <small class="text-muted">
-                        {{ $order->order_date->format('d M Y') }}
+                        {{ \Carbon\Carbon::parse($order->order_date)->format('d M Y') }}
                     </small>
 
                     <ul class="mt-2 mb-2">

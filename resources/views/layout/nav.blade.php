@@ -135,3 +135,32 @@
         </div>
     </div>
 </nav>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Ambil elemen tombol dan form
+        const searchToggle = document.getElementById('searchToggle');
+        const searchForm = document.getElementById('searchForm');
+
+        // Jika elemen ditemukan, jalankan perintah klik
+        if (searchToggle && searchForm) {
+            searchToggle.addEventListener('click', function(e) {
+                e.preventDefault(); // Mencegah layar loncat ke atas
+                
+                // Toggle (Nyalakan/Matikan) class d-none
+                if (searchForm.classList.contains('d-none')) {
+                    searchForm.classList.remove('d-none'); // Munculkan
+                    searchForm.querySelector('input').focus(); // Langsung fokus kursor ke input
+                } else {
+                    searchForm.classList.add('d-none'); // Sembunyikan lagi
+                }
+            });
+
+            // (Opsional) Tutup form kalau klik di luar area
+            document.addEventListener('click', function(e) {
+                if (!searchForm.contains(e.target) && !searchToggle.contains(e.target)) {
+                    searchForm.classList.add('d-none');
+                }
+            });
+        }
+    });
+</script>

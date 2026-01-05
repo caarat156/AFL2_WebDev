@@ -54,22 +54,29 @@ class CartController extends Controller
     }
 
     // Remove item from cart
-    public function remove(Cart $cart)
-    {
-        // pastikan user login
-        if (!auth()->check()) {
-            abort(403);
-        }
-    
-        // pastikan cart milik user tsb
-        if ($cart->user_id !== auth()->id()) {
-            abort(403);
-        }
-    
-        $cart->delete();
-    
-        return back()->with('success', 'Item removed from cart');
+ // Ubah parameternya jadi $id biasa, jangan (Cart $cart)
+public function remove($id)
+{
+    // 1️⃣ Pastikan User Login
+    if (!auth()->check()) {
+        abort(403);
     }
+
+    // 2️⃣ Cari Manual berdasarkan 'cart_id'
+    $cart = Cart::where('cart_id', $id)
+        ->where('user_id', auth()->id()) // Pastikan punya dia sendiri
+        ->first();
+
+    // 3️⃣ Cek Ketemu Gak?
+    if (!$cart) {
+        return back()->with('error', 'Barang tidak ditemukan atau bukan milikmu.');
+    }
+
+    // 4️⃣ Hapus
+    $cart->delete();
+
+    return back()->with('success', 'Item berhasil dihapus dari keranjang.');
+}
     
 
     public function update(Request $request, $id)
@@ -117,59 +124,60 @@ class CartController extends Controller
     //     return view('user.checkout', compact('cartItems', 'total'));
     // }
 
-public function checkout(Request $request)
-{
-    // 1️⃣ VALIDASI (SESUI MIGRATION)
-    $request->validate([
-        'selected_items' => 'required|array|min:1',
-        'selected_items.*' => 'required|integer|exists:cart,cart_id',
-    ]);
-
-    // 2️⃣ AMBIL CART (PAKAI cart_id)
-    $cartItems = Cart::with('product')
-        ->whereIn('cart_id', $request->selected_items)
-        ->where('user_id', auth()->id())
-        ->get();
-
-    if ($cartItems->isEmpty()) {
-        return redirect()->route('user.cart')
-            ->with('error', 'Cart items not found');
-    }
-
-    // 3️⃣ HITUNG TOTAL
-    $total = $cartItems->sum(function ($item) {
-        return ($item->product->price_2025 ?? $item->product->price_2024)
-            * $item->quantity;
-    });
-
-    // 4️⃣ TRANSACTION
-    $order = null;
-
-    DB::transaction(function () use ($cartItems, $total, &$order) {
-        $order = Orders::create([
-            'midtrans_order_id' => 'PROD-' . Str::uuid(),
-            'user_id' => auth()->id(),
-            'total_price' => $total,
-            'order_date' => now(),
-            'payment_status' => 'pending',
-            'status' => 'on process',
+    public function checkout(Request $request)
+    {
+        // 1️⃣ VALIDASI
+        $request->validate([
+            'selected_items' => 'required|array|min:1',
+            'selected_items.*' => 'required|integer|exists:cart,cart_id',
         ]);
-
-        foreach ($cartItems as $item) {
-            Order_Items::create([
-                'order_id'   => $order->order_id, // ✔️ BENAR
-                'product_id' => $item->product_id,
-                'quantity'   => $item->quantity,
-                'unit_price' =>
-                    ($item->product->price_2025 ?? $item->product->price_2024),
-                'sub_total'  =>
-                    $item->quantity *
-                    ($item->product->price_2025 ?? $item->product->price_2024),
-            ]);
+    
+        // 2️⃣ AMBIL DATA CART
+        $cartItems = Cart::with('product')
+            ->whereIn('cart_id', $request->selected_items)
+            ->where('user_id', auth()->id())
+            ->get();
+    
+        if ($cartItems->isEmpty()) {
+            return redirect()->route('user.cart')
+                ->with('error', 'Cart items not found');
         }
-    });
-
-    return view('user.checkout', compact('cartItems', 'total', 'order'));
-}
+    
+        // 3️⃣ HITUNG TOTAL
+        $total = $cartItems->sum(function ($item) {
+            return ($item->product->price_2025 ?? $item->product->price_2024) * $item->quantity;
+        });
+    
+        // 4️⃣ DATABASE TRANSACTION
+        $order = null;
+    
+        DB::transaction(function () use ($cartItems, $total, &$order) {
+            
+            // --- STEP A: BIKIN KEPALA NOTA (ORDER) ---
+            // Kita pakai cara MANUAL (new Orders) supaya 'order_date' DIJAMIN MASUK
+            $order = new Orders();
+            $order->midtrans_order_id = 'PROD-' . Str::uuid();
+            $order->user_id           = auth()->id();
+            $order->total_price       = $total;
+            $order->order_date        = now(); // ✅ Ini pasti masuk sekarang
+            $order->payment_status    = 'pending';
+            $order->status            = 'on process';
+            $order->save(); 
+    
+            // --- STEP B: BIKIN DAFTAR BARANG (ORDER ITEMS) ---
+            foreach ($cartItems as $item) {
+                Order_Items::create([
+                    'order_id'   => $order->order_id, // Ambil ID dari order yg baru dibuat di atas
+                    'product_id' => $item->product_id,
+                    'quantity'   => $item->quantity,
+                    'unit_price' => ($item->product->price_2025 ?? $item->product->price_2024),
+                    'sub_total'  => $item->quantity * ($item->product->price_2025 ?? $item->product->price_2024),
+                ]);
+            }
+            
+        });
+    
+        return view('user.checkout', compact('cartItems', 'total', 'order'));
+    }
 
 }

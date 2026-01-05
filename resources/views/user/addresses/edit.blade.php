@@ -56,14 +56,16 @@
                     @error('postal_code') <div class="invalid-feedback">{{ $message }}</div> @enderror
                 </div>
 
-                <div class="mb-4">
-                    <div class="form-check">
-                        <input type="checkbox" id="is_default" name="is_default" class="form-check-input" value="1" {{ old('is_default', $address->is_default) ? 'checked' : '' }}>
-                        <label class="form-check-label" for="is_default">
-                            Set as default address
-                        </label>
-                    </div>
-                </div>
+                @if($address->is_default)
+                <span class="badge bg-success">Default</span>
+            @else
+                <form action="{{ route('address.default', $address->address_id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    @method('PUT') <button type="submit" class="btn btn-sm btn-outline-primary">
+                        Set as Default
+                    </button>
+                </form>
+            @endif
 
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
