@@ -82,20 +82,23 @@
                     </form>
                 </li>
 
-                <li class="nav-item">
-                    @auth
+                @if(Auth::check() && Auth::user()->role !== 'admin')
+                    <li class="nav-item">
                         <a class="nav-link text-secondary position-relative" href="{{ route('user.cart') }}" title="Shopping Cart">
                             <i class="bi bi-bag" style="font-size: 1.25rem;"></i>
                             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartBadge" style="display: none;">
                                 0
                             </span>
                         </a>
-                    @else
+                    </li>
+                @elseif(!Auth::check())
+                    <li class="nav-item">
                         <a class="nav-link text-secondary position-relative" href="{{ route('login') }}" title="Shopping Cart">
                             <i class="bi bi-bag" style="font-size: 1.25rem;"></i>
                         </a>
-                    @endauth
-                </li>
+                    </li>
+                @endif
+
 
                 <li class="nav-item dropdown">
                     @if(Auth::check())
