@@ -12,7 +12,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\WorkshopController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\PaymentController;
-
+use App\Http\Controllers\AdminTransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -125,27 +125,13 @@ Route::middleware(['auth'])->prefix('user')->name('user.')->group(function () {
 
     // 📍 Address
 
-    Route::middleware(['auth'])->group(function () {
-        
-        // 1. Menampilkan List & Form Tambah
-        Route::get('/addresses', [AddressController::class, 'index'])->name('addresses.index');
-        Route::get('/addresses/create', [AddressController::class, 'create'])->name('addresses.create');
-        Route::post('/addresses', [AddressController::class, 'store'])->name('addresses.store');
-    
-        // 2. Edit & Update 
-        // (Pakai {id} biar aman, method PUT sesuai Blade)
-        Route::get('/addresses/edit/{id}', [AddressController::class, 'edit'])->name('addresses.edit');
-        Route::put('/addresses/update/{id}', [AddressController::class, 'update'])->name('addresses.update');
-    
-        // 3. Delete 
-        // (Method DELETE sesuai Blade)
-        Route::delete('/addresses/delete/{id}', [AddressController::class, 'destroy'])->name('addresses.destroy');
-    
-        // 4. Set Default 
-        // (Method PUT karena kita meng-update status, sesuai Blade)
-        Route::put('/addresses/default/{id}', [AddressController::class, 'setDefault'])->name('addresses.set-default');
-    
-    });
+    Route::get('/addresses', [AddressController::class, 'index'])->name('addresses.index');
+    Route::get('/addresses/create', [AddressController::class, 'create'])->name('addresses.create');
+    Route::post('/addresses', [AddressController::class, 'store'])->name('addresses.store');
+    Route::get('/addresses/edit/{id}', [AddressController::class, 'edit'])->name('addresses.edit');
+    Route::put('/addresses/update/{id}', [AddressController::class, 'update'])->name('addresses.update');
+    Route::delete('/addresses/delete/{id}', [AddressController::class, 'destroy'])->name('addresses.destroy');
+    Route::put('/addresses/default/{id}', [AddressController::class, 'setDefault'])->name('addresses.set-default');
     // 💳 Payment
     Route::post('/payment/snap-token',[PaymentController::class, 'createSnapToken'])->name('payment.snap-token');
     Route::post('/midtrans/callback', [PaymentController::class, 'callback']);
@@ -167,7 +153,7 @@ Route::post('/midtrans/notification', [PaymentController::class, 'callback']);
 |--------------------------------------------------------------------------
 */
 
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->middleware(['auth'])->group(function () {
 
     Route::get('/home', [HomeController::class, 'adminHome'])->name('home');
 
@@ -180,6 +166,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
     Route::get('/transactions', [ProductController::class, 'viewTransactions'])->name('transactions');
+
+    Route::get('/product-transaction', [AdminTransactionController::class, 'index'])
+            ->name('admin.producttransaction');
 
     // 🏪 Stores
     Route::get('/stores', [StoreController::class, 'adminIndex'])->name('stores');

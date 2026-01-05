@@ -27,17 +27,13 @@
             @endif
 
             {{-- ================= SHIPPING ADDRESS ================= --}}
-            @if(auth()->user()->addresses->isEmpty())
+                @if(auth()->user()->addresses->isEmpty())
                 <div class="alert alert-warning">
                     <i class="bi bi-exclamation-circle me-2"></i>
                     <strong>No shipping address yet.</strong>
+                    {{-- 👇 Pastikan ini mengarah ke user.addresses.create --}}
                     <a href="{{ route('user.addresses.create') }}" class="alert-link">Add your first address</a>
                 </div>
-            @else
-                <div class="card mb-4 border-primary">
-                    <div class="card-header bg-primary text-white">
-                        <i class="bi bi-geo-alt me-2"></i>Shipping Address
-                    </div>
                     <div class="card-body">
                         @php
                             $defaultAddress = auth()->user()->defaultAddress;
@@ -57,8 +53,9 @@
                                 </p>
                             </div>
                             <div class="col-md-4 text-end">
-                                <a href="{{ route('user.addresses', ['from' => 'cart']) }}" class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-pencil me-1"></i>Change Address
+                                {{-- 👇 PERBAIKAN: Gunakan 'user.addresses.index' dan Hapus HTML sampah di bawahnya --}}
+                                <a href="{{ route('user.addresses.index') }}" class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil me-1"></i> Change Address
                                 </a>
                             </div>
                         </div>

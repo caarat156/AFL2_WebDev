@@ -155,14 +155,14 @@ public function remove($id)
             
             // --- STEP A: BIKIN KEPALA NOTA (ORDER) ---
             // Kita pakai cara MANUAL (new Orders) supaya 'order_date' DIJAMIN MASUK
-            $order = new Orders();
-            $order->midtrans_order_id = 'PROD-' . Str::uuid();
-            $order->user_id           = auth()->id();
-            $order->total_price       = $total;
-            $order->order_date        = now(); // ✅ Ini pasti masuk sekarang
-            $order->payment_status    = 'pending';
-            $order->status            = 'on process';
-            $order->save(); 
+            $order = Orders::create([
+                'midtrans_order_id' => 'PROD-' . uniqid(),
+                'user_id' => auth()->id(),
+                'total_price' => $total,
+                'payment_status' => 'pending',
+                'status' => 'on process',
+                'order_date' => now(), // <--- TAMBAHKAN BARIS INI
+            ]);
     
             // --- STEP B: BIKIN DAFTAR BARANG (ORDER ITEMS) ---
             foreach ($cartItems as $item) {
